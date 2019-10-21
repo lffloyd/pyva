@@ -132,7 +132,8 @@ class Factorial {
 class Fac {
     public int ComputeFac(int num) {
         int num_aux;
-        int statica;
+        int statica = 3;
+        if (statica != 90) return;
         if (num < 1)
             num_aux = 1;
         else

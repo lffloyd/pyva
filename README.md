@@ -11,10 +11,21 @@ Make sure to have:
 
 ### Setup
 
-Create a pienv environment in your root folder with:
+Create a pipenv environment in your root folder with:
 ```pipenv shell```
 
 Then, you can install the dependencies through:
 ```pipenv install```
 
 Once finished, you can run or edit the project.
+
+### Ply documentation
+
+You can find simple step-by-step implementations of lexers and parsers using
+Ply [here](http://www.dabeaz.com/ply/ply.html).
+
+### Additional links
+
+* [Python docs about Regex](https://docs.python.org/3.3/howto/regex.html#matching-characters) - to learn how Python 
+treats regex
+* [Regexr](https://regexr.com) - to try some regex
