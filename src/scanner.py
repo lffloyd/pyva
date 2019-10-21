@@ -1,7 +1,7 @@
 import ply.lex as lex
 
 # List of token names.   This is always required
-tokens = (
+tokens = [
     'ID',         #identifier
     'NUMBER',     #0,1,2,3...
     'PLUS',       #+
@@ -25,28 +25,34 @@ tokens = (
     'EQUALS',     #==
     'NEQUALS',    #!=
     'AND',        #&
-    'NOT',        #!
-    'BOOLEAN',    #boolean
-    'CLASS',      #class
-    'EXTENDS',    #extends
-    'PUBLIC',     #public
-    'STATIC',     #static
-    'VOID',       #void
-    'MAIN',       #main
-    'STRING',     #String
-    'RETURN',     #return
-    'INT',        #int
-    'IF',         #if
-    'ELSE',       #else
-    'WHILE',      #while
-    'PRINT',      #System.out.println
-    'LENGTH',     #length
-    'TRUE',       #true
-    'FALSE',      #false
-    'THIS',       #this
-    'NEW',        #new
-    'NULL'        #null
-)
+    'NOT'        #!
+]
+
+# Defines the keywords
+reserved_words = {
+    'BOOLEAN': 'boolean',
+    'CLASS': 'class',
+    'EXTENDS': 'extends',
+    'PUBLIC': 'public',
+    'STATIC': 'static',
+    'VOID': 'void',
+    'MAIN': 'main',
+    'STRING': 'String',
+    'RETURN': 'return',
+    'INT': 'int',
+    'IF': 'if',
+    'ELSE': 'else',
+    'WHILE': 'while',
+    'SYSTEMOUTPRINTLN': 'System.out.println',
+    'LENGTH': 'length',
+    'TRUE': 'true',
+    'FALSE': 'false',
+    'THIS': 'this',
+    'NEW': 'new',
+    'NULL': 'null'
+}
+
+tokens += reserved_words
 
 # Regular expression rules for simple tokens
 t_PLUS = r'\+'
@@ -71,31 +77,21 @@ t_EQUALS = r'=='
 t_NEQUALS = r'!='
 t_AND = r'&&'
 t_NOT = r'!'
-t_BOOLEAN = r'boolean'
-t_CLASS = r'class'
-t_EXTENDS = r'extends'
-t_PUBLIC = r'public'
-t_STATIC = r'static'
-t_VOID = r'void'
-t_MAIN = r'main'
-t_STRING = r'String'
-t_RETURN = r'return'
-t_INT = r'int'
-t_IF = r'if'
-t_ELSE = r'else'
-t_WHILE = r'while'
-t_PRINT = r'System.out.println'
-t_LENGTH = r'length'
-t_TRUE = r'true'
-t_FALSE = r'false'
-t_THIS = r'this'
-t_NEW = r'new'
-t_NULL = r'null'
 
 
 # Regular expression rules with value definitions
+def t_SYSTEMOUTPRINTLN(t):
+    r'System.out.println'
+    t.value = str(t.value)
+    return t
+
+
 def t_ID(t):
-    r'[a-zA-Z][0-9|a-zA-Z|_]*'
+    r'([a-zA-Z][0-9|a-zA-Z|_]*)'
+    key = t.value.upper().replace('.', '')
+    # Adjusts the types of keyword tokens that match this regex
+    if key in reserved_words:
+        t.type = key
     t.value = str(t.value)
     return t
 
@@ -136,6 +132,7 @@ class Factorial {
 class Fac {
     public int ComputeFac(int num) {
         int num_aux;
+        int statica;
         if (num < 1)
             num_aux = 1;
         else
