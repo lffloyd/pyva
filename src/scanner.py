@@ -117,37 +117,37 @@ def t_error(t):
     print("Illegal character '%s'" % t.value[0])
     t.lexer.skip(1)
 
+def generateScanner(data):
+    # Build the lexer
+    lexer = lex.lex()
 
-# Build the lexer
-lexer = lex.lex()
+    # Test it out
+    #data = '''
+    #class Factorial {
+    #    public static void main(String[] a) {
+    #        System.out.println(new Fac().ComputeFac(10));
+    #    }
+    #}
 
-# Test it out
-data = '''
-class Factorial {
-    public static void main(String[] a) {
-        System.out.println(new Fac().ComputeFac(10));
-    }
-}
+    #class Fac {
+    #    public int ComputeFac(int num) {
+    #        int num_aux;
+    #        int statica;
+    #        if (num < 1)
+    #            num_aux = 1;
+    #        else
+    #            num_aux = num * (this.ComputeFac(num - 1));
+    #        return num_aux;
+    #    }
+    #}
+    #'''
 
-class Fac {
-    public int ComputeFac(int num) {
-        int num_aux;
-        int statica;
-        if (num < 1)
-            num_aux = 1;
-        else
-            num_aux = num * (this.ComputeFac(num - 1));
-        return num_aux;
-    }
-}
- '''
+    # Give the lexer some input
+    lexer.input(data)
 
-# Give the lexer some input
-lexer.input(data)
-
-# Tokenize
-while True:
-    tok = lexer.token()
-    if not tok:
-        break  # No more input
-    print(tok)
+    # Tokenize
+    while True:
+        tok = lexer.token()
+        if not tok:
+            break  # No more input
+        print(tok)
