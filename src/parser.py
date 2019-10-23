@@ -76,44 +76,19 @@ import ply.yacc as yacc
 from src.scanner import tokens
 
 
-def p_expression_plus(p):
-    'expression : expression PLUS term'
-    p[0] = p[1] + p[3]
+def p_prog(p):
+    'prog : main LKEY classe RKEY'
+    # p[0] = p[1]
 
 
-def p_expression_minus(p):
-    'expression : expression MINUS term'
-    p[0] = p[1] - p[3]
+def p_main(p):
+    'main : CLASS ID LKEY PUBLIC STATIC VOID MAIN LPAREN STRING LBRACKET RBRACKET ID RPAREN LKEY cmd RKEY RKEY'
+    p[0] = p[15]
 
 
-def p_expression_term(p):
-    'expression : term'
+def p_var(p):
+    'var : tipo ID SEMICOLON'
     p[0] = p[1]
-
-
-def p_term_times(p):
-    'term : term TIMES factor'
-    p[0] = p[1] * p[3]
-
-
-def p_term_div(p):
-    'term : term DIVIDE factor'
-    p[0] = p[1] / p[3]
-
-
-def p_term_factor(p):
-    'term : factor'
-    p[0] = p[1]
-
-
-def p_factor_num(p):
-    'factor : NUMBER'
-    p[0] = p[1]
-
-
-def p_factor_expr(p):
-    'factor : LPAREN expression RPAREN'
-    p[0] = p[2]
 
 
 # Error rule for syntax errors
