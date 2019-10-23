@@ -1,4 +1,4 @@
-#    Nossos tokens
+#     NOSSOS TOKENS
 
 #    'ID',         #identifier
 #    'NUMBER',     #0,1,2,3...
@@ -24,7 +24,9 @@
 #    'NEQUALS',    #!=
 #    'AND',        #&
 #    'NOT'         #!
-#
+
+#     RESERVED WORDS
+
 #    'BOOLEAN': 'boolean',
 #    'CLASS': 'class',
 #    'EXTENDS': 'extends',
@@ -46,7 +48,34 @@
 #    'NEW': 'new',
 #    'NULL': 'null'
 
-# Nossa gramática a partir da fornecida
+# GRAMÁTICA ATUALIZADA EBNF ---> BNF
+
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+
+# NOSSA GRAMÁTICA A PARTIR DA QUE FOI FORNECIDA (AINDA NÃO ATUALIZEI DAQUI PRA BAIXO)
 
 # minúsculo são não terminais
 # maiúsculo são os nossos tokes
@@ -78,13 +107,36 @@ from src.scanner import tokens
 
 def p_prog(p):
     'prog : main LKEY classe RKEY'
-    # p[0] = p[1]
+    p[0] = p[3]
 
 
 def p_main(p):
     'main : CLASS ID LKEY PUBLIC STATIC VOID MAIN LPAREN STRING LBRACKET RBRACKET ID RPAREN LKEY cmd RKEY RKEY'
     p[0] = p[15]
 
+def p_classe_no_var_no_metodo(p):
+    'classe : CLASS ID LBRACKET EXTENDS ID RBRACKET LKEY RKEY'
+    # p[0] =
+    # pass
+    # Não sei qual dos dois acima a gente usaria
+
+def p_classe_yes_var_no_metodo(p):
+    'classe : CLASS ID LBRACKET EXTENDS ID RBRACKET LKEY RKEY'
+    # p[0] =
+    # pass
+    # Não sei qual dos dois acima a gente usaria
+
+def p_classe_no_var_no_metodo(p):
+    'classe : CLASS ID LBRACKET EXTENDS ID RBRACKET LKEY RKEY'
+    # p[0] =
+    # pass
+    # Não sei qual dos dois acima a gente usaria
+
+def p_classe_no_var_no_metodo(p):
+    'classe : CLASS ID LBRACKET EXTENDS ID RBRACKET LKEY RKEY'
+    # p[0] =
+    # pass
+    # Não sei qual dos dois acima a gente usaria
 
 def p_var(p):
     'var : tipo ID SEMICOLON'
