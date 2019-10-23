@@ -1,0 +1,86 @@
+# GRAMÁTICA ATUALIZADA EBNF ---> BNF
+
+#        PROG -> MAIN CONJ_CLASSES
+#
+#        MAIN -> class id '{' public static void main '(' String '[' ']' id ')'
+#        '{' CMD '}' '}'
+#
+#        CONJ_CLASSES -> episilon
+#        | CONJ_CLASSES CLASSE
+#
+#        CLASSE -> class id EXTENSION '{' CONJ_VAR CONJ_METODOS '}'
+#
+#        EXTENSION -> episilon 
+#        | extends id
+#
+#        CONJ_VAR -> episilon | CONJ_VAR VAR
+#
+#        CONJ_METODOS -> episilon | CONJ_METODOS METODO
+#
+#        VAR -> TIPO id ;
+#
+#        METODO -> public TIPO id '(' PARAMS ')' '{' CONJ_VAR CONJ_CMD return EXP ; '}'
+#
+#        CONJ_CMD -> episilon 
+#        | CONJ_CMD CMD
+#
+#        PARAMS -> episilon 
+#        | CONJ_PARAMS
+#
+#        CONJ_PARAMS -> TIPO id MAIS_PARAM
+#
+#        MAIS_PARAM -> episilon
+#        | MAIS_PARAM , TIPO id
+#
+#        TIPO -> int '[' ']'
+#        | boolean
+#        | int
+#        | id
+#
+#        CMD -> '{' CONJ_CMD '}'
+#        | if '(' EXP ')' CMD
+#        | if '(' EXP ')' CMD else CMD
+#        | while '(' EXP ')' CMD
+#        | System.out.println '(' EXP ')' ;
+#        | id = EXP ;
+#        | id '[' EXP ']' = EXP ;
+#
+#        EXP -> EXP && REXP
+#        | REXP
+#
+#        REXP -> REXP < AEXP
+#        | REXP == AEXP
+#        | REXP != AEXP
+#        | AEXP
+#
+#        AEXP -> AEXP + MEXP
+#        | AEXP - MEXP
+#        | MEXP
+#
+#        MEXP -> MEXP * SEXP
+#        | SEXP
+#
+#        SEXP -> ! SEXP
+#        | - SEXP
+#        | true
+#        | false
+#        | num
+#        | null
+#        | new int '[' EXP ']'
+#        | PEXP . length
+#        | PEXP '[' EXP ']'
+#        | PEXP
+#
+#        PEXP -> id
+#        | this
+#        | new id '(' ')'
+#        | '(' EXP ')'
+#        | PEXP . id
+#        | PEXP . id '(' OPTION_EXPS ')'
+#
+#        OPTION_EXPS -> episilon 
+#        | EXP 
+#
+#        EXPS -> EXP CONJ_EXPS
+#
+#        CONJ_EXPS -> episilon | CONJ_EXPS , EXP
