@@ -23,6 +23,13 @@ def read_source_code(file, mode):
                 auxLine = (line.split("/*"))
                 line = auxLine[0] + "\n"
                 fileContent = fileContent + line
+
+                #Caso o operador "*/" esteja na mesma linha...
+                if(auxLine[-1].find('*/') != -1):
+                    multiLineComment = False
+                    line = auxLine[-1].split("*/")
+                    fileContent = fileContent + line[-1]
+
             else:
                 if (line.find("//") != -1):
                     auxLine = (line.split("//"))
