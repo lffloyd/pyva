@@ -67,3 +67,4 @@
 # sexp -> NOT sexp | MINUS sexp | TRUE | FALSE | NUM (verificar pois nao temos esse token) | NULL | NEW INT LBRACKET exp RBRACKET | pexp LENGTH (verificar pois na gramática dele é ".length" e na nossa é só "length") | pexp LBRACKET exp RBRACKET | pexp
 # pexp -> ID | THIS | NEW ID LPAREN RPREN | LPAREN exp RPAREN | pexp ID (verificar pois na gramática dele é ".id" e a nossa é "id") | pexp ID (verificar pois na gramática dele é ".id" e a nossa é "id") LPAREN pode_ou_nao(exps) RPAREN
 # exps -> exp RKEY COLON exp RKEY <--- verificar se aqui é COLON mesmo
+

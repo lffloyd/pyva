@@ -1,40 +1,15 @@
-from src.scanner import generateScanner
+from src.scanner import lexer
+from src.utils.code_reader import read_source_code
 
-miniJavaFile = open("miniJava.java","r")
+raw_source_code = read_source_code("miniJava.java", "r")
 
-fileContent = ""
+print(raw_source_code)
 
-multiLineComment = False
+lexer.input(raw_source_code)
 
-line = miniJavaFile.readline()
-
-while(line):
-    if(multiLineComment):
-
-        if(line.find("*/") != -1):
-            multiLineComment = False
-            auxLine = (line.split("*/"))
-            line = auxLine[-1]
-            fileContent = fileContent + line    
-        
-    else:
-
-        if(line.find("/*") != -1):
-            multiLineComment = True
-            auxLine = (line.split("/*"))
-            line = auxLine[0] + "\n"
-            fileContent = fileContent + line    
-        else:
-            if(line.find("//") != -1):
-                auxLine = (line.split("//"))
-                line = auxLine[0] + "\n"
-                fileContent = fileContent + line    
-            else:
-                fileContent = fileContent + line    
-    line = miniJavaFile.readline()
-    
-print(fileContent)
-
-generateScanner(fileContent)
-
-miniJavaFile.close()
+# Tokenize
+while True:
+    tok = lexer.token()
+    if not tok:
+        break  # No more input
+    print(tok)
