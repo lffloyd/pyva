@@ -68,3 +68,8 @@
 # pexp -> ID | THIS | NEW ID LPAREN RPREN | LPAREN exp RPAREN | pexp ID (verificar pois na gramática dele é ".id" e a nossa é "id") | pexp ID (verificar pois na gramática dele é ".id" e a nossa é "id") LPAREN pode_ou_nao(exps) RPAREN
 # exps -> exp RKEY COLON exp RKEY <--- verificar se aqui é COLON mesmo
 
+# Yacc import 
+import ply.yacc as yacc
+ 
+# Get the token map from the lexer.  This is required.
+from calclex import tokens
