@@ -43,14 +43,14 @@
 #        CMD1 -> '{' CONJ_CMD '}'
 #        | if '(' EXP ')' CMD1
 #        | if '(' EXP ')' CMD2 else CMD1
-#        | while '(' EXP ')' CMD
+#        | while '(' EXP ')' CMD1
 #        | System.out.println '(' EXP ')' ;
 #        | id = EXP ;
 #        | id '[' EXP ']' = EXP ;
 #
 #        CMD2 -> '{' CONJ_CMD '}'
 #        | if '(' EXP ')' CMD2 else CMD2
-#        | while '(' EXP ')' CMD
+#        | while '(' EXP ')' CMD2
 #        | System.out.println '(' EXP ')' ;
 #        | id = EXP ;
 #        | id '[' EXP ']' = EXP ;
