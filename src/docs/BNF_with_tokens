@@ -1,14 +1,18 @@
-# GRAMÁTICA ATUALIZADA EBNF ---> BNF WITH OUR TOKENS
+#        GRAMÁTICA ATUALIZADA EBNF ---> BNF WITH OUR TOKENS
+#        SÍMBOLOS NÃO TERMINAIS ------> Maiúsculo
+#        SÍMBOLOS TERMINAIS ----------> Minúsculo
+
+
 
 #        PROG -> MAIN CONJ_CLASSES
 #
-#        MAIN -> class id '{' public static void main '(' String '[' ']' id ')'
-#        '{' CMD '}' '}'
+#        MAIN -> class id lkey public static void main lparen string lbracket rbracket id rparen
+#        lkey CMD rkey rkey
 #
 #        CONJ_CLASSES -> episilon
 #        | CONJ_CLASSES CLASSE
 #
-#        CLASSE -> class id EXTENSION '{' CONJ_VAR CONJ_METODOS '}'
+#        CLASSE -> class id EXTENSION lkey CONJ_VAR CONJ_METODOS rkey
 #
 #        EXTENSION -> episilon 
 #        | extends id
@@ -19,7 +23,7 @@
 #
 #        VAR -> TIPO id ;
 #
-#        METODO -> public TIPO id '(' PARAMS ')' '{' CONJ_VAR CONJ_CMD return EXP ; '}'
+#        METODO -> public TIPO id lparen PARAMS rparen lkey CONJ_VAR CONJ_CMD return EXP ; rkey
 #
 #        CONJ_CMD -> episilon 
 #        | CONJ_CMD CMD
@@ -32,51 +36,51 @@
 #        MAIS_PARAM -> episilon
 #        | MAIS_PARAM , TIPO id
 #
-#        TIPO -> int '[' ']'
+#        TIPO -> int lbracket rbracket
 #        | boolean
 #        | int
 #        | id
 #
-#        CMD -> '{' CONJ_CMD '}'
-#        | if '(' EXP ')' CMD
-#        | if '(' EXP ')' CMD else CMD
-#        | while '(' EXP ')' CMD
-#        | System.out.println '(' EXP ')' ;
+#        CMD -> lkey CONJ_CMD rkey
+#        | if lparen EXP rparen CMD
+#        | if lparen EXP rparen CMD else CMD
+#        | while lparen EXP rparen CMD
+#        | Systemoutprintln lparen EXP rparen ;
 #        | id = EXP ;
-#        | id '[' EXP ']' = EXP ;
+#        | id lbracket EXP rbracket attr EXP ;
 #
-#        EXP -> EXP && REXP
+#        EXP -> EXP and REXP
 #        | REXP
 #
-#        REXP -> REXP < AEXP
-#        | REXP == AEXP
-#        | REXP != AEXP
+#        REXP -> REXP lthan AEXP
+#        | REXP equals AEXP
+#        | REXP nequals AEXP
 #        | AEXP
 #
-#        AEXP -> AEXP + MEXP
-#        | AEXP - MEXP
+#        AEXP -> AEXP plus MEXP
+#        | AEXP minus MEXP
 #        | MEXP
 #
-#        MEXP -> MEXP * SEXP
+#        MEXP -> MEXP times SEXP
 #        | SEXP
 #
-#        SEXP -> ! SEXP
-#        | - SEXP
+#        SEXP -> not SEXP
+#        | minus SEXP
 #        | true
 #        | false
 #        | num
 #        | null
-#        | new int '[' EXP ']'
+#        | new int lbracket EXP rbracket
 #        | PEXP . length
-#        | PEXP '[' EXP ']'
+#        | PEXP lbracket EXP rbracket
 #        | PEXP
 #
 #        PEXP -> id
 #        | this
-#        | new id '(' ')'
-#        | '(' EXP ')'
+#        | new id lparen rparen
+#        | lparen EXP rparen
 #        | PEXP . id
-#        | PEXP . id '(' OPTION_EXPS ')'
+#        | PEXP . id lparen OPTION_EXPS rparen
 #
 #        OPTION_EXPS -> episilon 
 #        | EXP 
