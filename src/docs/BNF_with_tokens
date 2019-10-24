@@ -20,9 +20,9 @@
 #
 #        conj_metodos -> EPISILON | conj_metodos metodo
 #
-#        var -> tipo ID ;
+#        var -> tipo ID SEMICOLON
 #
-#        metodo -> PUBLIC tipo ID LPAREN params RPAREN LKEY conj_var conj_cmd RETURN exp ; RKEY
+#        metodo -> PUBLIC tipo ID LPAREN params RPAREN LKEY conj_var conj_cmd RETURN exp SEMICOLON RKEY
 #
 #        conj_cmd -> EPISILON 
 #        | conj_cmd cmd
@@ -33,7 +33,7 @@
 #        conj_params -> tipo ID mais_param
 #
 #        mais_param -> EPISILON
-#        | mais_param , tipo ID
+#        | mais_param COLON tipo ID
 #
 #        tipo -> INT LBRACKET RBRACKET
 #        | BOOLEAN
@@ -44,9 +44,9 @@
 #        | IF LPAREN exp RPAREN cmd
 #        | IF LPAREN exp RPAREN cmd ELSE cmd
 #        | WHILE LPAREN exp RPAREN cmd
-#        | sYSTEMOUTPRINTLN LPAREN exp RPAREN ;
-#        | ID = exp ;
-#        | ID LBRACKET exp RBRACKET ATTR exp ;
+#        | sYSTEMOUTPRINTLN LPAREN exp RPAREN SEMICOLON
+#        | ID = exp SEMICOLON
+#        | ID LBRACKET exp RBRACKET ATTR exp SEMICOLON
 #
 #        exp -> exp AND rexp
 #        | rexp
@@ -70,7 +70,7 @@
 #        | NUM
 #        | NULL
 #        | NEW INT LBRACKET exp RBRACKET
-#        | pexp . LENGTH
+#        | pexp DOT LENGTH
 #        | pexp LBRACKET exp RBRACKET
 #        | pexp
 #
@@ -78,12 +78,12 @@
 #        | THIS
 #        | NEW ID LPAREN RPAREN
 #        | LPAREN exp RPAREN
-#        | pexp . ID
-#        | pexp . ID LPAREN option_exps RPAREN
+#        | pexp DOT ID
+#        | pexp DOT ID LPAREN option_exps RPAREN
 #
 #        option_exps -> EPISILON 
 #        | exp 
 #
 #        exps -> exp conj_exps
 #
-#        conj_exps -> EPISILON | conj_exps , exp
+#        conj_exps -> EPISILON | conj_exps COLON exp

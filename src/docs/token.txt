@@ -22,7 +22,7 @@
 #    'GEQTHAN',    #>=
 #    'EQUALS',     #==
 #    'NEQUALS',    #!=
-#    'AND',        #&
+#    'AND',        #&&
 #    'NOT'         #!
 
 #     RESERVED WORDS

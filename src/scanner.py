@@ -23,8 +23,8 @@ tokens = [
     'GEQTHAN',    #>=
     'EQUALS',     #==
     'NEQUALS',    #!=
-    'AND',        #&
-    'NOT'        #!
+    'AND',        #&&
+    'NOT'         #!
 ]
 
 # Defines the keywords
