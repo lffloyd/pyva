@@ -30,7 +30,7 @@
 #        conj_params -> tipo ID mais_param
 #
 #        mais_param -> EPISILON
-#        | mais_param  tipo ID
+#        | mais_param COLON tipo ID
 #
 #        tipo -> INT LBRACKET RBRACKET
 #        | BOOLEAN
@@ -90,4 +90,4 @@
 #
 #        exps -> exp conj_exps
 #
-#        conj_exps -> EPISILON | conj_exps  exp
+#        conj_exps -> EPISILON | conj_exps COLON exp
