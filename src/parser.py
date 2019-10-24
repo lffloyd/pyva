@@ -43,12 +43,26 @@ def p_conj_classes(p):
 
 def p_classe(p):
     'classe : CLASS ID extension LKEY conj_var conj_metodos RKEY'
-    children = [p[3], p[5], p[6]]
-    leaf = [p[1], p[2], p[4], p[7]]
+    non_terminals = [p[3], p[5], p[6]]
+    tokens = [p[1], p[2], p[4], p[7]]
 
     p[0] = Node(type = "classe", children = non_terminals, leaf = tokens)
 
 
+def p_extension(p):
+    '''
+    extension -> EPISILON 
+    | EXTENDS ID
+    '''
+
+    if(len(p) > 2):
+        tokens = [p[1], p[2]]
+        Node(type = "extension", tokens = tokens)
+    else:
+        pass
+        
+
+        
 
 '''
 
