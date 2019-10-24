@@ -1,12 +1,9 @@
-#        GRAMÁTICA ATUALIZADA EBNF ---> BNF WITH OUR TOKENS
-
-#        SÍMBOLOS NÃO TERMINAIS ------> Minúsculo
-#        SÍMBOLOS TERMINAIS ----------> Maiúsculo
+#        GRAMÁTICA ATUALIZADA EBNF ---> BNF WITH OUR TOKENS SEM AMBIGUIDADE
 
 #        prog -> main conj_classes
 #
 #        main -> CLASS ID LKEY PUBLIC STATIC VOID MAIN LPAREN STRING LBRACKET RBRACKET ID RPAREN
-#        LKEY cmd RKEY RKEY
+#        LKEY cmd1 RKEY RKEY
 #
 #        conj_classes -> EPISILON
 #        | conj_classes classe
@@ -39,16 +36,23 @@
 #        | BOOLEAN
 #        | INT
 #        | ID
-#
-#        cmd -> LKEY conj_cmd RKEY
-#        | IF LPAREN exp RPAREN cmd
-#        | IF LPAREN exp RPAREN cmd ELSE cmd
-#        | WHILE LPAREN exp RPAREN cmd
-#        | sYSTEMOUTPRINTLN LPAREN exp RPAREN ;
-#        | ID = exp ;
+#        
+#        cmd1 -> LKEY conj_cmd RKEY
+#        | IF LPAREN exp RPAREN cmd1
+#        | IF LPAREN exp RPAREN cmd2 ELSE cmd1
+#        | WHILE LPAREN exp RPAREN cmd1
+#        | sYSTEM.OUT.PRINTLN LPAREN exp RPAREN ;
+#        | ID ATTR exp ;
 #        | ID LBRACKET exp RBRACKET ATTR exp ;
 #
-#        exp -> exp AND rexp
+#        cmd2 -> LKEY conj_cmd RKEY
+#        | IF LPAREN exp RPAREN cmd2 ELSE cmd2
+#        | WHILE LPAREN exp RPAREN cmd2
+#        | SYSTEMOUTPRINTLN LPAREN exp RPAREN ;
+#        | ID ATTR exp ;
+#        | ID LBRACKET exp RBRACKET ATTR exp ;
+#          
+#        exp -> exp && rexp
 #        | rexp
 #
 #        rexp -> rexp LTHAN aexp

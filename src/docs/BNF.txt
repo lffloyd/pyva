@@ -1,86 +1,86 @@
-# GRAMÁTICA ATUALIZADA EBNF ---> BNF
+#        GRAMÁTICA ATUALIZADA EBNF ---> BNF
 
-#        PROG -> MAIN CONJ_CLASSES
+#        prog -> main conj_classes
 #
-#        MAIN -> class id '{' public static void main '(' String '[' ']' id ')'
-#        '{' CMD '}' '}'
+#        main -> CLASS ID '{' PUBLIC STATIC VOID MAIN '(' sTRING '[' ']' ID ')'
+#        '{' cmd '}' '}'
 #
-#        CONJ_CLASSES -> episilon
-#        | CONJ_CLASSES CLASSE
+#        conj_classes -> EPISILON
+#        | conj_classes classe
 #
-#        CLASSE -> class id EXTENSION '{' CONJ_VAR CONJ_METODOS '}'
+#        classe -> CLASS ID extension '{' conj_var conj_metodos '}'
 #
-#        EXTENSION -> episilon 
-#        | extends id
+#        extension -> EPISILON 
+#        | EXTENDS ID
 #
-#        CONJ_VAR -> episilon | CONJ_VAR VAR
+#        conj_var -> EPISILON | conj_var var
 #
-#        CONJ_METODOS -> episilon | CONJ_METODOS METODO
+#        conj_metodos -> EPISILON | conj_metodos metodo
 #
-#        VAR -> TIPO id ;
+#        var -> tipo ID ;
 #
-#        METODO -> public TIPO id '(' PARAMS ')' '{' CONJ_VAR CONJ_CMD return EXP ; '}'
+#        metodo -> PUBLIC tipo ID '(' params ')' '{' conj_var conj_cmd RETURN exp ; '}'
 #
-#        CONJ_CMD -> episilon 
-#        | CONJ_CMD CMD
+#        conj_cmd -> EPISILON 
+#        | conj_cmd cmd
 #
-#        PARAMS -> episilon 
-#        | CONJ_PARAMS
+#        params -> EPISILON 
+#        | conj_params
 #
-#        CONJ_PARAMS -> TIPO id MAIS_PARAM
+#        conj_params -> tipo ID mais_param
 #
-#        MAIS_PARAM -> episilon
-#        | MAIS_PARAM , TIPO id
+#        mais_param -> EPISILON
+#        | mais_param , tipo ID
 #
-#        TIPO -> int '[' ']'
-#        | boolean
-#        | int
-#        | id
+#        tipo -> INT '[' ']'
+#        | BOOLEAN
+#        | INT
+#        | ID
 #
-#        CMD -> '{' CONJ_CMD '}'
-#        | if '(' EXP ')' CMD
-#        | if '(' EXP ')' CMD else CMD
-#        | while '(' EXP ')' CMD
-#        | System.out.println '(' EXP ')' ;
-#        | id = EXP ;
-#        | id '[' EXP ']' = EXP ;
+#        cmd -> '{' conj_cmd '}'
+#        | IF '(' exp ')' cmd
+#        | IF '(' exp ')' cmd ELSE cmd
+#        | WHILE '(' exp ')' cmd
+#        | sYSTEM.OUT.PRINTLN '(' exp ')' ;
+#        | ID = exp ;
+#        | ID '[' exp ']' = exp ;
 #
-#        EXP -> EXP && REXP
-#        | REXP
+#        exp -> exp && rexp
+#        | rexp
 #
-#        REXP -> REXP < AEXP
-#        | REXP == AEXP
-#        | REXP != AEXP
-#        | AEXP
+#        rexp -> rexp < aexp
+#        | rexp == aexp
+#        | rexp != aexp
+#        | aexp
 #
-#        AEXP -> AEXP + MEXP
-#        | AEXP - MEXP
-#        | MEXP
+#        aexp -> aexp + mexp
+#        | aexp - mexp
+#        | mexp
 #
-#        MEXP -> MEXP * SEXP
-#        | SEXP
+#        mexp -> mexp * sexp
+#        | sexp
 #
-#        SEXP -> ! SEXP
-#        | - SEXP
-#        | true
-#        | false
-#        | num
-#        | null
-#        | new int '[' EXP ']'
-#        | PEXP . length
-#        | PEXP '[' EXP ']'
-#        | PEXP
+#        sexp -> ! sexp
+#        | - sexp
+#        | TRUE
+#        | FALSE
+#        | NUM
+#        | NULL
+#        | NEW INT '[' exp ']'
+#        | pexp . LENGTH
+#        | pexp '[' exp ']'
+#        | pexp
 #
-#        PEXP -> id
-#        | this
-#        | new id '(' ')'
-#        | '(' EXP ')'
-#        | PEXP . id
-#        | PEXP . id '(' OPTION_EXPS ')'
+#        pexp -> ID
+#        | THIS
+#        | NEW ID '(' ')'
+#        | '(' exp ')'
+#        | pexp . ID
+#        | pexp . ID '(' option_exps ')'
 #
-#        OPTION_EXPS -> episilon 
-#        | EXP 
+#        option_exps -> EPISILON 
+#        | exp 
 #
-#        EXPS -> EXP CONJ_EXPS
+#        exps -> exp conj_exps
 #
-#        CONJ_EXPS -> episilon | CONJ_EXPS , EXP
+#        conj_exps -> EPISILON | conj_exps , exp
