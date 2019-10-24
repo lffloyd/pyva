@@ -52,7 +52,7 @@
 #        | ID ATTR exp SEMICOLON
 #        | ID LBRACKET exp RBRACKET ATTR exp SEMICOLON
 #          
-#        exp -> exp && rexp
+#        exp -> exp AND rexp
 #        | rexp
 #
 #        rexp -> rexp LTHAN aexp
