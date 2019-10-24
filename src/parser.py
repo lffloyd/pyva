@@ -158,20 +158,81 @@ def p_tipo(p):
         tokens = [p[1]]
         p[0] = Node(type="tipo", leaf=tokens)
 
-#        cmd1 -> LKEY conj_cmd RKEY
-#        | IF LPAREN exp RPAREN cmd1
-#        | IF LPAREN exp RPAREN cmd2 ELSE cmd1
-#        | WHILE LPAREN exp RPAREN cmd1
-#        | sYSTEM.OUT.PRINTLN LPAREN exp RPAREN SEMICOLON
-#        | ID ATTR exp SEMICOLON
-#        | ID LBRACKET exp RBRACKET ATTR exp SEMICOLON
-#
-#        cmd2 -> LKEY conj_cmd RKEY
-#        | IF LPAREN exp RPAREN cmd2 ELSE cmd2
-#        | WHILE LPAREN exp RPAREN cmd2
-#        | SYSTEMOUTPRINTLN LPAREN exp RPAREN SEMICOLON
-#        | ID ATTR exp SEMICOLON
-#        | ID LBRACKET exp RBRACKET ATTR exp SEMICOLON
+
+def p_cmd1(p):
+    '''cmd1 : LKEY conj_cmd RKEY
+    | IF LPAREN exp RPAREN cmd1
+    | IF LPAREN exp RPAREN cmd2 ELSE cmd1
+    | WHILE LPAREN exp RPAREN cmd1
+    | SYSTEMOUTPRINTLN LPAREN exp RPAREN SEMICOLON
+    | ID ATTR exp SEMICOLON
+    | ID LBRACKET exp RBRACKET ATTR exp SEMICOLON'''
+
+    if(p[1] == "{"):
+        non_terminals = [p[2]]
+        tokens = [p[1], p[3]]
+        p[0] = Node(type="cmd1", children=non_terminals, leaf=tokens)
+    elif(p[1] == "if"):
+        if(len(p) == 6):
+            non_terminals = [p[3], p[5]]
+            tokens = [p[1], p[2], p[4]]
+            p[0] = Node(type="cmd1", children=non_terminals, leaf=tokens)
+        else:
+            non_terminals = [p[3], p[5], p[7]]
+            tokens = [p[1], p[2], p[4], p[6]]
+            p[0] = Node(type="cmd1", children=non_terminals, leaf=tokens)
+    elif(p[1] == "while"):
+        non_terminals = [p[3], p[5]]
+        tokens = [p[1], p[2], p[4]]
+        p[0] = Node(type="cmd1", children=non_terminals, leaf=tokens)
+    elif(p[1] == "System.out.println"):
+        non_terminals = [p[3]]
+        tokens = [p[1], p[2], p[4], p[5]]
+        p[0] = Node(type="cmd1", children=non_terminals, leaf=tokens)
+    else:
+        if(len(p) == 5):
+            non_terminals = [p[3]]
+            tokens = [p[1], p[2], p[4]]
+            p[0] = Node(type="cmd1", children=non_terminals, leaf=tokens)
+        else:
+            non_terminals = [p[3], p[6]]
+            tokens = [p[1], p[2], p[4], p[5], p[7]]
+            p[0] = Node(type="cmd1", children=non_terminals, leaf=tokens)
+
+
+def p_cmd1(p):
+    '''cmd2 : LKEY conj_cmd RKEY
+      | IF LPAREN exp RPAREN cmd2 ELSE cmd2
+      | WHILE LPAREN exp RPAREN cmd2
+      | SYSTEMOUTPRINTLN LPAREN exp RPAREN SEMICOLON
+      | ID ATTR exp SEMICOLON
+      | ID LBRACKET exp RBRACKET ATTR exp SEMICOLON'''
+
+    if(p[1] == "{"):
+        non_terminals = [p[2]]
+        tokens = [p[1], p[3]]
+        p[0] = Node(type="cmd1", children=non_terminals, leaf=tokens)
+    elif(p[1] == "if"):
+        non_terminals = [p[3], p[5], p[7]]
+        tokens = [p[1], p[2], p[4], p[6]]
+        p[0] = Node(type="cmd1", children=non_terminals, leaf=tokens)
+    elif(p[1] == "while"):
+        non_terminals = [p[3], p[5]]
+        tokens = [p[1], p[2], p[4]]
+        p[0] = Node(type="cmd1", children=non_terminals, leaf=tokens)
+    elif(p[1] == "System.out.println"):
+        non_terminals = [p[3]]
+        tokens = [p[1], p[2], p[4], p[5]]
+        p[0] = Node(type="cmd1", children=non_terminals, leaf=tokens)
+    else:
+        if(len(p) == 5):
+            non_terminals = [p[3]]
+            tokens = [p[1], p[2], p[4]]
+            p[0] = Node(type="cmd1", children=non_terminals, leaf=tokens)
+        else:
+            non_terminals = [p[3], p[6]]
+            tokens = [p[1], p[2], p[4], p[5], p[7]]
+            p[0] = Node(type="cmd1", children=non_terminals, leaf=tokens)
 
 
 def p_exp(p):
@@ -228,6 +289,7 @@ def p_mexp(p):
         non_terminals = [p[1]]
         p[0] = Node(type="mexp", children=non_terminals)
 
+
 def p_sexp_first_terminal(p):
     '''sexp : NOT sexp
        | MINUS sexp
@@ -237,17 +299,18 @@ def p_sexp_first_terminal(p):
        | NULL
        | NEW INT LBRACKET exp RBRACKET'''
 
-    if(len(p)==2):
+    if(len(p) == 2):
         tokens = [p[1]]
         p[0] = Node(type="sexp", leaf=tokens)
-    if(len(p)==3):
+    if(len(p) == 3):
         tokens = [p[1]]
         non_terminals = [p[2]]
         p[0] = Node(type="sexp", children=non_terminals, leaf=tokens)
-    if(len(p)>3):
+    if(len(p) > 3):
         tokens = [p[1], p[2], p[3], p[5]]
         non_terminals = [p[4]]
         p[0] = Node(type="sexp", children=non_terminals, leaf=tokens)
+
 
 def p_sexp_first_pexp(p):
     '''sexp : 
@@ -255,14 +318,14 @@ def p_sexp_first_pexp(p):
        | pexp LBRACKET exp RBRACKET
        | pexp'''
 
-    if(len(p)==2):
+    if(len(p) == 2):
         non_terminals = [p[1]]
         p[0] = Node(type="sexp", children=non_terminals)
-    if(len(p)==4):
+    if(len(p) == 4):
         tokens = [p[2], p[3]]
         non_terminals = [p[1]]
         p[0] = Node(type="sexp", children=non_terminals, leaf=tokens)
-    if(len(p)>4):
+    if(len(p) > 4):
         tokens = [p[2], p[4]]
         non_terminals = [p[1], p[3]]
         p[0] = Node(type="sexp", children=non_terminals, leaf=tokens)
