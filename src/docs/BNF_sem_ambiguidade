@@ -3,7 +3,7 @@
 #        PROG -> MAIN CONJ_CLASSES
 #
 #        MAIN -> class id '{' public static void main '(' String '[' ']' id ')'
-#        '{' CMD '}' '}'
+#        '{' CMD1 '}' '}'
 #
 #        CONJ_CLASSES -> episilon
 #        | CONJ_CLASSES CLASSE
@@ -36,9 +36,6 @@
 #        | boolean
 #        | int
 #        | id
-#
-#        CMD -> CMD1
-#        | CMD2
 #        
 #        CMD1 -> '{' CONJ_CMD '}'
 #        | if '(' EXP ')' CMD1
