@@ -104,7 +104,7 @@ def p_metodo(p):
 
 def p_conj_cmd(p):
     '''conj_cmd : empty
-    | conj_cmd cmd'''
+    | conj_cmd cmd1'''
 
     if len(p) > 2:
         non_terminals = [p[1], p[2]]
