@@ -2,96 +2,159 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
-    SYSTEMOUTPRINTLN
-    COLON
-    BOOLEAN
-    ELSE
-    ATTR
-    NEW
-    EQUALS
-    NUMBER
-    LENGTH
-    FALSE
-    IF
-    DOT
-    LTHAN
-    INT
-    MINUS
-    AND
-    TIMES
     GEQTHAN
     LEQTHAN
-    RETURN
-    NULL
-    WHILE
-    PLUS
-    NOT
-    EXTENDS
-    NEQUALS
     GTHAN
-    THIS
-    TRUE
 
 Grammar
 
 Rule 0     S' -> prog
-Rule 1     prog -> main LKEY classe RKEY
-Rule 2     main -> CLASS ID LKEY PUBLIC STATIC VOID MAIN LPAREN STRING LBRACKET RBRACKET ID RPAREN LKEY cmd RKEY RKEY
-Rule 3     var -> tipo ID SEMICOLON
+Rule 1     prog -> main conj_classes
+Rule 2     main -> CLASS ID LKEY PUBLIC STATIC VOID MAIN LPAREN STRING LBRACKET RBRACKET ID RPAREN LKEY cmd1 RKEY RKEY
+Rule 3     conj_classes -> empty
+Rule 4     conj_classes -> conj_classes classe
+Rule 5     classe -> CLASS ID extension LKEY conj_var conj_metodos RKEY
+Rule 6     extension -> empty
+Rule 7     extension -> EXTENDS ID
+Rule 8     conj_var -> empty
+Rule 9     conj_var -> conj_var var
+Rule 10    conj_metodos -> empty
+Rule 11    conj_metodos -> conj_metodos metodo
+Rule 12    var -> tipo ID SEMICOLON
+Rule 13    metodo -> PUBLIC tipo ID LPAREN params RPAREN LKEY conj_var conj_cmd RETURN exp SEMICOLON RKEY
+Rule 14    conj_cmd -> empty
+Rule 15    conj_cmd -> conj_cmd cmd
+Rule 16    params -> empty
+Rule 17    params -> conj_params
+Rule 18    conj_params -> tipo ID mais_param
+Rule 19    mais_param -> empty
+Rule 20    mais_param -> mais_param COLON tipo ID
+Rule 21    tipo -> INT LBRACKET RBRACKET
+Rule 22    tipo -> BOOLEAN
+Rule 23    tipo -> INT
+Rule 24    tipo -> ID
+Rule 25    cmd1 -> LKEY conj_cmd RKEY
+Rule 26    cmd1 -> IF LPAREN exp RPAREN cmd1
+Rule 27    cmd1 -> IF LPAREN exp RPAREN cmd2 ELSE cmd1
+Rule 28    cmd1 -> WHILE LPAREN exp RPAREN cmd1
+Rule 29    cmd1 -> SYSTEMOUTPRINTLN LPAREN exp RPAREN SEMICOLON
+Rule 30    cmd1 -> ID ATTR exp SEMICOLON
+Rule 31    cmd1 -> ID LBRACKET exp RBRACKET ATTR exp SEMICOLON
+Rule 32    cmd2 -> LKEY conj_cmd RKEY
+Rule 33    cmd2 -> IF LPAREN exp RPAREN cmd2 ELSE cmd2
+Rule 34    cmd2 -> WHILE LPAREN exp RPAREN cmd2
+Rule 35    cmd2 -> SYSTEMOUTPRINTLN LPAREN exp RPAREN SEMICOLON
+Rule 36    cmd2 -> ID ATTR exp SEMICOLON
+Rule 37    cmd2 -> ID LBRACKET exp RBRACKET ATTR exp SEMICOLON
+Rule 38    exp -> exp AND rexp
+Rule 39    exp -> rexp
+Rule 40    rexp -> rexp LTHAN aexp
+Rule 41    rexp -> rexp EQUALS aexp
+Rule 42    rexp -> rexp NEQUALS aexp
+Rule 43    rexp -> aexp
+Rule 44    aexp -> aexp PLUS mexp
+Rule 45    aexp -> aexp MINUS mexp
+Rule 46    aexp -> mexp
+Rule 47    mexp -> mexp TIMES sexp
+Rule 48    mexp -> sexp
+Rule 49    sexp -> NOT sexp
+Rule 50    sexp -> MINUS sexp
+Rule 51    sexp -> TRUE
+Rule 52    sexp -> FALSE
+Rule 53    sexp -> NUMBER
+Rule 54    sexp -> NULL
+Rule 55    sexp -> NEW INT LBRACKET exp RBRACKET
+Rule 56    sexp -> <empty>
+Rule 57    sexp -> pexp DOT LENGTH
+Rule 58    sexp -> pexp LBRACKET exp RBRACKET
+Rule 59    sexp -> pexp
+Rule 60    pexp -> ID
+Rule 61    pexp -> THIS
+Rule 62    pexp -> LPAREN exp RPAREN
+Rule 63    pexp -> NEW ID LPAREN RPAREN
+Rule 64    pexp -> pexp DOT ID
+Rule 65    pexp -> pexp DOT ID LPAREN option_exps RPAREN
+Rule 66    option_exps -> empty
+Rule 67    option_exps -> exp
+Rule 68    exps -> exp conj_exps
+Rule 69    conj_exps -> empty
+Rule 70    conj_exps -> conj_exps COLON exp
+Rule 71    empty -> <empty>
 
 Terminals, with rules where they appear
 
-AND                  : 
-ATTR                 : 
-BOOLEAN              : 
-CLASS                : 2
-COLON                : 
-DOT                  : 
-ELSE                 : 
-EQUALS               : 
-EXTENDS              : 
-FALSE                : 
+AND                  : 38
+ATTR                 : 30 31 36 37
+BOOLEAN              : 22
+CLASS                : 2 5
+COLON                : 20 70
+DOT                  : 57 64 65
+ELSE                 : 27 33
+EQUALS               : 41
+EXTENDS              : 7
+FALSE                : 52
 GEQTHAN              : 
 GTHAN                : 
-ID                   : 2 2 3
-IF                   : 
-INT                  : 
-LBRACKET             : 2
-LENGTH               : 
+ID                   : 2 2 5 7 12 13 18 20 24 30 31 36 37 60 63 64 65
+IF                   : 26 27 33
+INT                  : 21 23 55
+LBRACKET             : 2 21 31 37 55 58
+LENGTH               : 57
 LEQTHAN              : 
-LKEY                 : 1 2 2
-LPAREN               : 2
-LTHAN                : 
+LKEY                 : 2 2 5 13 25 32
+LPAREN               : 2 13 26 27 28 29 33 34 35 62 63 65
+LTHAN                : 40
 MAIN                 : 2
-MINUS                : 
-NEQUALS              : 
-NEW                  : 
-NOT                  : 
-NULL                 : 
-NUMBER               : 
-PLUS                 : 
-PUBLIC               : 2
-RBRACKET             : 2
-RETURN               : 
-RKEY                 : 1 2 2
-RPAREN               : 2
-SEMICOLON            : 3
+MINUS                : 45 50
+NEQUALS              : 42
+NEW                  : 55 63
+NOT                  : 49
+NULL                 : 54
+NUMBER               : 53
+PLUS                 : 44
+PUBLIC               : 2 13
+RBRACKET             : 2 21 31 37 55 58
+RETURN               : 13
+RKEY                 : 2 2 5 13 25 32
+RPAREN               : 2 13 26 27 28 29 33 34 35 62 63 65
+SEMICOLON            : 12 13 29 30 31 35 36 37
 STATIC               : 2
 STRING               : 2
-SYSTEMOUTPRINTLN     : 
-THIS                 : 
-TIMES                : 
-TRUE                 : 
+SYSTEMOUTPRINTLN     : 29 35
+THIS                 : 61
+TIMES                : 47
+TRUE                 : 51
 VOID                 : 2
-WHILE                : 
+WHILE                : 28 34
 error                : 
 
 Nonterminals, with rules where they appear
 
-classe               : 1
-cmd                  : 2
+aexp                 : 40 41 42 43 44 45
+classe               : 4
+cmd                  : 15
+cmd1                 : 2 26 27 28
+cmd2                 : 27 33 33 34
+conj_classes         : 1 4
+conj_cmd             : 13 15 25 32
+conj_exps            : 68 70
+conj_metodos         : 5 11
+conj_params          : 17
+conj_var             : 5 9 13
+empty                : 3 6 8 10 14 16 19 66 69
+exp                  : 13 26 27 28 29 30 31 31 33 34 35 36 37 37 38 55 58 62 67 68 70
+exps                 : 
+extension            : 5
 main                 : 1
+mais_param           : 18 20
+metodo               : 11
+mexp                 : 44 45 46 47
+option_exps          : 65
+params               : 13
+pexp                 : 57 58 59 64 65
 prog                 : 0
-tipo                 : 3
-var                  : 
+rexp                 : 38 39 40 41 42
+sexp                 : 47 48 49 50
+tipo                 : 12 13 18 20
+var                  : 9
 
