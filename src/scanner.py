@@ -24,7 +24,8 @@ tokens = [
     'EQUALS',     #==
     'NEQUALS',    #!=
     'AND',        #&&
-    'NOT'         #!
+    'NOT',        #!
+    'SYSTEMOUTPRINTLN' #System.out.println
 ]
 
 # Defines the keywords
@@ -42,7 +43,6 @@ reserved_words = {
     'IF': 'if',
     'ELSE': 'else',
     'WHILE': 'while',
-    'SYSTEMOUTPRINTLN': 'System.out.println',
     'LENGTH': 'length',
     'TRUE': 'true',
     'FALSE': 'false',
@@ -86,7 +86,7 @@ def t_SYSTEMOUTPRINTLN(t):
 
 def t_ID(t):
     r'([a-zA-Z][0-9|a-zA-Z|_]*)'
-    key = t.value.upper().replace('.', '')
+    key = t.value.upper()
     # Adjusts the types of keyword tokens that match this regex
     if key in reserved_words:
         t.type = key
