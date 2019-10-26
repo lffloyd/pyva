@@ -149,7 +149,7 @@ def p_cmd2(p):
       | ID ATTR exp SEMICOLON
       | ID LBRACKET exp RBRACKET ATTR exp SEMICOLON'''
 
-    p[0] = Info(type="cmd1", children=p[1:])
+    p[0] = Info(type="cmd2", children=p[1:])
 
 
 def p_exp(p):
