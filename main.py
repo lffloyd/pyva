@@ -6,8 +6,6 @@ raw_source_code = read_source_code("miniJava.java", "r")
 
 print(raw_source_code)
 
-lexer.input(raw_source_code)
-
 # Tokenize
 #while True:
 #    tok = lexer.token()
