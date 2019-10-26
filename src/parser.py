@@ -1,32 +1,51 @@
 import ply.yacc as yacc
+#from treelib import Node, Tree
+from anytree import Node, RenderTree
+from anytree.exporter import DotExporter
 
 # Get the token map from the lexer.  This is required.
 from src.scanner import tokens
 
-class Node:
-    def __init__(self, type, children=None, leaf=None):
+#globalId = 0
+#tree = Tree()
+
+class Info:
+    def __init__(self, type, children=None):
         self.type = type
         if children:
             self.children = children
         else:
             self.children = []
-        self.leaf = leaf
+
+def createTree(info, parent):
+    if(info != None):
+        if info.children != None:
+            for item in info.children:
+                if not type(item) is Info:
+                    Node(str(item), parent = parent)
+                else:
+                    new = Node(item.type, parent=parent)
+                    createTree(item, new)
 
 
 def p_prog(p):
     'prog : main conj_classes'
     non_terminals = [p[1], p[2]]
-
-    p[0] = Node(type="prog", children=non_terminals)
+    p[0] = Info(type="prog", children=p[1:])
+    root = Node("prog")
+    createTree(p[0], root)
+    for pre, fill, node in RenderTree(root):
+        print("%s%s" % (pre, node.name))
+    DotExporter(root).to_picture("root.png")
 
 
 def p_main(p):
     'main : CLASS ID LKEY PUBLIC STATIC VOID MAIN LPAREN STRING LBRACKET RBRACKET ID RPAREN LKEY cmd1 RKEY RKEY'
-    non_terminals = [p[1], p[2], p[3], p[4], p[5], p[6], p[7],
+    tokens = [p[1], p[2], p[3], p[4], p[5], p[6], p[7],
                      p[8], p[9], p[10], p[11], p[12], p[13], p[14], p[16]]
-    tokens = [p[15]]
+    non_terminals = [p[15]]
 
-    p[0] = Node(type="main", children=non_terminals, leaf=tokens)
+    p[0] = Info(type="main", children=p[1:])
 
 
 def p_conj_classes(p):
@@ -35,20 +54,13 @@ def p_conj_classes(p):
     | conj_classes classe
     '''
 
-    if len(p) > 2:
-        non_terminals = [p[1], p[2]]
-        p[0] = Node(type="conj_classes", children=non_terminals)
-    else:
-        # caso seja a transição episilon
-        pass
+    p[0] = Info(type="conj_classes", children=p[1:])
 
 
 def p_classe(p):
     'classe : CLASS ID extension LKEY conj_var conj_metodos RKEY'
-    non_terminals = [p[3], p[5], p[6]]
-    tokens = [p[1], p[2], p[4], p[7]]
 
-    p[0] = Node(type="classe", children=non_terminals, leaf=tokens)
+    p[0] = Info(type="classe", children=p[1:])
 
 
 def p_extension(p):
@@ -56,92 +68,60 @@ def p_extension(p):
     extension : empty
     | EXTENDS ID
     '''
-
-    if len(p) > 2:
-        tokens = [p[1], p[2]]
-        p[0] = Node(type="extension", leaf=tokens)
-    else:
-        pass
+    p[0] = Info(type="extension", children=p[1:])
 
 
 def p_conj_var(p):
     '''conj_var : empty
                 | conj_var var'''
 
-    if len(p) > 2:
-        non_terminals = [p[1], p[2]]
-        p[0] = Node(type="conj_var", children=non_terminals)
-    else:
-        pass
+    p[0] = Info(type="conj_var", children=p[1:])
 
 
 def p_conj_metodos(p):
     '''conj_metodos : empty
                     | conj_metodos metodo'''
 
-    if len(p) > 2:
-        non_terminals = [p[1], p[2]]
-        p[0] = Node(type="conj_metodos", children=non_terminals)
-    else:
-        pass
+    p[0] = Info(type="conj_metodos", children=p[1:])
 
 
 def p_var(p):
     'var : tipo ID SEMICOLON'
 
-    non_terminals = [p[1]]
-    tokens = [p[2], p[3]]
-    p[0] = Node(type="var", children=non_terminals, leaf=tokens)
+    p[0] = Info(type="var", children=p[1:])
 
 
 def p_metodo(p):
     'metodo : PUBLIC tipo ID LPAREN params RPAREN LKEY conj_var conj_cmd RETURN exp SEMICOLON RKEY'
 
-    tokens = [p[1], p[3], p[4], p[6], p[7], p[10], p[12], p[13]]
-    non_terminals = [p[2], p[5], p[8], p[9], p[11]]
-    p[0] = Node(type="metodo", children=non_terminals, leaf=tokens)
+    p[0] = Info(type="metodo", children=p[1:])
 
 
 def p_conj_cmd(p):
     '''conj_cmd : empty
     | conj_cmd cmd1'''
 
-    if len(p) > 2:
-        non_terminals = [p[1], p[2]]
-        p[0] = Node(type="conj_cmd", children=non_terminals)
-    else:
-        pass
+    p[0] = Info(type="conj_cmd", children=p[1:])
 
 
-def p_params_episilon(p):
-    'params : empty'
-    pass
+def p_params(p):
+    '''params : empty
+    | conj_params'''
 
-
-def p_params_conj(p):
-    'params : conj_params'
-    non_terminals = [p[1]]
-    p[0] = Node(type="params", children=non_terminals)
+    p[0] = Info(type="params", children=p[1:])
 
 
 def p_conj_params(p):
     '''conj_params : tipo ID mais_param'''
 
-    non_terminals = [p[1], p[3]]
-    tokens = [p[2]]
-    p[0] = Node(type="conj_params", children=non_terminals, leaf=tokens)
+    p[0] = Info(type="conj_params", children=p[1:])
 
 
 def p_mais_param(p):
     '''mais_param : empty
     | mais_param COLON tipo ID'''
 
-    if len(p) > 2:
-        non_terminals = [p[1], p[3]]
-        tokens = [p[2], p[4]]
-        p[0] = Node(type="mais_param", children=non_terminals, leaf=tokens)
-    else:
-        pass
+    p[0] = Info(type="mais_param", children=p[1:])
 
 
 def p_tipo(p):
@@ -150,12 +130,7 @@ def p_tipo(p):
     | INT
     | ID'''
 
-    if len(p) > 2:
-        tokens = [p[1], p[2], p[3]]
-        p[0] = Node(type="tipo", leaf=tokens)
-    else:
-        tokens = [p[1]]
-        p[0] = Node(type="tipo", leaf=tokens)
+    p[0] = Info(type="tipo", children=p[1:])
 
 
 def p_cmd1(p):
@@ -167,36 +142,7 @@ def p_cmd1(p):
     | ID ATTR exp SEMICOLON
     | ID LBRACKET exp RBRACKET ATTR exp SEMICOLON'''
 
-    if(p[1] == "{"):
-        non_terminals = [p[2]]
-        tokens = [p[1], p[3]]
-        p[0] = Node(type="cmd1", children=non_terminals, leaf=tokens)
-    elif(p[1] == "if"):
-        if len(p) == 6:
-            non_terminals = [p[3], p[5]]
-            tokens = [p[1], p[2], p[4]]
-            p[0] = Node(type="cmd1", children=non_terminals, leaf=tokens)
-        else:
-            non_terminals = [p[3], p[5], p[7]]
-            tokens = [p[1], p[2], p[4], p[6]]
-            p[0] = Node(type="cmd1", children=non_terminals, leaf=tokens)
-    elif(p[1] == "while"):
-        non_terminals = [p[3], p[5]]
-        tokens = [p[1], p[2], p[4]]
-        p[0] = Node(type="cmd1", children=non_terminals, leaf=tokens)
-    elif(p[1] == "System.out.println"):
-        non_terminals = [p[3]]
-        tokens = [p[1], p[2], p[4], p[5]]
-        p[0] = Node(type="cmd1", children=non_terminals, leaf=tokens)
-    else:
-        if len(p) == 5:
-            non_terminals = [p[3]]
-            tokens = [p[1], p[2], p[4]]
-            p[0] = Node(type="cmd1", children=non_terminals, leaf=tokens)
-        else:
-            non_terminals = [p[3], p[6]]
-            tokens = [p[1], p[2], p[4], p[5], p[7]]
-            p[0] = Node(type="cmd1", children=non_terminals, leaf=tokens)
+    p[0] = Info(type="cmd1", children=p[1:])
 
 
 def p_cmd2(p):
@@ -207,44 +153,14 @@ def p_cmd2(p):
       | ID ATTR exp SEMICOLON
       | ID LBRACKET exp RBRACKET ATTR exp SEMICOLON'''
 
-    if(p[1] == "{"):
-        non_terminals = [p[2]]
-        tokens = [p[1], p[3]]
-        p[0] = Node(type="cmd1", children=non_terminals, leaf=tokens)
-    elif(p[1] == "if"):
-        non_terminals = [p[3], p[5], p[7]]
-        tokens = [p[1], p[2], p[4], p[6]]
-        p[0] = Node(type="cmd1", children=non_terminals, leaf=tokens)
-    elif(p[1] == "while"):
-        non_terminals = [p[3], p[5]]
-        tokens = [p[1], p[2], p[4]]
-        p[0] = Node(type="cmd1", children=non_terminals, leaf=tokens)
-    elif(p[1] == "System.out.println"):
-        non_terminals = [p[3]]
-        tokens = [p[1], p[2], p[4], p[5]]
-        p[0] = Node(type="cmd1", children=non_terminals, leaf=tokens)
-    else:
-        if len(p) == 5:
-            non_terminals = [p[3]]
-            tokens = [p[1], p[2], p[4]]
-            p[0] = Node(type="cmd1", children=non_terminals, leaf=tokens)
-        else:
-            non_terminals = [p[3], p[6]]
-            tokens = [p[1], p[2], p[4], p[5], p[7]]
-            p[0] = Node(type="cmd1", children=non_terminals, leaf=tokens)
+    p[0] = Info(type="cmd1", children=p[1:])
 
 
 def p_exp(p):
     '''exp : exp AND rexp
         | rexp'''
 
-    if len(p) > 2:
-        non_terminals = [p[1], p[3]]
-        tokens = [p[2]]
-        p[0] = Node(type="exp", children=non_terminals, leaf=tokens)
-    else:
-        non_terminals = [p[1]]
-        p[0] = Node(type="exp", children=non_terminals)
+    p[0] = Info(type="exp", children=p[1:])
 
 
 def p_rexp(p):
@@ -253,13 +169,7 @@ def p_rexp(p):
         | rexp NEQUALS aexp
         | aexp'''
 
-    if len(p) > 2:
-        non_terminals = [p[1], p[3]]
-        tokens = [p[2]]
-        p[0] = Node(type="rexp", children=non_terminals, leaf=tokens)
-    else:
-        non_terminals = [p[1]]
-        p[0] = Node(type="rexp", children=non_terminals)
+    p[0] = Info(type="rexp", children=p[1:])
 
 
 def p_aexp(p):
@@ -267,67 +177,29 @@ def p_aexp(p):
         | aexp MINUS mexp
         | mexp'''
 
-    if len(p) > 2:
-        non_terminals = [p[1], p[3]]
-        tokens = [p[2]]
-        p[0] = Node(type="aexp", children=non_terminals, leaf=tokens)
-    else:
-        non_terminals = [p[1]]
-        p[0] = Node(type="aexp", children=non_terminals)
+    p[0] = Info(type="aexp", children=p[1:])
 
 
 def p_mexp(p):
     '''mexp : mexp TIMES sexp
         | sexp'''
 
-    if len(p) > 2:
-        non_terminals = [p[1], p[3]]
-        tokens = [p[2]]
-        p[0] = Node(type="mexp", children=non_terminals, leaf=tokens)
-    else:
-        non_terminals = [p[1]]
-        p[0] = Node(type="mexp", children=non_terminals)
+    p[0] = Info(type="mexp", children=p[1:])
 
 
-def p_sexp_first_terminal(p):
+def p_sexp(p):
     '''sexp : NOT sexp
        | MINUS sexp
        | TRUE
        | FALSE
        | NUMBER
        | NULL
-       | NEW INT LBRACKET exp RBRACKET'''
-
-    if len(p) == 2:
-        tokens = [p[1]]
-        p[0] = Node(type="sexp", leaf=tokens)
-    if len(p) == 3:
-        tokens = [p[1]]
-        non_terminals = [p[2]]
-        p[0] = Node(type="sexp", children=non_terminals, leaf=tokens)
-    if len(p) > 3:
-        tokens = [p[1], p[2], p[3], p[5]]
-        non_terminals = [p[4]]
-        p[0] = Node(type="sexp", children=non_terminals, leaf=tokens)
-
-
-def p_sexp_first_pexp(p):
-    '''sexp :
+       | NEW INT LBRACKET exp RBRACKET
        | pexp DOT LENGTH
        | pexp LBRACKET exp RBRACKET
        | pexp'''
 
-    if len(p) == 2:
-        non_terminals = [p[1]]
-        p[0] = Node(type="sexp", children=non_terminals)
-    if len(p) == 4:
-        tokens = [p[2], p[3]]
-        non_terminals = [p[1]]
-        p[0] = Node(type="sexp", children=non_terminals, leaf=tokens)
-    if len(p) > 4:
-        tokens = [p[2], p[4]]
-        non_terminals = [p[1], p[3]]
-        p[0] = Node(type="sexp", children=non_terminals, leaf=tokens)
+    p[0] = Info(type="sexp", children=p[1:])
 
 
 def p_pexp(p):
@@ -338,95 +210,40 @@ def p_pexp(p):
        | pexp DOT ID
        | pexp DOT ID LPAREN option_exps RPAREN'''
 
-    if len(p) == 2:
-        tokens = [p[1]]
-        p[0] = Node(type="pexp", leaf=tokens)
-
-    if len(p) == 4:
-        if(p[2] == "."):
-            non_terminals = [p[1]]
-            tokens = [p[2], p[3]]
-            p[0] = Node(type="pexp", children=non_terminals, leaf=tokens)
-        else:
-            non_terminals = [p[2]]
-            tokens = [p[1], p[3]]
-            p[0] = Node(type="pexp", children=non_terminals, leaf=tokens)
-
-    if len(p) > 4:
-        if(p[2] == "."):
-            non_terminals = [p[1], p[5]]
-            tokens = [p[2], p[3], p[4], p[6]]
-            p[0] = Node(type="pexp", children=non_terminals, leaf=tokens)
-        else:
-            tokens = [p[1], p[2], p[3], p[4]]
-            p[0] = Node(type="pexp", leaf=tokens)
-
-
-def p_option_exps_episilon(p):
-    '''option_exps : empty'''
-    pass
-
+    p[0] = Info(type="pexp", children=p[1:])
 
 def p_option_exps(p):
-    '''option_exps : exp '''
-    non_terminals = [p[1]]
-    p[0] = Node(type="option_exps", children=non_terminals)
+    '''option_exps : empty
+       | exp '''
+
+    p[0] = Info(type="option_exps", children=p[1:])
 
 
 def p_exps(p):
     '''exps : exp conj_exps '''
 
-    non_terminals = [p[1], p[2]]
-    p[0] = Node(type="exps", children=non_terminals)
+    p[0] = Info(type="exps", children=p[1:])
 
 
 def p_conj_exps(p):
     '''conj_exps : empty
                  | conj_exps COLON exp'''
 
-    if len(p) > 2:
-        non_terminals = [p[1], p[3]]
-        tokens = [p[2]]
-        p[0] = Node(type="conj_exps", children=non_terminals, leaf=tokens)
-    else:
-        pass
+    p[0] = Info(type="conj_exps", children=p[1:])
 
 
 def p_empty(p):
     'empty :'
-    pass
+    non_terminals = []
+    p[0] = Info(type="empty", children = non_terminals)
 
 
-# Error rule for syntax errors
 def p_error(p):
-    print("Syntax error in input!")
+        if p:
+            print("Syntax error at line {0}: LexToken({1}, '{2}')".format(p.lineno, p.type, p.value))
+        else:
+            print('At end of input')
 
 
 # Build the parser
 parser = yacc.yacc()
-
-# while True:
-#     try:
-#         s = """class Factorial {
-#     public static void main(String[] a) {
-#         System.out.println(new Fac().ComputeFac(10));
-#     }
-# }
-#
-# class Fac {
-#     public int ComputeFac(int num) {
-#         int num_aux;
-#         int statica;
-#         if (num < 1)
-#             num_aux = 1;
-#         else
-#             num_aux = num * (this.ComputeFac(num - 1));
-#         return num_aux;
-#     }
-# }"""
-#     except EOFError:
-#         break
-#     if not s:
-#         continue
-#     result = parser.parse(s)
-#     print(result)
