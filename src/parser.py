@@ -30,7 +30,6 @@ def createTree(info, parent):
 
 def p_prog(p):
     'prog : main conj_classes'
-    non_terminals = [p[1], p[2]]
     p[0] = Info(type="prog", children=p[1:])
     root = Node("prog")
     createTree(p[0], root)
@@ -41,10 +40,7 @@ def p_prog(p):
 
 def p_main(p):
     'main : CLASS ID LKEY PUBLIC STATIC VOID MAIN LPAREN STRING LBRACKET RBRACKET ID RPAREN LKEY cmd1 RKEY RKEY'
-    tokens = [p[1], p[2], p[3], p[4], p[5], p[6], p[7],
-                     p[8], p[9], p[10], p[11], p[12], p[13], p[14], p[16]]
-    non_terminals = [p[15]]
-
+    
     p[0] = Info(type="main", children=p[1:])
 
 
@@ -234,8 +230,7 @@ def p_conj_exps(p):
 
 def p_empty(p):
     'empty :'
-    non_terminals = []
-    p[0] = Info(type="empty", children = non_terminals)
+    p[0] = Info(type="empty", children = [])
 
 
 def p_error(p):
