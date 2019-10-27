@@ -19,6 +19,17 @@ def main():
         print(raw_source_code)
 
         print('****************************************\n')
+        print('***************Token list:**************')
+
+        lexer.input(raw_source_code)
+
+        while True:
+            tok = lexer.token()
+            if not tok:
+                break  # No more input
+            print(tok)
+
+        print('****************************************\n')
         print('**************Syntax tree:**************')
 
         parser.parse(raw_source_code, lexer=lexer)
