@@ -4,7 +4,7 @@ from anytree import Node, RenderTree
 from anytree.exporter import DotExporter
 
 # Get the token map from the lexer.  This is required.
-from src.scanner import tokens
+from .scanner import tokens
 
 #globalId = 0
 #tree = Tree()

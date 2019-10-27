@@ -19,6 +19,22 @@ Then, you can install the dependencies through:
 
 Once finished, you can run or edit the project.
 
+### Build instructions
+
+To build the project, you'll need pyinstaller. If you've followed the previous steps, you already have it.
+
+So move to the root folder of the project. There, execute
+the following command to build:
+
+```pyinstaller cli.py --name pyva --add-data src/parsetab.py:src```
+
+The last parameter is a parsing table. Notice that is recommended to have previously created this table, 
+because otherwise, on every execution of the program, a new parsing table will
+be generated. You can easily create a parsing table by executing the program once.
+
+If success ensues, an executable file called ```pyva``` will be present in your ```dist/```
+ folder. Every file inside it is needed for the program execution.
+ 
 ### Ply documentation
 
 You can find simple step-by-step implementations of lexers and parsers using
