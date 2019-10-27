@@ -35,7 +35,7 @@ def p_prog(p):
     createTree(p[0], root)
     for pre, fill, node in RenderTree(root):
         print("%s%s" % (pre, node.name))
-    DotExporter(root).to_picture("root.png")
+    # DotExporter(root).to_picture("root.png")
 
 
 def p_main(p):
