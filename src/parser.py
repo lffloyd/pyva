@@ -26,8 +26,8 @@ def createTree(info, parent):
             for item in info.children:
                 if not type(item) is Info:
                     Node(str(item), parent=parent)
-                #elif item.val != None:
-                #    Node(str(item.val), parent = parent)
+                elif item.val != None: #TODO apagar apos implementacao
+                    Node(str(item.val), parent = parent) #TODO apagar apos implementacao
                 else:
                     new = Node(item.type, parent=parent)
                     createTree(item, new)
@@ -39,7 +39,7 @@ def p_prog(p):
     root = Node("prog")
     createTree(p[0], root)
     for pre, fill, node in RenderTree(root):
-       print("%s%s" % (pre, node.name))
+        print("%s%s" % (pre, node.name))
     # DotExporter(root).to_picture("root.png")
 
 
@@ -88,6 +88,7 @@ def p_conj_metodos(p):
 
 def p_var(p):
     'var : tipo ID SEMICOLON'
+    #TODO inserir id na tabela
     p[0] = Info(type="var", children=p[1:])
 
 
@@ -113,14 +114,14 @@ def p_params(p):
 
 def p_conj_params(p):
     '''conj_params : tipo ID mais_param'''
-
+    #TODO inserir id na tabela
     p[0] = Info(type="conj_params", children=p[1:])
 
 
 def p_mais_param(p):
     '''mais_param : empty
     | mais_param COLON tipo ID'''
-
+    #TODO inserir id na tabela
     p[0] = Info(type="mais_param", children=p[1:])
 
 
@@ -138,99 +139,183 @@ def p_cmd1(p):
     | IF LPAREN exp RPAREN cmd1
     | IF LPAREN exp RPAREN cmd2 ELSE cmd1
     | WHILE LPAREN exp RPAREN cmd1
-    | SYSTEMOUTPRINTLN LPAREN exp RPAREN SEMICOLON
-    | ID ATTR exp SEMICOLON
-    | ID LBRACKET exp RBRACKET ATTR exp SEMICOLON'''
+    | SYSTEMOUTPRINTLN LPAREN exp RPAREN SEMICOLON'''
 
     p[0] = Info(type="cmd1", children=p[1:])
 
+def p_cmd1_attr(p):
+    '''cmd1 : ID ATTR exp SEMICOLON'''
+    #TODO verificar se id foi declarado
+    #TODO inserir novo valor de id na tabela se p[3].val
+    p[0] = Info(type="cmd1", children=p[1:])
+
+def p_cmd1_attr_list(p):
+    '''cmd1 : ID LBRACKET exp RBRACKET ATTR exp SEMICOLON'''
+
+    #TODO verificar se id foi declarado
+    #TODO inserir novo valor de id na tabela se p[6].val
+    p[0] = Info(type="cmd1", children=p[1:])
 
 def p_cmd2(p):
     '''cmd2 : LKEY conj_cmd RKEY
       | IF LPAREN exp RPAREN cmd2 ELSE cmd2
       | WHILE LPAREN exp RPAREN cmd2
-      | SYSTEMOUTPRINTLN LPAREN exp RPAREN SEMICOLON
-      | ID ATTR exp SEMICOLON
-      | ID LBRACKET exp RBRACKET ATTR exp SEMICOLON'''
+      | SYSTEMOUTPRINTLN LPAREN exp RPAREN SEMICOLON'''
 
     p[0] = Info(type="cmd2", children=p[1:])
 
+def p_cmd2_attr(p):
+    '''cmd2 : ID ATTR exp SEMICOLON'''
+    #TODO verificar se id foi declarado
+    #TODO inserir novo valor de id na tabela se p[3].val
+    p[0] = Info(type="cmd2", children=p[1:])
 
-def p_exp(p):
-    '''exp : exp AND rexp
-        | rexp'''
+def p_cmd2_attr_list(p):
+    '''cmd2 : ID LBRACKET exp RBRACKET ATTR exp SEMICOLON'''
+    #TODO verificar se id foi declarado
+    #TODO inserir novo valor de id na tabela se p[6].val
+    p[0] = Info(type="cmd2", children=p[1:])
 
-    p[0] = Info(type="exp", children=p[1:])
+def p_exp_and(p):
+    '''exp : exp AND rexp'''
+
+    if(p[1].val != None and p[3].val != None):
+        value = p[1].val and p[3].val
+        # print(value)
+        p[0] = Info(type="aexp", children=p[1:], val=value)
+    else:
+        p[0] = Info(type="aexp", children=p[1:])
+
+def p_exp_resp(p):
+    '''exp : rexp'''
+
+    p[0] = Info(type="exp", children=p[1:], val = p[1].val)
 
 
-def p_rexp(p):
-    '''rexp : rexp LTHAN aexp
-        | rexp EQUALS aexp
-        | rexp NEQUALS aexp
-        | aexp'''
+def p_rexp_lthan(p):
+    '''rexp : rexp LTHAN aexp'''
 
-    p[0] = Info(type="rexp", children=p[1:])
+    if(p[1].val != None and p[3].val != None):
+        value = p[1].val < p[3].val
+        # print(value)
+        p[0] = Info(type="aexp", children=p[1:], val=value)
+    else:
+        p[0] = Info(type="aexp", children=p[1:])
 
+def p_rexp_equals(p):
+    '''rexp : rexp EQUALS aexp'''
+
+    if(p[1].val != None and p[3].val != None):
+        value = p[1].val == p[3].val
+        # print(value)
+        p[0] = Info(type="aexp", children=p[1:], val=value)
+    else:
+        p[0] = Info(type="aexp", children=p[1:])
+
+def p_rexp_nequals(p):
+    '''rexp : rexp NEQUALS aexp'''
+
+    if(p[1].val != None and p[3].val != None):
+        value = p[1].val != p[3].val
+        # print(value)
+        p[0] = Info(type="aexp", children=p[1:], val=value)
+    else:
+        p[0] = Info(type="aexp", children=p[1:])
+
+def p_rexp_aexp(p):
+    '''rexp : aexp'''
+
+    p[0] = Info(type="rexp", children=p[1:], val = p[1].val)
 
 def p_aexp_minus(p):
     '''aexp : aexp MINUS mexp'''
+
     if(p[1].val != None and p[3].val != None):
         value = p[1].val - p[3].val
-        #print(value)
-        p[0] = Info(type="aexp", children=p[1:], val = value)
+        # print(value)
+        p[0] = Info(type="aexp", children=p[1:], val=value)
     else:
         p[0] = Info(type="aexp", children=p[1:])
 
 
 def p_aexp_plus(p):
     '''aexp : aexp PLUS mexp'''
+
     if(p[1].val != None and p[3].val != None):
         value = p[1].val + p[3].val
-        p[0] = Info(type="aexp", children=p[1:], val = value)
+        p[0] = Info(type="aexp", children=p[1:], val=value)
     else:
         p[0] = Info(type="aexp", children=p[1:])
 
+
 def p_aexp_mexp(p):
     '''aexp : mexp'''
-    p[0] = Info(type="aexp", children=p[1:], val = p[1].val)
 
-def p_mexp(p):
+    p[0] = Info(type="aexp", children=p[1:], val=p[1].val)
+
+
+def p_mexp_sexp(p):
     '''mexp : sexp'''
-    #print(p[1].val)
+
+    # print(p[1].val)
     p[0] = Info(type="mexp", children=p[1:], val=p[1].val)
 
 
 def p_mexp_times(p):
     '''mexp : mexp TIMES sexp'''
+
     value = None
     if(p[1].val != None and p[3].val != None):
         value = p[1].val * p[3].val
-        #print(val)
+        # print(val)
     p[0] = Info(type="mexp", children=p[1:], val=value)
 
-
 def p_sexp(p):
-    '''sexp : NOT sexp
-       | MINUS sexp
-       | TRUE
-       | FALSE
-       | NULL
-       | NEW INT LBRACKET exp RBRACKET
+    '''sexp : NEW INT LBRACKET exp RBRACKET
        | pexp DOT LENGTH
-       | pexp LBRACKET exp RBRACKET
-       | pexp'''
+       | pexp LBRACKET exp RBRACKET'''
 
     p[0] = Info(type="sexp", children=p[1:])
 
+def p_sexp_not(p):
+    '''sexp : NOT sexp'''
 
-def p_sexp_number(p):
-    '''sexp : NUMBER'''
+    value = None
+    if (p[2].val != None):
+        value = not p[2].val
+    p[0] = Info(type="sexp", children=p[1:], val = value)
+
+def p_sexp_minus(p):
+    '''sexp : MINUS sexp'''
+
+    value = None
+    if (p[2].val != None):
+        value = -p[2].val
+    p[0] = Info(type="sexp", children=p[1:])
+
+def p_sexp_pexp(p):
+    '''sexp : pexp'''
+
+    p[0] = Info(type="sexp", children=p[1:], val = p[1].val)
+
+
+def p_sexp_terminal(p):
+    '''sexp : TRUE
+       | FALSE
+       | NULL
+       | NUMBER'''
+
     p[0] = Info(type="sexp", children=p[1:], val=p[1])
 
+def p_pexp_id(p):
+    '''pexp : ID'''
+
+    #TODO se id tem valor na tabela, val = id.val
+    #TODO verificar se variavel foi declarada
+    p[0] = Info(type="pexp", children=p[1:])
 
 def p_pexp(p):
-    '''pexp : ID
-       | THIS
+    '''pexp : THIS
        | LPAREN exp RPAREN
        | NEW ID LPAREN RPAREN
        | pexp DOT ID
@@ -243,7 +328,7 @@ def p_option_exps(p):
     '''option_exps : empty
        | exp '''
 
-    p[0] = Info(type="option_exps", children=p[1:])
+    p[0] = Info(type="option_exps", children=p[1:], val = p[1].val)
 
 
 def p_exps(p):
