@@ -9,20 +9,25 @@ from .scanner import tokens
 #globalId = 0
 #tree = Tree()
 
+
 class Info:
-    def __init__(self, type, children=None):
+    def __init__(self, type, children=None, val=None):
         self.type = type
+        self.val = val
         if children:
             self.children = children
         else:
             self.children = []
+
 
 def createTree(info, parent):
     if(info != None):
         if info.children != None:
             for item in info.children:
                 if not type(item) is Info:
-                    Node(str(item), parent = parent)
+                    Node(str(item), parent=parent)
+                #elif item.val != None:
+                #    Node(str(item.val), parent = parent)
                 else:
                     new = Node(item.type, parent=parent)
                     createTree(item, new)
@@ -34,13 +39,13 @@ def p_prog(p):
     root = Node("prog")
     createTree(p[0], root)
     for pre, fill, node in RenderTree(root):
-        print("%s%s" % (pre, node.name))
+       print("%s%s" % (pre, node.name))
     # DotExporter(root).to_picture("root.png")
 
 
 def p_main(p):
     'main : CLASS ID LKEY PUBLIC STATIC VOID MAIN LPAREN STRING LBRACKET RBRACKET ID RPAREN LKEY cmd1 RKEY RKEY'
-    
+
     p[0] = Info(type="main", children=p[1:])
 
 
@@ -83,7 +88,6 @@ def p_conj_metodos(p):
 
 def p_var(p):
     'var : tipo ID SEMICOLON'
-
     p[0] = Info(type="var", children=p[1:])
 
 
@@ -168,19 +172,41 @@ def p_rexp(p):
     p[0] = Info(type="rexp", children=p[1:])
 
 
-def p_aexp(p):
-    '''aexp : aexp PLUS mexp
-        | aexp MINUS mexp
-        | mexp'''
+def p_aexp_minus(p):
+    '''aexp : aexp MINUS mexp'''
+    if(p[1].val != None and p[3].val != None):
+        value = p[1].val - p[3].val
+        #print(value)
+        p[0] = Info(type="aexp", children=p[1:], val = value)
+    else:
+        p[0] = Info(type="aexp", children=p[1:])
 
-    p[0] = Info(type="aexp", children=p[1:])
 
+def p_aexp_plus(p):
+    '''aexp : aexp PLUS mexp'''
+    if(p[1].val != None and p[3].val != None):
+        value = p[1].val + p[3].val
+        p[0] = Info(type="aexp", children=p[1:], val = value)
+    else:
+        p[0] = Info(type="aexp", children=p[1:])
+
+def p_aexp_mexp(p):
+    '''aexp : mexp'''
+    p[0] = Info(type="aexp", children=p[1:], val = p[1].val)
 
 def p_mexp(p):
-    '''mexp : mexp TIMES sexp
-        | sexp'''
+    '''mexp : sexp'''
+    #print(p[1].val)
+    p[0] = Info(type="mexp", children=p[1:], val=p[1].val)
 
-    p[0] = Info(type="mexp", children=p[1:])
+
+def p_mexp_times(p):
+    '''mexp : mexp TIMES sexp'''
+    value = None
+    if(p[1].val != None and p[3].val != None):
+        value = p[1].val * p[3].val
+        #print(val)
+    p[0] = Info(type="mexp", children=p[1:], val=value)
 
 
 def p_sexp(p):
@@ -188,7 +214,6 @@ def p_sexp(p):
        | MINUS sexp
        | TRUE
        | FALSE
-       | NUMBER
        | NULL
        | NEW INT LBRACKET exp RBRACKET
        | pexp DOT LENGTH
@@ -196,6 +221,11 @@ def p_sexp(p):
        | pexp'''
 
     p[0] = Info(type="sexp", children=p[1:])
+
+
+def p_sexp_number(p):
+    '''sexp : NUMBER'''
+    p[0] = Info(type="sexp", children=p[1:], val=p[1])
 
 
 def p_pexp(p):
@@ -207,6 +237,7 @@ def p_pexp(p):
        | pexp DOT ID LPAREN option_exps RPAREN'''
 
     p[0] = Info(type="pexp", children=p[1:])
+
 
 def p_option_exps(p):
     '''option_exps : empty
@@ -230,14 +261,15 @@ def p_conj_exps(p):
 
 def p_empty(p):
     'empty :'
-    p[0] = Info(type="empty", children = [])
+    p[0] = Info(type="empty", children=[])
 
 
 def p_error(p):
-        if p:
-            print("Syntax error at line {0}: LexToken({1}, '{2}')".format(p.lineno, p.type, p.value))
-        else:
-            print('At end of input')
+    if p:
+        print("Syntax error at line {0}: LexToken({1}, '{2}')".format(
+            p.lineno, p.type, p.value))
+    else:
+        print('At end of input')
 
 
 # Build the parser
