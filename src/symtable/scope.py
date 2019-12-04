@@ -3,7 +3,7 @@
 
 class Scope:
     def __init__(self, scope_level=0):
-        self.table =  dict()
+        self.table = dict()
         self.level = scope_level
 
     '''Insert a new entry on this scope'''

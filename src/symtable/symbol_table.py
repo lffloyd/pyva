@@ -7,10 +7,14 @@ class SymbolTable:
         self.current_scope_level = 0
 
     '''Insert a new scope on this symbol table'''
-    def insert(self, scope):
+    def insert_scope(self, scope):
         self.current_scope_level = self.current_scope_level + 1
         scope.level = self.current_scope_level
         self.scopes.append(scope)
+
+    '''Insert a new entry on the top scope'''
+    def insert_entry(self, entry_name, entry_values=None):
+        self.scopes[len(self.scopes)-1].insert(entry_name, entry_values)
 
     '''Removes the current scope from the table'''
     def remove(self):
