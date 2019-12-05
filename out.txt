@@ -1,0 +1,278 @@
+****************pyva 0.00x**************
+*********Your MiniJava+ compiler********
+
+***************Code read:***************
+class Factorial { 
+    public static void main(String[] a) { 
+        System.out.println(new Fac().ComputeFac(10));
+    }
+}
+
+class Fac { 
+    public int ComputeFac(int num) {
+        int num_aux;
+        int statica;
+        if (num < 1)
+            num_aux = 1;
+        else
+            num_aux = num * (this.ComputeFac(num - 1));
+        return num_aux;
+    }
+}
+****************************************
+
+***************Token list:**************
+LexToken(CLASS,'class',1,0)
+LexToken(ID,'Factorial',1,6)
+LexToken(LKEY,'{',1,16)
+LexToken(PUBLIC,'public',2,23)
+LexToken(STATIC,'static',2,30)
+LexToken(VOID,'void',2,37)
+LexToken(MAIN,'main',2,42)
+LexToken(LPAREN,'(',2,46)
+LexToken(STRING,'String',2,47)
+LexToken(LBRACKET,'[',2,53)
+LexToken(RBRACKET,']',2,54)
+LexToken(ID,'a',2,56)
+LexToken(RPAREN,')',2,57)
+LexToken(LKEY,'{',2,59)
+LexToken(SYSTEMOUTPRINTLN,'System.out.println',3,70)
+LexToken(LPAREN,'(',3,88)
+LexToken(NEW,'new',3,89)
+LexToken(ID,'Fac',3,93)
+LexToken(LPAREN,'(',3,96)
+LexToken(RPAREN,')',3,97)
+LexToken(DOT,'.',3,98)
+LexToken(ID,'ComputeFac',3,99)
+LexToken(LPAREN,'(',3,109)
+LexToken(NUMBER,10,3,110)
+LexToken(RPAREN,')',3,112)
+LexToken(RPAREN,')',3,113)
+LexToken(SEMICOLON,';',3,114)
+LexToken(RKEY,'}',4,120)
+LexToken(RKEY,'}',5,122)
+LexToken(CLASS,'class',7,125)
+LexToken(ID,'Fac',7,131)
+LexToken(LKEY,'{',7,135)
+LexToken(PUBLIC,'public',8,142)
+LexToken(INT,'int',8,149)
+LexToken(ID,'ComputeFac',8,153)
+LexToken(LPAREN,'(',8,163)
+LexToken(INT,'int',8,164)
+LexToken(ID,'num',8,168)
+LexToken(RPAREN,')',8,171)
+LexToken(LKEY,'{',8,173)
+LexToken(INT,'int',9,183)
+LexToken(ID,'num_aux',9,187)
+LexToken(SEMICOLON,';',9,194)
+LexToken(INT,'int',10,204)
+LexToken(ID,'statica',10,208)
+LexToken(SEMICOLON,';',10,215)
+LexToken(IF,'if',11,225)
+LexToken(LPAREN,'(',11,228)
+LexToken(ID,'num',11,229)
+LexToken(LTHAN,'<',11,233)
+LexToken(NUMBER,1,11,235)
+LexToken(RPAREN,')',11,236)
+LexToken(ID,'num_aux',12,250)
+LexToken(ATTR,'=',12,258)
+LexToken(NUMBER,1,12,260)
+LexToken(SEMICOLON,';',12,261)
+LexToken(ELSE,'else',13,271)
+LexToken(ID,'num_aux',14,288)
+LexToken(ATTR,'=',14,296)
+LexToken(ID,'num',14,298)
+LexToken(TIMES,'*',14,302)
+LexToken(LPAREN,'(',14,304)
+LexToken(THIS,'this',14,305)
+LexToken(DOT,'.',14,309)
+LexToken(ID,'ComputeFac',14,310)
+LexToken(LPAREN,'(',14,320)
+LexToken(ID,'num',14,321)
+LexToken(MINUS,'-',14,325)
+LexToken(NUMBER,1,14,327)
+LexToken(RPAREN,')',14,328)
+LexToken(RPAREN,')',14,329)
+LexToken(SEMICOLON,';',14,330)
+LexToken(RETURN,'return',15,340)
+LexToken(ID,'num_aux',15,347)
+LexToken(SEMICOLON,';',15,354)
+LexToken(RKEY,'}',16,360)
+LexToken(RKEY,'}',17,362)
+****************************************
+
+**************Syntax tree:**************
+prog
+├── main
+│   ├── class
+│   ├── Factorial
+│   ├── {
+│   ├── public
+│   ├── static
+│   ├── void
+│   ├── main
+│   ├── (
+│   ├── String
+│   ├── [
+│   ├── ]
+│   ├── a
+│   ├── )
+│   ├── {
+│   ├── cmd1
+│   │   ├── System.out.println
+│   │   ├── (
+│   │   ├── exp
+│   │   │   └── rexp
+│   │   │       └── aexp
+│   │   │           └── mexp
+│   │   │               └── sexp
+│   │   │                   └── pexp
+│   │   │                       ├── pexp
+│   │   │                       │   ├── new
+│   │   │                       │   ├── Fac
+│   │   │                       │   ├── (
+│   │   │                       │   └── )
+│   │   │                       ├── .
+│   │   │                       ├── ComputeFac
+│   │   │                       ├── (
+│   │   │                       ├── option_exps
+│   │   │                       │   └── exp
+│   │   │                       │       └── rexp
+│   │   │                       │           └── aexp
+│   │   │                       │               └── mexp
+│   │   │                       │                   └── sexp
+│   │   │                       │                       └── 10
+│   │   │                       └── )
+│   │   ├── )
+│   │   └── ;
+│   ├── }
+│   └── }
+└── conj_classes
+    ├── conj_classes
+    │   └── empty
+    └── classe
+        ├── class
+        ├── Fac
+        ├── extension
+        │   └── empty
+        ├── {
+        ├── conj_var
+        │   └── empty
+        ├── conj_metodos
+        │   ├── conj_metodos
+        │   │   └── empty
+        │   └── metodo
+        │       ├── public
+        │       ├── tipo
+        │       │   └── int
+        │       ├── ComputeFac
+        │       ├── (
+        │       ├── params
+        │       │   └── conj_params
+        │       │       ├── tipo
+        │       │       │   └── int
+        │       │       ├── num
+        │       │       └── mais_param
+        │       │           └── empty
+        │       ├── )
+        │       ├── {
+        │       ├── conj_var
+        │       │   ├── conj_var
+        │       │   │   ├── conj_var
+        │       │   │   │   └── empty
+        │       │   │   └── var
+        │       │   │       ├── tipo
+        │       │   │       │   └── int
+        │       │   │       ├── num_aux
+        │       │   │       └── ;
+        │       │   └── var
+        │       │       ├── tipo
+        │       │       │   └── int
+        │       │       ├── statica
+        │       │       └── ;
+        │       ├── conj_cmd
+        │       │   ├── conj_cmd
+        │       │   │   └── empty
+        │       │   └── cmd1
+        │       │       ├── if
+        │       │       ├── (
+        │       │       ├── exp
+        │       │       │   └── rexp
+        │       │       │       ├── rexp
+        │       │       │       │   └── aexp
+        │       │       │       │       └── mexp
+        │       │       │       │           └── sexp
+        │       │       │       │               └── pexp
+        │       │       │       │                   └── num
+        │       │       │       ├── <
+        │       │       │       └── aexp
+        │       │       │           └── mexp
+        │       │       │               └── sexp
+        │       │       │                   └── 1
+        │       │       ├── )
+        │       │       ├── cmd2
+        │       │       │   ├── num_aux
+        │       │       │   ├── =
+        │       │       │   ├── exp
+        │       │       │   │   └── rexp
+        │       │       │   │       └── aexp
+        │       │       │   │           └── mexp
+        │       │       │   │               └── sexp
+        │       │       │   │                   └── 1
+        │       │       │   └── ;
+        │       │       ├── else
+        │       │       └── cmd1
+        │       │           ├── num_aux
+        │       │           ├── =
+        │       │           ├── exp
+        │       │           │   └── rexp
+        │       │           │       └── aexp
+        │       │           │           └── mexp
+        │       │           │               ├── mexp
+        │       │           │               │   └── sexp
+        │       │           │               │       └── pexp
+        │       │           │               │           └── num
+        │       │           │               ├── *
+        │       │           │               └── sexp
+        │       │           │                   └── pexp
+        │       │           │                       ├── (
+        │       │           │                       ├── exp
+        │       │           │                       │   └── rexp
+        │       │           │                       │       └── aexp
+        │       │           │                       │           └── mexp
+        │       │           │                       │               └── sexp
+        │       │           │                       │                   └── pexp
+        │       │           │                       │                       ├── pexp
+        │       │           │                       │                       │   └── this
+        │       │           │                       │                       ├── .
+        │       │           │                       │                       ├── ComputeFac
+        │       │           │                       │                       ├── (
+        │       │           │                       │                       ├── option_exps
+        │       │           │                       │                       │   └── exp
+        │       │           │                       │                       │       └── rexp
+        │       │           │                       │                       │           └── aexp
+        │       │           │                       │                       │               ├── aexp
+        │       │           │                       │                       │               │   └── mexp
+        │       │           │                       │                       │               │       └── sexp
+        │       │           │                       │                       │               │           └── pexp
+        │       │           │                       │                       │               │               └── num
+        │       │           │                       │                       │               ├── -
+        │       │           │                       │                       │               └── mexp
+        │       │           │                       │                       │                   └── sexp
+        │       │           │                       │                       │                       └── 1
+        │       │           │                       │                       └── )
+        │       │           │                       └── )
+        │       │           └── ;
+        │       ├── return
+        │       ├── exp
+        │       │   └── rexp
+        │       │       └── aexp
+        │       │           └── mexp
+        │       │               └── sexp
+        │       │                   └── pexp
+        │       │                       └── num_aux
+        │       ├── ;
+        │       └── }
+        └── }
+****************************************
+
