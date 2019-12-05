@@ -11,6 +11,7 @@ from .code_generation.mips_generation import *
 
 symbolT = SymbolTable()
 
+
 class Info:
     def __init__(self, type, children=None, val=None, toTable=None, cgen=None):
         self.type = type
@@ -21,55 +22,101 @@ class Info:
             self.children = children
         else:
             self.children = []
+    def set(self, type = None, children = None, val = None):
+        if type:
+            self.type = type
+        if children:
+            self.children = children
+        if val:
+            self.val = val
 
-def analiseSemantica(info, constante = 0, mult = False, add = False):
+
+def analiseSemantica(info, constante=0):
     global symbolT
-    if(info != None):
+    if(info != None and type(info) is Info):
         if info.children != None:
+            index = 0
             for item in info.children:
-                if type(item) is Info: #TODO trocar para not 
-                #elif item.val != None:  # TODO apagar apos implementacao
-                    # TODO apagar apos implementacao
-                #else:
-                    # TODO remover todos os dados do escopo global ao sair da classe
+                if type(item) is Info:  # TODO trocar para not
+                    #if item.val != None and len(item.children):  # TODO apagar apos implementacao
+                        #print(item.val)
+                        #item[index].info = item.val
+                        #item[index].children = []
+                # else:
                     if (item.type == "class"):
                         symbolT = SymbolTable()
-                    if (item.type == "metodo"):
+                        analiseSemantica(item)
+
+                    elif (item.type == "metodo"):
                         symbolT.insert_scope(Scope())
                         analiseSemantica(item)
                         symbolT.remove()
                     else:
-                        if (item.type == "var" or item.type == "conj_params"):
-                            if (len(item.children[0].children)>1):
-                                symbolT.insert_entry(item.children[1], {'type': 'int[]'})
-                            else: 
-                                symbolT.insert_entry(item.children[1], {'type': item.children[0].children[0]})
-                        
-                        elif (item.type == "mais_param" and len(item.children) > 1):
-                            if (len(item.children[2].children)>1):
-                                symbolT.insert_entry(item.children[3], {'type': 'int[]'})
-                            else: 
-                                symbolT.insert_entry(item.children[3], {'type': item.children[2].children[0]})
-                        
-                        elif ((item.type == "pexp" or item.type == "cmd2" or item.type == "cmd1") and item.toTable):
-                            sco = symbolT.scopes[symbolT.current_scope_level]
-                            glob = symbolT.scopes[0]
-                            if (not (sco.is_in(item.children[0]) or glob.is_in(item.children[0]))):
-                                print( 'Erro: Variável {0} não declarada'.format(item.children[0]))
-                            #if (sco.is_in(item.children[0]) and item.toTable['val']):
-                            #    sco.insert(item.children[0], item.toTable)
-                            print(sco.table)
-                        analiseSemantica(item)
+                        if (item.type == "mexp" ):
+                            constante = 0
+                        if (item.type == "aexp" and len(item.children) > 1):
+                            if(item.val):
+                                info.children[index] = item.val + constante
+                                return True
+                            else:                                
+                                if(item.children[1] and item.children[2].val != None):
+                                    item.children[2] = item.children[2].val
+                                    if(item.children[1] == "+" ):
+                                        constante = constante + item.children[2]
+                                        item.children[2] = constante
+                                        resp = analiseSemantica(item, constante)
+                                        item.set(children = [item.children[0]])
+                                        return True
+                                    if(item.children[1] == "-" ):
+                                        constante = constante - item.children[2]
+                                        item.children[2] = constante
+                                        resp = analiseSemantica(item, constante)
+                                        item.set(children = [item.children[0]])
+                                        return True
+                                else:
+                                    resp = analiseSemantica(item, constante)
+                                    print(resp)
+                        else:
+                            if (item.type == "var" or item.type == "conj_params"):
+                                
+                                if (len(item.children[0].children) > 1):
+                                    
+                                    symbolT.insert_entry(
+                                        item.children[1], {'type': 'int[]'})
+                                else:
+                                    symbolT.insert_entry(item.children[1], {
+                                                        'type': item.children[0].children[0]})
+
+                            elif (item.type == "mais_param" and len(item.children) > 1):
+                                if (len(item.children[2].children) > 1):
+                                    symbolT.insert_entry(
+                                        item.children[3], {'type': 'int[]'})
+                                else:
+                                    symbolT.insert_entry(item.children[3], {
+                                                        'type': item.children[2].children[0]})
+
+                            elif ((item.type == "pexp" or item.type == "cmd2" or item.type == "cmd1") and item.toTable):
+                                sco = symbolT.scopes[symbolT.current_scope_level]
+                                glob = symbolT.scopes[0]
+                                
+                                if not (sco.is_in(item.children[0]) or glob.is_in(item.children[0])):
+                                    print('Erro: Variável {0} não declarada'.format(
+                                        item.children[0]))
+                            
+                            analiseSemantica(item)
+                index += 1
+                            
 
 def createTree(info, parent):
     if(info != None):
         if info.children != None:
             for item in info.children:
                 if not type(item) is Info:
+                    #print(item)
                     Node(str(item), parent=parent)
-                elif item.val != None:  # TODO apagar apos implementacao
+                #elif item.val != None:  # TODO apagar apos implementacao
                     # TODO apagar apos implementacao
-                    Node(str(item.val), parent=parent)
+                #    Node(str(item.val), parent=parent)
                 else:
                     new = Node(item.type, parent=parent)
                     createTree(item, new)
@@ -78,17 +125,17 @@ def createTree(info, parent):
 def p_prog(p):
     'prog : main conj_classes'
 
-     
     p[0] = Info(type="prog", children=p[1:], cgen=prog_cgen)
     raiz_arvore = p[0]
     raiz_arvore.cgen(p)
     root = Node("prog")
+    analiseSemantica(p[0])
     createTree(p[0], root)
     for pre, fill, node in RenderTree(root):
         print("%s%s" % (pre, node.name))
-    
+
     print("##Semantic##")
-    analiseSemantica(p[0])
+    
     # DotExporter(root).to_picture("root.png")
 
 
@@ -193,13 +240,13 @@ def p_cmd1(p):
 def p_cmd1_attr(p):
     '''cmd1 : ID ATTR exp SEMICOLON'''
 
-    p[0] = Info(type="cmd1", children=p[1:], toTable={ 'val': p[3].val })
+    p[0] = Info(type="cmd1", children=p[1:], toTable={'val': p[3].val})
 
 
 def p_cmd1_attr_list(p):
     '''cmd1 : ID LBRACKET exp RBRACKET ATTR exp SEMICOLON'''
 
-    p[0] = Info(type="cmd1", children=p[1:], toTable={ 'val': p[6].val })
+    p[0] = Info(type="cmd1", children=p[1:], toTable={'val': p[6].val})
 
 
 def p_cmd2(p):
@@ -214,13 +261,13 @@ def p_cmd2(p):
 def p_cmd2_attr(p):
     '''cmd2 : ID ATTR exp SEMICOLON'''
 
-    p[0] = Info(type="cmd2", children=p[1:], toTable= { 'val': p[3].val })
+    p[0] = Info(type="cmd2", children=p[1:], toTable={'val': p[3].val})
 
 
 def p_cmd2_attr_list(p):
     '''cmd2 : ID LBRACKET exp RBRACKET ATTR exp SEMICOLON'''
 
-    p[0] = Info(type="cmd2", children=p[1:], toTable={ 'val': p[6].val })
+    p[0] = Info(type="cmd2", children=p[1:], toTable={'val': p[6].val})
 
 
 def p_exp_and(p):
@@ -367,7 +414,7 @@ def p_sexp_terminal(p):
 def p_pexp_id(p):
     '''pexp : ID'''
 
-    p[0] = Info(type="pexp", children=p[1:], toTable= { 'val': None })
+    p[0] = Info(type="pexp", children=p[1:], toTable={'val': None})
 
 
 def p_pexp(p):

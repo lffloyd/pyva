@@ -5,7 +5,7 @@ class Factorial {
 }
 
 class Fac {
-    int aaa;
+    int[] aaa;
     public int ComputeFac(int num,int ottt) {
         int num_aux;
         int statica;
@@ -14,7 +14,7 @@ class Fac {
             aaa = 3;
         }
         else{
-            num_aux = 3 + 5 + 3 * (this.ComputeFac(num - 1)) + 2*statica +1;
+            num_aux = 4 - 6 + 3 + 5 + 0* (this.ComputeFac(num - 1)) + 2*statica;
         }            
         return num_aux;
     }
