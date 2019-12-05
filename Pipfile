@@ -4,11 +4,7 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-<<<<<<< Updated upstream
-pylint = "*"
-=======
 autopep8 = "*"
->>>>>>> Stashed changes
 
 [packages]
 ply = "*"
