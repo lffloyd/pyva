@@ -109,7 +109,6 @@ def p_conj_classes(p):
 
 def p_classe(p):
     'classe : CLASS ID extension LKEY conj_var conj_metodos RKEY'
-    print(p[3])
     p[0] = Info(type="classe", children=p[1:])
 
 
