@@ -11,8 +11,6 @@ from .symtable.symbol_table import SymbolTable
 
 symbolT = SymbolTable()
 
-raiz_arvore = None
-
 class Info:
     def __init__(self, type, children=None, val=None, toTable=None, cgen=None):
         self.type = type
@@ -72,13 +70,13 @@ def createTree(info, parent):
 def p_prog(p):
     'prog : main conj_classes'
 
-    def p_prog_cgen():
-        print("a " + p[1].cgen + p[2].cgen)
+    def prog_cgen():
+        print("a " + p[1].cgen() + " + " + p[2].cgen())
 
      
-    p[0] = Info(type="prog", children=p[1:], cgen=p_prog_cgen)
-    global raiz_arvore
+    p[0] = Info(type="prog", children=p[1:], cgen=prog_cgen)
     raiz_arvore = p[0]
+    raiz_arvore.cgen()
     root = Node("prog")
     createTree(p[0], root)
     for pre, fill, node in RenderTree(root):
@@ -89,10 +87,10 @@ def p_prog(p):
 def p_main(p):
     'main : CLASS ID LKEY PUBLIC STATIC VOID MAIN LPAREN STRING LBRACKET RBRACKET ID RPAREN LKEY cmd1 RKEY RKEY'
 
-    def p_main_cgen():
-        print("b")
+    def main_cgen():
+        return "b"
 
-    p[0] = Info(type="main", children=p[1:], cgen=p_main_cgen)
+    p[0] = Info(type="main", children=p[1:], cgen=main_cgen)
 
 
 def p_conj_classes(p):
@@ -101,10 +99,10 @@ def p_conj_classes(p):
     | conj_classes classe
     '''
 
-    def p_conj_classes_cgen():
-        print("c")
+    def conj_classes_cgen():
+        return "c"
 
-    p[0] = Info(type="conj_classes", children=p[1:], cgen=p_conj_classes_cgen)
+    p[0] = Info(type="conj_classes", children=p[1:], cgen=conj_classes_cgen)
 
 
 def p_classe(p):

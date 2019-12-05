@@ -1,6 +1,6 @@
 from sys import argv
 from .scanner import lexer
-from .parser import parser, raiz_arvore
+from .parser import parser
 from .utils.code_reader import read_source_code
 
 
@@ -35,8 +35,6 @@ def main():
         parser.parse(raw_source_code, lexer=lexer)
 
         print('****************************************\n')
-
-        raiz_arvore.cgen()
 
     except FileNotFoundError as err:
         print(err)
