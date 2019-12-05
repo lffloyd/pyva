@@ -22,25 +22,21 @@ class Info:
         else:
             self.children = []
 
-
-def createTree(info, parent):
+def analiseSemantica(info, constante = 0, mult = False, add = False):
+    global symbolT
     if(info != None):
         if info.children != None:
             for item in info.children:
-                if not type(item) is Info:
-                    Node(str(item), parent=parent)
-                elif item.val != None:  # TODO apagar apos implementacao
+                if type(item) is Info: #TODO trocar para not 
+                #elif item.val != None:  # TODO apagar apos implementacao
                     # TODO apagar apos implementacao
-                    Node(str(item.val), parent=parent)
-                else:
+                #else:
                     # TODO remover todos os dados do escopo global ao sair da classe
-                    """ if (item.type == "class"):
-                        new = Node(item.type, parent=parent)
-                        createTree(item, new) """
+                    if (item.type == "class"):
+                        symbolT = SymbolTable()
                     if (item.type == "metodo"):
                         symbolT.insert_scope(Scope())
-                        new = Node(item.type, parent=parent)
-                        createTree(item, new)
+                        analiseSemantica(item)
                         symbolT.remove()
                     else:
                         if (item.type == "var" or item.type == "conj_params"):
@@ -57,14 +53,26 @@ def createTree(info, parent):
                         
                         elif ((item.type == "pexp" or item.type == "cmd2" or item.type == "cmd1") and item.toTable):
                             sco = symbolT.scopes[symbolT.current_scope_level]
-                            if (not sco.is_in(item.children[0])):
+                            glob = symbolT.scopes[0]
+                            if (not (sco.is_in(item.children[0]) or glob.is_in(item.children[0]))):
                                 print( 'Erro: Variável {0} não declarada'.format(item.children[0]))
-                            """ if (sco.is_in(item.children[0]) and item.toTable['val']):
-                                sco.insert(item.children[0], item.toTable['val'])
-                            print(sco.table) """
+                            #if (sco.is_in(item.children[0]) and item.toTable['val']):
+                            #    sco.insert(item.children[0], item.toTable)
+                            print(sco.table)
+                        analiseSemantica(item)
 
-                        new = Node(item.type, parent=parent)
-                        createTree(item, new)
+def createTree(info, parent):
+    if(info != None):
+        if info.children != None:
+            for item in info.children:
+                if not type(item) is Info:
+                    Node(str(item), parent=parent)
+                elif item.val != None:  # TODO apagar apos implementacao
+                    # TODO apagar apos implementacao
+                    Node(str(item.val), parent=parent)
+                else:
+                    new = Node(item.type, parent=parent)
+                    createTree(item, new)
 
 
 def p_prog(p):
@@ -78,6 +86,9 @@ def p_prog(p):
     createTree(p[0], root)
     for pre, fill, node in RenderTree(root):
         print("%s%s" % (pre, node.name))
+    
+    print("##Semantic##")
+    analiseSemantica(p[0])
     # DotExporter(root).to_picture("root.png")
 
 

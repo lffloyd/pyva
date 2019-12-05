@@ -4,14 +4,27 @@ class Factorial {
     }
 }
 
-class Fac { 
-    public int ComputeFac(int num) {
+class Fac {
+    int aaa;
+    public int ComputeFac(int num,int ottt) {
+        int num_aux;
+        int statica;
+        if (num < 1){
+            num_aux = 1;
+            aaa = 3;
+        }
+        else{
+            num_aux = 3 + 5 + 3 * (this.ComputeFac(num - 1)) + 2*statica +1;
+        }            
+        return num_aux;
+    }
+    /* public int ComputeFac2(int num) {
         int num_aux;
         int statica;
         if (num < 1)
             num_aux = 1;
         else
-            num_aux = num * (this.ComputeFac(num - 1));
-        return num_aux;
-    }
+            num_aux = 3 + (this.ComputeFac(num - 1)) + 3 + 5;
+        return num_auxx;
+    } */
 }

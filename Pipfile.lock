@@ -1,11 +1,15 @@
 {
     "_meta": {
         "hash": {
+<<<<<<< Updated upstream
             "sha256": "9b425491c805e7fbaeec8b1dfd641716a15209ede13470d77c8d7cdae64cf9c1"
+=======
+            "sha256": "8fcc2ac00f9e1c0caaa7cbd6ecc52155a759ee86954898daeb403b4380eff628"
+>>>>>>> Stashed changes
         },
         "pipfile-spec": 6,
         "requires": {
-            "python_version": "3.5"
+            "python_version": "3.8"
         },
         "sources": [
             {
@@ -30,6 +34,18 @@
             "index": "pypi",
             "version": "==2.7.2"
         },
+        "future": {
+            "hashes": [
+                "sha256:b1bead90b70cf6ec3f0710ae53a525360fa360d306a86583adc6bf83a4db537d"
+            ],
+            "version": "==0.18.2"
+        },
+        "pefile": {
+            "hashes": [
+                "sha256:a5d6e8305c6b210849b47a6174ddf9c452b2888340b8177874b862ba6c207645"
+            ],
+            "version": "==2019.4.18"
+        },
         "ply": {
             "hashes": [
                 "sha256:00c7c1aaa88358b9c765b6d3000c6eec0ba42abca5351b095321aef446081da3",
@@ -45,6 +61,13 @@
             "index": "pypi",
             "version": "==3.5"
         },
+        "pywin32-ctypes": {
+            "hashes": [
+                "sha256:24ffc3b341d457d48e8922352130cf2644024a4ff09762a2261fd34c36ee5942",
+                "sha256:9dc2d991b3479cc2df15930958b674a48a227d5361d413827a4cfd0b5876fc98"
+            ],
+            "version": "==0.2.0"
+        },
         "six": {
             "hashes": [
                 "sha256:1f1b7d42e254082a9db6279deae68afb421ceba6158efa6131de7b3003ee93fd",
@@ -54,6 +77,7 @@
         }
     },
     "develop": {
+<<<<<<< Updated upstream
         "astroid": {
             "hashes": [
                 "sha256:71ea07f44df9568a75d0f354c49143a4575d90645e9fead6dfb52c26a85ed13a",
@@ -148,6 +172,21 @@
                 "sha256:78b6c0a91883a6c3c2332ef6af900f3da75955a22d1deffab5eb24dff7f314bf"
             ],
             "version": "==1.11.2"
+=======
+        "autopep8": {
+            "hashes": [
+                "sha256:4d8eec30cc81bc5617dbf1218201d770dc35629363547f17577c61683ccfb3ee"
+            ],
+            "index": "pypi",
+            "version": "==1.4.4"
+        },
+        "pycodestyle": {
+            "hashes": [
+                "sha256:95a2219d12372f05704562a14ec30bc76b05a5b297b21a5dfe3f6fac3491ae56",
+                "sha256:e40a936c9a450ad81df37f549d676d127b1b66000a6c500caa2b085bc0ca976c"
+            ],
+            "version": "==2.5.0"
+>>>>>>> Stashed changes
         }
     }
 }
