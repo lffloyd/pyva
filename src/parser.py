@@ -58,23 +58,50 @@ def analiseSemantica(info, constante=0):
                             if(item.val):
                                 info.children[index] = item.val + constante
                                 return True
-                            elif len(item.children) > 1:                                
+                            elif len(item.children) > 1:                            
                                 if(item.children[1] and item.children[2].val != None):
                                     item.children[2] = item.children[2].val
                                     if(item.children[1] == "+" ):
                                         constante = constante + item.children[2]
                                         item.children[2] = constante
                                         resp = analiseSemantica(item, constante)
-                                        item.set(children = [item.children[0]])
+                                        print(resp)
+                                        if resp :
+                                            item.set(children = [item.children[0]])
+                                        print('true')
                                         return True
                                     if(item.children[1] == "-" ):
                                         constante = constante - item.children[2]
                                         item.children[2] = constante
                                         resp = analiseSemantica(item, constante)
-                                        item.set(children = [item.children[0]])
+                                        print(resp)
+                                        if resp :
+                                            item.set(children = [item.children[0]])
+                                        print('true')
                                         return True
+                                elif(item.children[1] and item.children[0].val != None):
+                                    item.children[0] = item.children[0].val
+                                    if(item.children[1] == "+" ):
+                                        constante = constante + item.children[0]
+                                        item.children[0] = constante
+                                        resp = analiseSemantica(item, constante)
+                                        print(resp)
+                                        if resp :
+                                            item.set(children = [item.children[2]])
+                                        print('true')
+                                        return True
+                                    if(item.children[1] == "-" ):
+                                        constante = constante - item.children[0]
+                                        item.children[0] = constante
+                                        resp = analiseSemantica(item, constante)
+                                        print(resp)
+                                        if resp :
+                                            item.set(children = [item.children[2]])
+                                        print('true')
+                                        return True
+                                    return None
                                 else:
-                                    resp = analiseSemantica(item, constante)
+                                    analiseSemantica(item, constante)
                         else:
                             if (item.type == "var" or item.type == "conj_params"):
                                 
