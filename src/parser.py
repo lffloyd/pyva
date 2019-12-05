@@ -31,6 +31,18 @@ class Info:
             self.val = val
 
 
+
+def createTree(info, parent):
+    if(info != None):
+        if info.children != None:
+            index = 0
+            for item in info.children:
+                if not type(item) is Info:
+                    Node(str(item), parent=parent)
+                else:
+                    new = Node(item.type, parent=parent)
+                    createTree(item, new)
+
 def analiseSemantica(info, constante=0):
     global symbolT
     if(info != None and type(info) is Info):
@@ -65,19 +77,15 @@ def analiseSemantica(info, constante=0):
                                         constante = constante + item.children[2]
                                         item.children[2] = constante
                                         resp = analiseSemantica(item, constante)
-                                        print(resp)
                                         if resp :
                                             item.set(children = [item.children[0]])
-                                        print('true')
                                         return True
                                     if(item.children[1] == "-" ):
                                         constante = constante - item.children[2]
                                         item.children[2] = constante
                                         resp = analiseSemantica(item, constante)
-                                        print(resp)
                                         if resp :
                                             item.set(children = [item.children[0]])
-                                        print('true')
                                         return True
                                 elif(item.children[1] and item.children[0].val != None):
                                     item.children[0] = item.children[0].val
@@ -85,23 +93,19 @@ def analiseSemantica(info, constante=0):
                                         constante = constante + item.children[0]
                                         item.children[0] = constante
                                         resp = analiseSemantica(item, constante)
-                                        print(resp)
                                         if resp :
                                             item.set(children = [item.children[2]])
-                                        print('true')
                                         return True
                                     if(item.children[1] == "-" ):
                                         constante = constante - item.children[0]
                                         item.children[0] = constante
                                         resp = analiseSemantica(item, constante)
-                                        print(resp)
                                         if resp :
                                             item.set(children = [item.children[2]])
-                                        print('true')
                                         return True
                                     return None
                                 else:
-                                    analiseSemantica(item, constante)
+                                    return analiseSemantica(item, constante)
                         else:
                             if (item.type == "var" or item.type == "conj_params"):
                                 
@@ -132,25 +136,9 @@ def analiseSemantica(info, constante=0):
                             analiseSemantica(item)
                 index += 1
                             
-
-def createTree(info, parent):
-    if(info != None):
-        if info.children != None:
-            for item in info.children:
-                if not type(item) is Info:
-                    #print(item)
-                    Node(str(item), parent=parent)
-                #elif item.val != None:  # TODO apagar apos implementacao
-                    # TODO apagar apos implementacao
-                #    Node(str(item.val), parent=parent)
-                else:
-                    new = Node(item.type, parent=parent)
-                    createTree(item, new)
-
-
 def p_prog(p):
     'prog : main conj_classes'
-
+     
     p[0] = Info(type="prog", children=p[1:], cgen=prog_cgen)
     raiz_arvore = p[0]
     raiz_arvore.cgen(p)
@@ -159,9 +147,6 @@ def p_prog(p):
     createTree(p[0], root)
     for pre, fill, node in RenderTree(root):
         print("%s%s" % (pre, node.name))
-
-    print("##Semantic##")
-    
     # DotExporter(root).to_picture("root.png")
 
 
@@ -392,6 +377,8 @@ def p_mexp_times(p):
     value = None
     if(p[1].val != None and p[3].val != None):
         value = p[1].val * p[3].val
+    if(p[1].val == 0 or p[3].val == 0): 
+        value = 0
         # print(val)
     p[0] = Info(type="mexp", children=p[1:], val=value)
 
@@ -457,25 +444,25 @@ def p_option_exps(p):
     '''option_exps : empty
        | exp '''
 
-    p[0] = Info(type="option_exps", children=p[1:], val=p[1].val)
+    p[0] = Info(type="option_exps", children=p[1:], val=p[1].val, cgen=option_exps)
 
 
 def p_exps(p):
     '''exps : exp conj_exps '''
 
-    p[0] = Info(type="exps", children=p[1:])
+    p[0] = Info(type="exps", children=p[1:], cgen=exps_cgen)
 
 
 def p_conj_exps(p):
     '''conj_exps : empty
                  | conj_exps COLON exp'''
 
-    p[0] = Info(type="conj_exps", children=p[1:])
+    p[0] = Info(type="conj_exps", children=p[1:], cgen=conj_exps_cgen)
 
 
 def p_empty(p):
     'empty :'
-    p[0] = Info(type="empty", children=[])
+    p[0] = Info(type="empty", children=[], cgen=empty_cgen)
 
 
 def p_error(p):
