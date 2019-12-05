@@ -54,11 +54,11 @@ def analiseSemantica(info, constante=0):
                     else:
                         if (item.type == "mexp" ):
                             constante = 0
-                        if (item.type == "aexp" and len(item.children) > 1):
+                        if (item.type == "aexp"):
                             if(item.val):
                                 info.children[index] = item.val + constante
                                 return True
-                            else:                                
+                            elif len(item.children) > 1:                                
                                 if(item.children[1] and item.children[2].val != None):
                                     item.children[2] = item.children[2].val
                                     if(item.children[1] == "+" ):
@@ -75,7 +75,6 @@ def analiseSemantica(info, constante=0):
                                         return True
                                 else:
                                     resp = analiseSemantica(item, constante)
-                                    print(resp)
                         else:
                             if (item.type == "var" or item.type == "conj_params"):
                                 
