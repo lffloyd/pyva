@@ -36,7 +36,7 @@ def main():
 
         print('****************************************\n')
 
-        #raiz_arvore.cgen
+        raiz_arvore.cgen()
 
     except FileNotFoundError as err:
         print(err)

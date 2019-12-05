@@ -77,6 +77,7 @@ def p_prog(p):
 
      
     p[0] = Info(type="prog", children=p[1:], cgen=p_prog_cgen)
+    global raiz_arvore
     raiz_arvore = p[0]
     root = Node("prog")
     createTree(p[0], root)
