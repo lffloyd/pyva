@@ -22,21 +22,25 @@ class Info:
         else:
             self.children = []
 
-def analiseSemantica(info, constante = 0, mult = False, add = False):
-    global symbolT
+
+def createTree(info, parent):
     if(info != None):
         if info.children != None:
             for item in info.children:
-                if type(item) is Info: #TODO trocar para not 
-                #elif item.val != None:  # TODO apagar apos implementacao
+                if not type(item) is Info:
+                    Node(str(item), parent=parent)
+                elif item.val != None:  # TODO apagar apos implementacao
                     # TODO apagar apos implementacao
-                #else:
+                    Node(str(item.val), parent=parent)
+                else:
                     # TODO remover todos os dados do escopo global ao sair da classe
-                    if (item.type == "class"):
-                        symbolT = SymbolTable()
+                    """ if (item.type == "class"):
+                        new = Node(item.type, parent=parent)
+                        createTree(item, new) """
                     if (item.type == "metodo"):
                         symbolT.insert_scope(Scope())
-                        analiseSemantica(item)
+                        new = Node(item.type, parent=parent)
+                        createTree(item, new)
                         symbolT.remove()
                     else:
                         if (item.type == "var" or item.type == "conj_params"):
@@ -53,31 +57,18 @@ def analiseSemantica(info, constante = 0, mult = False, add = False):
                         
                         elif ((item.type == "pexp" or item.type == "cmd2" or item.type == "cmd1") and item.toTable):
                             sco = symbolT.scopes[symbolT.current_scope_level]
-                            glob = symbolT.scopes[0]
-                            if (not (sco.is_in(item.children[0]) or glob.is_in(item.children[0]))):
+                            if (not sco.is_in(item.children[0])):
                                 print( 'Erro: Variável {0} não declarada'.format(item.children[0]))
-                            #if (sco.is_in(item.children[0]) and item.toTable['val']):
-                            #    sco.insert(item.children[0], item.toTable)
-                            print(sco.table)
-                        analiseSemantica(item)
+                            """ if (sco.is_in(item.children[0]) and item.toTable['val']):
+                                sco.insert(item.children[0], item.toTable['val'])
+                            print(sco.table) """
 
-def createTree(info, parent):
-    if(info != None):
-        if info.children != None:
-            for item in info.children:
-                if not type(item) is Info:
-                    Node(str(item), parent=parent)
-                elif item.val != None:  # TODO apagar apos implementacao
-                    # TODO apagar apos implementacao
-                    Node(str(item.val), parent=parent)
-                else:
-                    new = Node(item.type, parent=parent)
-                    createTree(item, new)
+                        new = Node(item.type, parent=parent)
+                        createTree(item, new)
 
 
 def p_prog(p):
     'prog : main conj_classes'
-
      
     p[0] = Info(type="prog", children=p[1:], cgen=prog_cgen)
     raiz_arvore = p[0]
@@ -86,9 +77,6 @@ def p_prog(p):
     createTree(p[0], root)
     for pre, fill, node in RenderTree(root):
         print("%s%s" % (pre, node.name))
-    
-    print("##Semantic##")
-    analiseSemantica(p[0])
     # DotExporter(root).to_picture("root.png")
 
 
@@ -384,25 +372,25 @@ def p_option_exps(p):
     '''option_exps : empty
        | exp '''
 
-    p[0] = Info(type="option_exps", children=p[1:], val=p[1].val)
+    p[0] = Info(type="option_exps", children=p[1:], val=p[1].val, cgen=option_exps)
 
 
 def p_exps(p):
     '''exps : exp conj_exps '''
 
-    p[0] = Info(type="exps", children=p[1:])
+    p[0] = Info(type="exps", children=p[1:], cgen=exps_cgen)
 
 
 def p_conj_exps(p):
     '''conj_exps : empty
                  | conj_exps COLON exp'''
 
-    p[0] = Info(type="conj_exps", children=p[1:])
+    p[0] = Info(type="conj_exps", children=p[1:], cgen=conj_exps_cgen)
 
 
 def p_empty(p):
     'empty :'
-    p[0] = Info(type="empty", children=[])
+    p[0] = Info(type="empty", children=[], cgen=empty_cgen)
 
 
 def p_error(p):
