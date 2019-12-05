@@ -9,11 +9,13 @@ from .scanner import tokens
 #globalId = 0
 #tree = Tree()
 
+raiz_arvore = None
 
 class Info:
-    def __init__(self, type, children=None, val=None):
+    def __init__(self, type, children=None, val=None, cgen=None):
         self.type = type
         self.val = val
+        self.cgen = cgen
         if children:
             self.children = children
         else:
@@ -35,7 +37,13 @@ def createTree(info, parent):
 
 def p_prog(p):
     'prog : main conj_classes'
-    p[0] = Info(type="prog", children=p[1:])
+
+    def p_prog_cgen():
+        print("a " + p[1].cgen + p[2].cgen)
+
+     
+    p[0] = Info(type="prog", children=p[1:], cgen=p_prog_cgen)
+    raiz_arvore = p[0]
     root = Node("prog")
     createTree(p[0], root)
     for pre, fill, node in RenderTree(root):
@@ -46,7 +54,10 @@ def p_prog(p):
 def p_main(p):
     'main : CLASS ID LKEY PUBLIC STATIC VOID MAIN LPAREN STRING LBRACKET RBRACKET ID RPAREN LKEY cmd1 RKEY RKEY'
 
-    p[0] = Info(type="main", children=p[1:])
+    def p_main_cgen():
+        print("b")
+
+    p[0] = Info(type="main", children=p[1:], cgen=p_main_cgen)
 
 
 def p_conj_classes(p):
@@ -55,12 +66,15 @@ def p_conj_classes(p):
     | conj_classes classe
     '''
 
-    p[0] = Info(type="conj_classes", children=p[1:])
+    def p_conj_classes_cgen():
+        print("c")
+
+    p[0] = Info(type="conj_classes", children=p[1:], cgen=p_conj_classes_cgen)
 
 
 def p_classe(p):
     'classe : CLASS ID extension LKEY conj_var conj_metodos RKEY'
-
+    print(p[3])
     p[0] = Info(type="classe", children=p[1:])
 
 
