@@ -9,6 +9,7 @@ class Scope:
     '''Insert a new entry on this scope'''
     def insert(self, entry_name, entry_values=None):
         self.table[entry_name] = entry_values
+        #print(self.table)
 
     '''Verify if a given entry exists on this scope.'''
     def is_in(self, entry_name):
