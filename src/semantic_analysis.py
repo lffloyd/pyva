@@ -55,8 +55,7 @@ def analiseSemantica(info, sum = 0, mult = 1):
                                             item.set(children = [item.children[2]])
                                         return ReturnType.partialMult
                                 else:
-                                    analiseSemantica(item, mult=mult)
-                                    return ReturnType.no
+                                    return analiseSemantica(item, mult=mult)
                         elif (item.type == "aexp"):
                             mult = 1
                             if(item.val):
@@ -101,8 +100,7 @@ def analiseSemantica(info, sum = 0, mult = 1):
                                             item.set(children = [item.children[2]])
                                         return ReturnType.partialSum
                                 else:
-                                    analiseSemantica(item, sum)
-                                    return ReturnType.no
+                                    return analiseSemantica(item, sum)
                         else:
                             if (item.type == "var" or item.type == "conj_params"):
                                 

@@ -14,7 +14,7 @@ class Fac {
             aaa = 3;
         }
         else{
-            num_aux = 3+ 3*(this.ComputeFac(num - 1))*5*(2+statica)*2 ;
+            num_aux = 3+ 3*(this.ComputeFac(num - 1))*5*(2+statica)*2 + 2;
         }            
         return num_aux;
     }
