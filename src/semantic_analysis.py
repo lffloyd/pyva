@@ -42,13 +42,10 @@ def analiseSemantica(info, sum = 0, mult = 1):
                                         if resp == ReturnType.partialMult:
                                             item.set(children = [item.children[0]])
                                         return ReturnType.partialMult
-                                elif(item.children[1] and item.children[0].val != None):
-                                    print("val3: " + str(item.children[0].val))
-                                    
+                                elif(item.children[1] and item.children[0].val != None):                                    
                                     item.children[0] = item.children[0].val
                                     if(item.children[1] == "*" ):
                                         mult = mult * item.children[0]
-                                        print("mult3: "+ str(mult))
                                         item.children[0] = mult
                                         resp = analiseSemantica(item, mult=mult)
                                         if resp == ReturnType.partialMult:
@@ -60,12 +57,14 @@ def analiseSemantica(info, sum = 0, mult = 1):
                             mult = 1
                             if(item.val):
                                 
-                                #sexp = ASTNode(type="sexp", children=[item.val + sum], val=item.val + sum)
+                                sexp = ASTNode(type="sexp", children=[item.val + sum], val=item.val + sum)
+                                print(sexp.val)
                                 #mexp = ASTNode(type="mexp", children=[sexp], val=sexp.val)
                                 #info.children[index] = mexp
                                 #print(info.children[0].children[0].val)
-                                info.children[index] =item.val + sum
-                                return ReturnType.total
+                                info.children[index] = item.val + sum
+                                #setValToAll(item, item.val + sum)
+                                return ReturnType.partialSum
                             elif len(item.children) > 1:                            
                                 if(item.children[1] and item.children[2].val != None):
                                     item.children[2] = item.children[2].val
@@ -130,3 +129,13 @@ def analiseSemantica(info, sum = 0, mult = 1):
                             
                             analiseSemantica(item)
                 index += 1
+
+def setValToAll(info, val):
+    info.set(val = val)
+    index = 0
+    for item in info.children:
+        if type(item) is ASTNode:  
+            setValToAll(item, val)
+        else:
+            info.children[index] = val
+    index +=1
