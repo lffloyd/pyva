@@ -243,7 +243,7 @@ def p_aexp_mexp(p):
 def p_mexp_sexp(p):
     '''mexp : sexp'''
 
-    # print(p[1].val)
+    #print(p[1].val)
     p[0] = ASTNode(type="mexp", children=p[1:], val=p[1].val)
 
 
@@ -282,7 +282,7 @@ def p_sexp_minus(p):
     value = None
     if (p[2].val != None):
         value = -p[2].val
-    p[0] = ASTNode(type="sexp", children=p[1:])
+    p[0] = ASTNode(type="sexp", children=p[1:], val = value)
 
 
 def p_sexp_pexp(p):
@@ -312,8 +312,11 @@ def p_pexp(p):
        | NEW ID LPAREN RPAREN
        | pexp DOT ID
        | pexp DOT ID LPAREN option_exps RPAREN'''
-
-    p[0] = ASTNode(type="pexp", children=p[1:])
+    
+    val = None
+    if p[1] == "(":
+        val = p[2].val
+    p[0] = ASTNode(type="pexp", children=p[1:], val = val)
 
 
 def p_option_exps(p):

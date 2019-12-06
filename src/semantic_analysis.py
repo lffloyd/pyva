@@ -1,21 +1,23 @@
 from .symtable.symbol_table import SymbolTable, Scope
 from .abstract_syntax_tree.ast_node import ASTNode
+from enum import Enum
+
+class ReturnType(Enum):
+    no = 0
+    total = 1
+    partialSum = 2
+    partialMult = 3
 
 symbolT = SymbolTable()
 
 
-def analiseSemantica(info, constante=0):
+def analiseSemantica(info, sum = 0, mult = 1):
     global symbolT
     if(info != None and type(info) is ASTNode):
         if info.children != None:
             index = 0
             for item in info.children:
-                if type(item) is ASTNode:  # TODO trocar para not
-                    #if item.val != None and len(item.children):  # TODO apagar apos implementacao
-                        #print(item.val)
-                        #item[index].info = item.val
-                        #item[index].children = []
-                # else:
+                if type(item) is ASTNode:  
                     if (item.type == "class"):
                         symbolT = SymbolTable()
                         analiseSemantica(item)
@@ -26,47 +28,81 @@ def analiseSemantica(info, constante=0):
                         symbolT.remove()
                     else:
                         if (item.type == "mexp" ):
-                            constante = 0
-                        if (item.type == "aexp"):
+                            sum = 0
                             if(item.val):
-                                info.children[index] = item.val + constante
-                                return True
+                                info.children[index] =item.val * mult
+                                return ReturnType.total
+                            elif len(item.children) > 1:                            
+                                if(item.children[1] and item.children[2].val != None):                                    
+                                    item.children[2] = item.children[2].val
+                                    if(item.children[1] == "*" ):
+                                        mult = mult * item.children[2]
+                                        item.children[2] = mult
+                                        resp = analiseSemantica(item, mult=mult)
+                                        if resp == ReturnType.partialMult:
+                                            item.set(children = [item.children[0]])
+                                        return ReturnType.partialMult
+                                elif(item.children[1] and item.children[0].val != None):
+                                    print("val3: " + str(item.children[0].val))
+                                    
+                                    item.children[0] = item.children[0].val
+                                    if(item.children[1] == "*" ):
+                                        mult = mult * item.children[0]
+                                        print("mult3: "+ str(mult))
+                                        item.children[0] = mult
+                                        resp = analiseSemantica(item, mult=mult)
+                                        if resp == ReturnType.partialMult:
+                                            item.set(children = [item.children[2]])
+                                        return ReturnType.partialMult
+                                else:
+                                    analiseSemantica(item, mult=mult)
+                                    return ReturnType.no
+                        elif (item.type == "aexp"):
+                            mult = 1
+                            if(item.val):
+                                
+                                #sexp = ASTNode(type="sexp", children=[item.val + sum], val=item.val + sum)
+                                #mexp = ASTNode(type="mexp", children=[sexp], val=sexp.val)
+                                #info.children[index] = mexp
+                                #print(info.children[0].children[0].val)
+                                info.children[index] =item.val + sum
+                                return ReturnType.total
                             elif len(item.children) > 1:                            
                                 if(item.children[1] and item.children[2].val != None):
                                     item.children[2] = item.children[2].val
                                     if(item.children[1] == "+" ):
-                                        constante = constante + item.children[2]
-                                        item.children[2] = constante
-                                        resp = analiseSemantica(item, constante)
-                                        if resp :
+                                        sum = sum + item.children[2]
+                                        item.children[2] = sum
+                                        resp = analiseSemantica(item, sum)
+                                        if resp == ReturnType.partialSum:
                                             item.set(children = [item.children[0]])
-                                        return True
+                                        return ReturnType.partialSum
                                     if(item.children[1] == "-" ):
-                                        constante = constante - item.children[2]
-                                        item.children[2] = constante
-                                        resp = analiseSemantica(item, constante)
-                                        if resp :
+                                        sum = sum - item.children[2]
+                                        item.children[2] = sum
+                                        resp = analiseSemantica(item, sum)
+                                        if resp == ReturnType.partialSum:
                                             item.set(children = [item.children[0]])
-                                        return True
+                                        return ReturnType.partialSum
                                 elif(item.children[1] and item.children[0].val != None):
                                     item.children[0] = item.children[0].val
                                     if(item.children[1] == "+" ):
-                                        constante = constante + item.children[0]
-                                        item.children[0] = constante
-                                        resp = analiseSemantica(item, constante)
-                                        if resp :
+                                        sum = sum + item.children[0]
+                                        item.children[0] = sum
+                                        resp = analiseSemantica(item, sum)
+                                        if resp == ReturnType.partialSum:
                                             item.set(children = [item.children[2]])
-                                        return True
+                                        return ReturnType.partialSum
                                     if(item.children[1] == "-" ):
-                                        constante = constante - item.children[0]
-                                        item.children[0] = constante
-                                        resp = analiseSemantica(item, constante)
-                                        if resp :
+                                        sum = sum - item.children[0]
+                                        item.children[0] = sum
+                                        resp = analiseSemantica(item, sum)
+                                        if resp == ReturnType.partialSum:
                                             item.set(children = [item.children[2]])
-                                        return True
-                                    return None
+                                        return ReturnType.partialSum
                                 else:
-                                    return analiseSemantica(item, constante)
+                                    analiseSemantica(item, sum)
+                                    return ReturnType.no
                         else:
                             if (item.type == "var" or item.type == "conj_params"):
                                 
