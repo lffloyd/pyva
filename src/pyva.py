@@ -1,6 +1,10 @@
 from sys import argv
+from anytree import Node, RenderTree
+
 from .scanner import lexer
 from .parser import parser
+from .semantic_analysis import analiseSemantica
+from .abstract_syntax_tree.ast_node import create_tree
 from .utils.code_reader import read_source_code
 
 
@@ -33,6 +37,18 @@ def main():
         print('**************Syntax tree:**************')
 
         parser.parse(raw_source_code, lexer=lexer)
+
+        print('****************************************\n')
+
+        print('****************************************\n')
+        print('**************Semantic analysis:**************')
+
+        from .parser import tree
+
+        analiseSemantica(tree['production'])
+        create_tree(tree['production'], tree['root'])
+        for pre, _, node in RenderTree(tree['root']):
+            print("%s%s" % (pre, node.name))
 
         print('****************************************\n')
 

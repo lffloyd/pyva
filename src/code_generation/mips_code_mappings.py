@@ -7,7 +7,7 @@ def main_cgen(p):
         "move $fp $sp\n" +\
         "sw $ra 0($sp)\n" +\
         "addiu $sp $sp -4\n" +\
-        p.children[13] + "\n" +\
+        str(p.children[14]) + "\n" +\
         "lw $ra 4($sp)\n" +\
         "addiu $sp $sp 12\n" +\
         "lw $fp 0($sp)\n" +\

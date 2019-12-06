@@ -1,6 +1,5 @@
 import ply.yacc as yacc
-from anytree import Node, RenderTree
-from anytree.exporter import DotExporter
+from anytree import Node
 
 # Get the token map from the lexer.  This is required.
 from .scanner import tokens
@@ -9,21 +8,22 @@ from .semantic_analysis import analiseSemantica, symbolT
 from .abstract_syntax_tree.ast_node import ASTNode, create_tree
 from .symtable.scope import Scope
 from .symtable.symbol_table import SymbolTable
-from .code_generation.mips_generation import *
+from .code_generation.mips_code_mappings import *
 
-                            
+tree = {}
+
 def p_prog(p):
     'prog : main conj_classes'
      
     p[0] = ASTNode(type="prog", children=p[1:], cgen=prog_cgen)
-    raiz_arvore = p[0]
-    raiz_arvore.cgen(p[0])
-    root = Node("prog")
-    analiseSemantica(p[0])
-    create_tree(p[0], root)
-    for pre, _, node in RenderTree(root):
-        print("%s%s" % (pre, node.name))
-    # DotExporter(root).to_picture("root.png")
+
+    global tree
+    tree = {
+        'root':  Node("prog"),
+        'production': p[0]
+    }
+
+    tree['production'].cgen(tree['production'])
 
 
 def p_main(p):
