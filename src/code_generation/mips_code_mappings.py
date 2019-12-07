@@ -1,3 +1,4 @@
+import functools
 from enum import Enum
 from re import match
 
@@ -131,17 +132,6 @@ def cmd2_gen(p):
     if match(token['SYSTEMOUTPRINTLN'], children[0]):
         return children[2].cgen(children[2]) + \
                 "\tjal System.out.println\n"
-
-def conj_cmd_cgen(p):
-    if p.val != None:
-        return load_immediate(p.val)
-
-    children = p.children
-
-    if len(children) == 1:
-        return children[0].cgen(children[0])
-
-    return children[0].cgen(children[0]) + children[1].cgen(children[1])
 
 def exp_and_cgen(p):
     if p.val != None:
@@ -319,6 +309,17 @@ def exps_cgen(p):
 
     return children[0].cgen(children[0]) + children[1].cgen(children[1])
 
+def generic_list_of_expressions_cgen(p):
+    if p.val != None:
+        return load_immediate(p.val)
+
+    if (len(p.children) == 1):
+        return p.children[0].cgen(p.children[0])
+
+    children = p.children
+
+    return functools.reduce(lambda a, b: a.cgen(a) + b.cgen(b), children)
+
 def generic_recursive_cgen(p):
     if p.val != None:
         return load_immediate(p.val)
@@ -330,14 +331,6 @@ def generic_recursive_cgen(p):
 
 #############################################################################################################
 ###Esse trecho não está sendo utilizado no momento, mas acho que poderemos reaproveitar
-def conj_classes_cgen(p):
-    return ""
-
-    # if(p.children[0].type == "empty"):
-    #     return p.children[0].cgen(p.children[0])
-    # else:
-    #     return p.children[0].cgen(p.children[0]) + p.children[1].cgen(p.children[1])
-
 def classe_cgen(p):
     return (p.children[1] + ":" + "\n" +
         "move $fp $sp       \n" +

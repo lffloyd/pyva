@@ -36,7 +36,7 @@ def p_conj_classes(p):
     | conj_classes classe
     '''
 
-    p[0] = ASTNode(type="conj_classes", children=p[1:])
+    p[0] = ASTNode(type="conj_classes", children=p[1:], cgen=generic_list_of_expressions_cgen)
 
 
 def p_classe(p):
@@ -56,14 +56,14 @@ def p_conj_var(p):
     '''conj_var : empty
                 | conj_var var'''
 
-    p[0] = ASTNode(type="conj_var", children=p[1:])
+    p[0] = ASTNode(type="conj_var", children=p[1:], cgen=generic_list_of_expressions_cgen)
 
 
 def p_conj_metodos(p):
     '''conj_metodos : empty
                     | conj_metodos metodo'''
 
-    p[0] = ASTNode(type="conj_metodos", children=p[1:])
+    p[0] = ASTNode(type="conj_metodos", children=p[1:], cgen=generic_list_of_expressions_cgen)
 
 
 def p_var(p):
@@ -82,14 +82,14 @@ def p_conj_cmd(p):
     '''conj_cmd : empty
     | conj_cmd cmd1'''
 
-    p[0] = ASTNode(type="conj_cmd", children=p[1:], cgen=conj_cmd_cgen)
+    p[0] = ASTNode(type="conj_cmd", children=p[1:], cgen=generic_list_of_expressions_cgen)
 
 
 def p_params(p):
     '''params : empty
     | conj_params'''
 
-    p[0] = ASTNode(type="params", children=p[1:])
+    p[0] = ASTNode(type="params", children=p[1:], cgen=generic_list_of_expressions_cgen)
 
 
 def p_conj_params(p):
@@ -321,13 +321,13 @@ def p_option_exps(p):
     '''option_exps : empty
        | exp '''
 
-    p[0] = ASTNode(type="option_exps", children=p[1:], val=p[1].val)
+    p[0] = ASTNode(type="option_exps", children=p[1:], val=p[1].val, cgen=generic_list_of_expressions_cgen)
 
 
 def p_exps(p):
     '''exps : exp conj_exps '''
 
-    p[0] = ASTNode(type="exps", children=p[1:], cgen=exps_cgen)
+    p[0] = ASTNode(type="exps", children=p[1:], cgen=generic_list_of_expressions_cgen)
 
 
 def p_conj_exps(p):
