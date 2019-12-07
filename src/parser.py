@@ -41,7 +41,7 @@ def p_conj_classes(p):
 
 def p_classe(p):
     'classe : CLASS ID extension LKEY conj_var conj_metodos RKEY'
-    p[0] = ASTNode(type="classe", children=p[1:])
+    p[0] = ASTNode(type="classe", children=p[1:], cgen=classe_cgen)
 
 
 def p_extension(p):
@@ -69,13 +69,13 @@ def p_conj_metodos(p):
 def p_var(p):
     'var : tipo ID SEMICOLON'
 
-    p[0] = ASTNode(type="var", children=p[1:])
+    p[0] = ASTNode(type="var", children=p[1:], cgen=var_cgen)
 
-
+#TODO
 def p_metodo(p):
     'metodo : PUBLIC tipo ID LPAREN params RPAREN LKEY conj_var conj_cmd RETURN exp SEMICOLON RKEY'
 
-    p[0] = ASTNode(type="metodo", children=p[1:])
+    p[0] = ASTNode(type="metodo", children=p[1:], cgen=metodo_cgen)
 
 
 def p_conj_cmd(p):
@@ -94,14 +94,14 @@ def p_params(p):
 
 def p_conj_params(p):
     '''conj_params : tipo ID mais_param'''
-    p[0] = ASTNode(type="conj_params", children=p[1:])
+    p[0] = ASTNode(type="conj_params", children=p[1:], cgen=conj_params_cgen)
 
 
 def p_mais_param(p):
     '''mais_param : empty
     | mais_param COLON tipo ID'''
 
-    p[0] = ASTNode(type="mais_param", children=p[1:])
+    p[0] = ASTNode(type="mais_param", children=p[1:], cgen=mais_param_cgen)
 
 
 def p_tipo(p):
@@ -109,7 +109,7 @@ def p_tipo(p):
     | BOOLEAN
     | INT
     | ID'''
-    p[0] = ASTNode(type="tipo", children=p[1:])
+    p[0] = ASTNode(type="tipo", children=p[1:], cgen=tipo_cgen)
 
 
 def p_cmd1(p):
@@ -122,16 +122,17 @@ def p_cmd1(p):
     p[0] = ASTNode(type="cmd1", children=p[1:], cgen=cmd1_gen)
 
 
+#TODO
 def p_cmd1_attr(p):
     '''cmd1 : ID ATTR exp SEMICOLON'''
 
-    p[0] = ASTNode(type="cmd1", children=p[1:], toTable={'val': p[3].val})
+    p[0] = ASTNode(type="cmd1", children=p[1:], toTable={'val': p[3].val}, cgen=empty_cgen)
 
-
+#TODO
 def p_cmd1_attr_list(p):
     '''cmd1 : ID LBRACKET exp RBRACKET ATTR exp SEMICOLON'''
 
-    p[0] = ASTNode(type="cmd1", children=p[1:], toTable={'val': p[6].val})
+    p[0] = ASTNode(type="cmd1", children=p[1:], toTable={'val': p[6].val}, cgen=empty_cgen)
 
 
 def p_cmd2(p):
@@ -142,17 +143,17 @@ def p_cmd2(p):
 
     p[0] = ASTNode(type="cmd2", children=p[1:], cgen=cmd2_gen)
 
-
+#TODO
 def p_cmd2_attr(p):
     '''cmd2 : ID ATTR exp SEMICOLON'''
 
-    p[0] = ASTNode(type="cmd2", children=p[1:], toTable={'val': p[3].val})
+    p[0] = ASTNode(type="cmd2", children=p[1:], toTable={'val': p[3].val}, cgen=empty_cgen)
 
-
+#TODO
 def p_cmd2_attr_list(p):
     '''cmd2 : ID LBRACKET exp RBRACKET ATTR exp SEMICOLON'''
 
-    p[0] = ASTNode(type="cmd2", children=p[1:], toTable={'val': p[6].val})
+    p[0] = ASTNode(type="cmd2", children=p[1:], toTable={'val': p[6].val}, cgen=empty_cgen)
 
 
 def p_exp_and(p):
@@ -306,7 +307,7 @@ def p_pexp_id(p):
 
     p[0] = ASTNode(type="pexp", children=p[1:], toTable={'val': None}, cgen=empty_cgen)
 
-
+#TODO
 def p_pexp(p):
     '''pexp : THIS
        | LPAREN exp RPAREN
@@ -314,7 +315,7 @@ def p_pexp(p):
        | pexp DOT ID
        | pexp DOT ID LPAREN option_exps RPAREN'''
 
-    p[0] = ASTNode(type="pexp", children=p[1:])
+    p[0] = ASTNode(type="pexp", children=p[1:], cgen=empty_cgen)
 
 
 def p_option_exps(p):

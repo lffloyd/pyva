@@ -320,6 +320,74 @@ def conj_exps_cgen(p):
 
     return children[0].cgen(children[0]) + children[2].cgen(children[2])
 
+def conj_params_cgen(p):
+    if p.val != None:
+        return load_immediate(p.val)
+
+    children = p.children
+
+    return children[0].cgen(children[0]) + children[2].cgen(children[2])
+
+def mais_param_cgen(p):
+    if p.val != None:
+        return load_immediate(p.val)
+
+    if (len(p.children) == 1):
+        return p.children[0].cgen(p.children[0])
+
+    children = p.children
+
+    return children[0].cgen(children[0]) + children[2].cgen(children[2])
+
+def classe_cgen(p):
+    if p.val != None:
+        return load_immediate(p.val)
+
+    if (len(p.children) == 1):
+        return p.children[0].cgen(p.children[0])
+
+    children = p.children
+
+    return children[1] + ":\n" + children[4].cgen(children[4]) + children[5].cgen(children[5])
+
+def metodo_cgen(p):
+    if p.val != None:
+        return load_immediate(p.val)
+
+    if (len(p.children) == 1):
+        return p.children[0].cgen(p.children[0])
+
+    children = p.children
+
+    n_params = children[4].children_length() or 1
+
+    return children[2] + ":\n" + \
+        children[4].cgen(children[4]) + ":\n" + \
+        "\tmove $fp $sp\n" + \
+        "\tsw $ra 0($sp)\n" + \
+        "\taddiu $sp $sp -4\n" + \
+        children[7].cgen(children[7]) + \
+        "\tlw $ra 4($sp)\n" + \
+        "\taddiu $sp $sp " + str(4*n_params+8) + "\n" + \
+        "\tlw $fp 0($sp)\n" + \
+        "\tjr $ra\n"
+
+def var_cgen(p):
+    if p.val != None:
+        return load_immediate(p.val)
+    
+    children = p.children
+
+    return children[0].cgen(children[0]) + \
+            "\tsw $a0 0($sp)\n" + \
+            "\taddiu $sp $sp -4\n"
+
+def tipo_cgen(p):
+    if p.val != None:
+        return load_immediate(p.val)
+
+    return "\tli $a0 0\n"
+
 def generic_list_of_expressions_cgen(p):
     if p.val != None:
         return load_immediate(p.val)
@@ -338,55 +406,6 @@ def generic_recursive_cgen(p):
     children = p.children
 
     return children[0].cgen(children[0])
-
-
-#############################################################################################################
-###Esse trecho não está sendo utilizado no momento, mas acho que poderemos reaproveitar
-def classe_cgen(p):
-    return (p.children[1] + ":" + "\n" +
-        "move $fp $sp       \n" +
-        "sw $ra 0($sp)      \n" +
-        "addiu $sp $sp -4   \n" +
-        p.children[6].cgen(p.children[6])+    "\n" +
-        "lw $ra 4($sp)      \n" +
-        "addiu $sp $sp z    \n" +
-        "lw $fp 0($sp)      \n" +
-        "jr $ra             \n")
-
-def extension_cgen(p):
-    if(p.children[0].type == "empty"):
-        return p.children[0].cgen(p.children[0])
-    else:
-        return ""
-
-def conj_var_cgen(p):
-    if(p.children[0].type == "empty"):
-        return p.children[0].cgen(p.children[0])
-    else:
-        return ""
-
-def conj_metodos_cgen(p):
-    if(p.children[0].type == "empty"):
-        return p.children[0].cgen(p.children[0])
-    else:
-        return p.children[0].cgen(p.children[0]) + p.children[1].cgen(p.children[1])
-
-def var_cgen(p):
-    return ""
-
-def metodo_cgen(p):
-    return (p.children[3] + ":" + "\n" +
-        "move $fp $sp       \n" +
-        "sw $ra 0($sp)      \n" +
-        "addiu $sp $sp -4   \n" +
-        p.children[6].cgen(p.children[6]) +
-        "lw $ra 4($sp)      \n" +
-        "addiu $sp $sp 4    \n" +
-        "lw $fp 0($sp)      \n" +
-        "jr $ra             \n")
-         
-
-#########################################################################################################
 
 def empty_cgen(p):
     return ""
