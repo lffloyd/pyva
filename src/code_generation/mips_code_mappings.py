@@ -1,8 +1,6 @@
 from enum import Enum
 from re import match
 
-from ..scanner import t_LKEY, t_RKEY
-
 token = {
     'BOOLEAN': r'boolean',
     'CLASS': r'class',
@@ -23,7 +21,9 @@ token = {
     'FALSE': r'false',
     'THIS': r'this',
     'NEW': r'new',
-    'NULL': r'null'
+    'NULL': r'null',
+    'LKEY': r'{',
+    'RKEY': r'}'
 }
 
 if_count = 0
@@ -98,7 +98,7 @@ def cmd1_gen(p):
     
     children = p.children
 
-    if match(t_LKEY, children[0]):
+    if match(token['LKEY'], children[0]):
         return children[1].cgen(children[1])
 
     if match(token['WHILE'], children[0]):
@@ -119,7 +119,7 @@ def cmd2_gen(p):
     
     children = p.children
 
-    if match(t_LKEY, children[0]):
+    if match(token['LKEY'], children[0]):
         return children[1].cgen(children[1])
 
     if match(token['WHILE'], children[0]):
