@@ -309,6 +309,17 @@ def exps_cgen(p):
 
     return children[0].cgen(children[0]) + children[1].cgen(children[1])
 
+def conj_exps_cgen(p):
+    if p.val != None:
+        return load_immediate(p.val)
+
+    if (len(p.children) == 1):
+        return p.children[0].cgen(p.children[0])
+
+    children = p.children
+
+    return children[0].cgen(children[0]) + children[2].cgen(children[2])
+
 def generic_list_of_expressions_cgen(p):
     if p.val != None:
         return load_immediate(p.val)
@@ -368,24 +379,11 @@ def metodo_cgen(p):
         "move $fp $sp       \n" +
         "sw $ra 0($sp)      \n" +
         "addiu $sp $sp -4   \n" +
-        p.children[6].cgen(p.children[6])+    "\n" +
+        p.children[6].cgen(p.children[6]) +
         "lw $ra 4($sp)      \n" +
-        "addiu $sp $sp z    \n" +
+        "addiu $sp $sp 4    \n" +
         "lw $fp 0($sp)      \n" +
         "jr $ra             \n")
-
-def option_exps(p):
-    if (p.children[0].cgen(p.children[0]) == ""):
-        return p.children[0].cgen(p.children[0])
-    else:
-        return p.children[0].cgen(p.children[0]) + "\n" + "sw $a0 0($sp)\n" + "addiu $sp $sp -4\n"
-
-def conj_exps_cgen(p):
-    if (len(p.children) == 1):
-        return p.children[0].cgen(p.children[0])  
-    else:
-        return p.children[0].cgen(p.children[0]) + "\n" + "sw $a0 0($sp)\n" + "addiu $sp $sp -4\n" \
-            + p.children[1].cgen(p.children[1]) + "\n" + "sw $a0 0($sp)\n" + "addiu $sp $sp -4\n" 
          
 
 #########################################################################################################

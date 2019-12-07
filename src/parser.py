@@ -49,7 +49,7 @@ def p_extension(p):
     extension : empty
     | EXTENDS ID
     '''
-    p[0] = ASTNode(type="extension", children=p[1:])
+    p[0] = ASTNode(type="extension", children=p[1:], cgen=empty_cgen)
 
 
 def p_conj_var(p):
@@ -334,7 +334,7 @@ def p_conj_exps(p):
     '''conj_exps : empty
                  | conj_exps COLON exp'''
 
-    p[0] = ASTNode(type="conj_exps", children=p[1:])
+    p[0] = ASTNode(type="conj_exps", children=p[1:], cgen=conj_exps_cgen)
 
 
 def p_empty(p):
