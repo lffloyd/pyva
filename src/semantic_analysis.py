@@ -40,7 +40,8 @@ def analiseSemantica(info, sum = 0, mult = 1):
                                         item.children[2] = mult
                                         resp = analiseSemantica(item, mult=mult)
                                         if resp == ReturnType.partialMult:
-                                            item.set(children = [item.children[0]])
+                                            info.children[index] = item.children[0]
+                                            #item.set(children = [item.children[0]])
                                         return ReturnType.partialMult
                                 elif(item.children[1] and item.children[0].val != None):                                    
                                     item.children[0] = item.children[0].val
@@ -49,7 +50,8 @@ def analiseSemantica(info, sum = 0, mult = 1):
                                         item.children[0] = mult
                                         resp = analiseSemantica(item, mult=mult)
                                         if resp == ReturnType.partialMult:
-                                            item.set(children = [item.children[2]])
+                                            info.children[index] = item.children[2]
+                                            #item.set(children = [item.children[2]])
                                         return ReturnType.partialMult
                                 else:
                                     return analiseSemantica(item, mult=mult)
@@ -58,7 +60,7 @@ def analiseSemantica(info, sum = 0, mult = 1):
                             if(item.val):
                                 
                                 sexp = ASTNode(type="sexp", children=[item.val + sum], val=item.val + sum)
-                                print(sexp.val)
+                                #print(sexp.val)
                                 #mexp = ASTNode(type="mexp", children=[sexp], val=sexp.val)
                                 #info.children[index] = mexp
                                 #print(info.children[0].children[0].val)
@@ -73,14 +75,16 @@ def analiseSemantica(info, sum = 0, mult = 1):
                                         item.children[2] = sum
                                         resp = analiseSemantica(item, sum)
                                         if resp == ReturnType.partialSum:
-                                            item.set(children = [item.children[0]])
+                                            info.children[index] = item.children[0]
+                                            #item.set(children = [item.children[0]])
                                         return ReturnType.partialSum
                                     if(item.children[1] == "-" ):
                                         sum = sum - item.children[2]
                                         item.children[2] = sum
                                         resp = analiseSemantica(item, sum)
                                         if resp == ReturnType.partialSum:
-                                            item.set(children = [item.children[0]])
+                                            info.children[index] = item.children[0]
+                                            #item.set(children = [item.children[0]])
                                         return ReturnType.partialSum
                                 elif(item.children[1] and item.children[0].val != None):
                                     item.children[0] = item.children[0].val
@@ -89,14 +93,16 @@ def analiseSemantica(info, sum = 0, mult = 1):
                                         item.children[0] = sum
                                         resp = analiseSemantica(item, sum)
                                         if resp == ReturnType.partialSum:
-                                            item.set(children = [item.children[2]])
+                                            info.children[index] = item.children[2]
+                                            #item.set(children = [item.children[2]])
                                         return ReturnType.partialSum
                                     if(item.children[1] == "-" ):
                                         sum = sum - item.children[0]
                                         item.children[0] = sum
                                         resp = analiseSemantica(item, sum)
                                         if resp == ReturnType.partialSum:
-                                            item.set(children = [item.children[2]])
+                                            info.children[index] = item.children[2]
+                                            #item.set(children = [item.children[2]])
                                         return ReturnType.partialSum
                                 else:
                                     return analiseSemantica(item, sum)
