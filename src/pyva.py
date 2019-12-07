@@ -4,6 +4,7 @@ from anytree import Node, RenderTree
 from .scanner import lexer
 from .parser import parser
 from .semantic_analysis import analiseSemantica
+from .code_generation.mips_generator import MIPSGenerator
 from .abstract_syntax_tree.ast_node import create_tree
 from .utils.code_reader import read_source_code
 
@@ -41,14 +42,25 @@ def main():
         print('****************************************\n')
 
         print('****************************************\n')
-        print('**************Semantic analysis:**************')
+        # print('**************Semantic analysis:**************')
+
+        # from .parser import tree
+
+        # analiseSemantica(tree['production'])
+        # create_tree(tree['production'], tree['root'])
+        # for pre, _, node in RenderTree(tree['root']):
+        #     print("%s%s" % (pre, node.name))
+
+        # print('****************************************\n')
+
+        print('**************MIPS Code Generation:**************')
 
         from .parser import tree
 
-        analiseSemantica(tree['production'])
-        create_tree(tree['production'], tree['root'])
-        for pre, _, node in RenderTree(tree['root']):
-            print("%s%s" % (pre, node.name))
+        mips_gen = MIPSGenerator()
+        code = mips_gen.generate_code(tree)
+
+        print(code)
 
         print('****************************************\n')
 
