@@ -284,7 +284,8 @@ def p_sexp_minus(p):
     value = None
     if (p[2].val != None):
         value = -p[2].val
-    p[0] = ASTNode(type="sexp", children=p[1:], cgen=sexp_minus_cgen)
+        
+    p[0] = ASTNode(type="sexp", children=p[1:], val = value, cgen=sexp_minus_cgen)
 
 
 def p_sexp_pexp(p):
@@ -315,7 +316,12 @@ def p_pexp(p):
        | pexp DOT ID
        | pexp DOT ID LPAREN option_exps RPAREN'''
 
-    p[0] = ASTNode(type="pexp", children=p[1:], cgen=empty_cgen)
+    
+    val = None
+    if p[1] == "(":
+        val = p[2].val
+
+    p[0] = ASTNode(type="pexp", children=p[1:], val = val, cgen=empty_cgen)
 
 
 def p_option_exps(p):

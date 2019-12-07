@@ -42,16 +42,6 @@ def main():
         print('****************************************\n')
 
         print('****************************************\n')
-        # print('**************Semantic analysis:**************')
-
-        # from .parser import tree
-
-        # analiseSemantica(tree['production'])
-        # create_tree(tree['production'], tree['root'])
-        # for pre, _, node in RenderTree(tree['root']):
-        #     print("%s%s" % (pre, node.name))
-
-        # print('****************************************\n')
 
         print('**************MIPS Code Generation:**************')
 
@@ -63,6 +53,17 @@ def main():
         print(code)
 
         print('****************************************\n')
+        print('**************Semantic analysis:**************')
+
+        from .parser import tree
+
+        analiseSemantica(tree['production'])
+        create_tree(tree['production'], tree['root'])
+        for pre, _, node in RenderTree(tree['root']):
+            print("%s%s" % (pre, node.name))
+
+        print('****************************************\n')
+
 
     except FileNotFoundError as err:
         print(err)
