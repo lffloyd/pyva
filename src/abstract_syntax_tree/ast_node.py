@@ -11,13 +11,15 @@ class ASTNode:
             self.children = children
         else:
             self.children = []
-    def set(self, type = None, children = None, val = None):
+    def set(self, type = None, children = None, val = None, cgen = None):
         if type:
             self.type = type
         if children:
             self.children = children
         if val:
             self.val = val
+        if cgen:
+            self.cgen = cgen
 
 def create_tree(info, parent):
     if(info != None):
@@ -26,6 +28,8 @@ def create_tree(info, parent):
             for item in info.children:
                 if not type(item) is ASTNode:
                     Node(str(item), parent=parent)
+                #elif item.val != None:
+                #    Node(item.val, parent=parent)
                 else:
                     new = Node(item.type, parent=parent)
                     create_tree(item, new)
