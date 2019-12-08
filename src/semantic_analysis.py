@@ -49,6 +49,8 @@ def analiseSemantica(info, sum = 0, mult = 1):
                     resp = analiseSemantica(info.children[0], mult = mult)
                     if resp == ReturnType.partialMult:
                         analiseSemantica(info.children[2])
+                        #Esse retorno é importante para quando existem constantes intercaladas (ex.: 3*x*2*y*4)
+                        #pois nesse caso sempre existe uma operacao sem constantes no meio
                         return ReturnType.partialMult
                     else:
                         return analiseSemantica(info.children[2], mult = mult)
@@ -94,6 +96,8 @@ def analiseSemantica(info, sum = 0, mult = 1):
                     resp = analiseSemantica(info.children[0], sum = sum)
                     if resp == ReturnType.partialSum:
                         analiseSemantica(info.children[2])
+                        #Esse retorno é importante para quando existem constantes intercaladas (ex.: 3+x+2+y+4)
+                        #pois nesse caso sempre existe uma operacao sem constantes no meio
                         return ReturnType.partialSum
                     else:
                         return analiseSemantica(info.children[2], sum = sum)
