@@ -24,24 +24,28 @@ def analiseSemantica(info, sum = 0, mult = 1):
                     mult = mult * info.children[2].val
                     resp = analiseSemantica(info.children[0], mult = mult)
                     if resp == ReturnType.partialMult:
+                        #Como a constante ja foi propagada dentro do outro termo ela não precisa mais estar na arvore
                         info.set(
                             type = info.children[0].type,
                             children = info.children[0].children,
                             val = info.children[0].val,
                             cgen = info.children[0].cgen)
                     else:
+                        #Caso seja a ultima constante da subarvore info que pode ser utilizada na operacao ela recebe todo o valor
                         setValToAll(info.children[2], mult)
                     return ReturnType.partialMult
                 elif(info.children[1] == "*"  and info.children[0].val != None):                              
                     mult = mult * info.children[0].val
                     resp = analiseSemantica(info.children[2], mult = mult)
                     if resp == ReturnType.partialMult:
+                        #Como a constante ja foi propagada dentro do outro termo ela não precisa mais estar na arvore
                         info.set(
                             type = info.children[2].type,
                             children = info.children[2].children,
                             val = info.children[2].val,
                             cgen = info.children[2].cgen)
                     else:
+                        #Caso seja a ultima constante da subarvore info que pode ser utilizada na operacao ela recebe todo o valor
                         setValToAll(info.children[0], mult)
                     return ReturnType.partialMult
                 else:
@@ -68,12 +72,14 @@ def analiseSemantica(info, sum = 0, mult = 1):
                         sum = sum - info.children[2].val
                     resp = analiseSemantica(info.children[0], sum)
                     if resp == ReturnType.partialSum:
+                        #Como a constante ja foi propagada dentro do outro termo ela não precisa mais estar na arvore
                         info.set(
                             type = info.children[0].type,
                             children = info.children[0].children,
                             val = info.children[0].val,
                             cgen = info.children[0].cgen)
                     else:
+                        #Caso seja a ultima constante da subarvore info que pode ser utilizada na operacao ela recebe todo o valor
                         setValToAll(info.children[2], sum)
                     return ReturnType.partialSum
                 elif(info.children[1] and info.children[0].val != None):
@@ -83,12 +89,14 @@ def analiseSemantica(info, sum = 0, mult = 1):
                         sum = info.children[0].val - sum
                     resp = analiseSemantica(info.children[2], sum)
                     if resp == ReturnType.partialSum:
+                        #Como a constante ja foi propagada dentro do outro termo ela não precisa mais estar na arvore
                         info.set(
                             type = info.children[2].type,
                             children = info.children[2].children,
                             val = info.children[2].val,
                             cgen = info.children[2].cgen)
                     else:
+                        #Caso seja a ultima constante da subarvore info que pode ser utilizada na operacao ela recebe todo o valor
                         setValToAll(info.children[0], sum)
                     return ReturnType.partialSum
                 else:
