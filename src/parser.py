@@ -23,8 +23,6 @@ def p_prog(p):
         'production': p[0]
     }
 
-    tree['production'].cgen(tree['production'])
-
 
 def p_main(p):
     'main : CLASS ID LKEY PUBLIC STATIC VOID MAIN LPAREN STRING LBRACKET RBRACKET ID RPAREN LKEY cmd1 RKEY RKEY'
@@ -38,12 +36,12 @@ def p_conj_classes(p):
     | conj_classes classe
     '''
 
-    p[0] = ASTNode(type="conj_classes", children=p[1:], cgen=conj_classes_cgen)
+    p[0] = ASTNode(type="conj_classes", children=p[1:], cgen=generic_list_of_expressions_cgen)
 
 
 def p_classe(p):
     'classe : CLASS ID extension LKEY conj_var conj_metodos RKEY'
-    p[0] = ASTNode(type="classe", children=p[1:])
+    p[0] = ASTNode(type="classe", children=p[1:], cgen=classe_cgen)
 
 
 def p_extension(p):
@@ -51,52 +49,52 @@ def p_extension(p):
     extension : empty
     | EXTENDS ID
     '''
-    p[0] = ASTNode(type="extension", children=p[1:])
+    p[0] = ASTNode(type="extension", children=p[1:], cgen=empty_cgen)
 
 
 def p_conj_var(p):
     '''conj_var : empty
                 | conj_var var'''
 
-    p[0] = ASTNode(type="conj_var", children=p[1:])
+    p[0] = ASTNode(type="conj_var", children=p[1:], cgen=generic_list_of_expressions_cgen)
 
 
 def p_conj_metodos(p):
     '''conj_metodos : empty
                     | conj_metodos metodo'''
 
-    p[0] = ASTNode(type="conj_metodos", children=p[1:])
+    p[0] = ASTNode(type="conj_metodos", children=p[1:], cgen=generic_list_of_expressions_cgen)
 
 
 def p_var(p):
     'var : tipo ID SEMICOLON'
 
-    p[0] = ASTNode(type="var", children=p[1:], toTable={'val': None, 'pos':1})
+    p[0] = ASTNode(type="var", children=p[1:], toTable={'val': None, 'pos':1}, cgen=var_cgen)
 
-
+#TODO
 def p_metodo(p):
     'metodo : PUBLIC tipo ID LPAREN params RPAREN LKEY conj_var conj_cmd RETURN exp SEMICOLON RKEY'
 
-    p[0] = ASTNode(type="metodo", children=p[1:])
+    p[0] = ASTNode(type="metodo", children=p[1:], cgen=metodo_cgen)
 
 
 def p_conj_cmd(p):
     '''conj_cmd : empty
     | conj_cmd cmd1'''
 
-    p[0] = ASTNode(type="conj_cmd", children=p[1:])
+    p[0] = ASTNode(type="conj_cmd", children=p[1:], cgen=generic_list_of_expressions_cgen)
 
 
 def p_params(p):
     '''params : empty
     | conj_params'''
 
-    p[0] = ASTNode(type="params", children=p[1:])
+    p[0] = ASTNode(type="params", children=p[1:], cgen=generic_list_of_expressions_cgen)
 
 
 def p_conj_params(p):
     '''conj_params : tipo ID mais_param'''
-    p[0] = ASTNode(type="conj_params", children=p[1:], toTable={'val': None, 'pos':1})
+    p[0] = ASTNode(type="conj_params", children=p[1:], cgen=conj_params_cgen, toTable={'val': None, 'pos':1})
 
 
 def p_mais_param(p):
@@ -106,7 +104,7 @@ def p_mais_param(p):
     toTable = None
     if len(p) > 2:
         toTable = {'val': None, 'pos':3}
-    p[0] = ASTNode(type="mais_param", children=p[1:], toTable=toTable)
+    p[0] = ASTNode(type="mais_param", children=p[1:], toTable=toTable, cgen=mais_param_cgen)
 
 
 def p_tipo(p):
@@ -114,7 +112,7 @@ def p_tipo(p):
     | BOOLEAN
     | INT
     | ID'''
-    p[0] = ASTNode(type="tipo", children=p[1:])
+    p[0] = ASTNode(type="tipo", children=p[1:], cgen=tipo_cgen)
 
 
 def p_cmd1(p):
@@ -124,19 +122,20 @@ def p_cmd1(p):
     | WHILE LPAREN exp RPAREN cmd1
     | SYSTEMOUTPRINTLN LPAREN exp RPAREN SEMICOLON'''
 
-    p[0] = ASTNode(type="cmd1", children=p[1:])
+    p[0] = ASTNode(type="cmd1", children=p[1:], cgen=cmd1_gen)
 
 
+#TODO
 def p_cmd1_attr(p):
     '''cmd1 : ID ATTR exp SEMICOLON'''
 
-    p[0] = ASTNode(type="cmd1", children=p[1:], toTable={'val': p[3].val, 'pos':0})
+    p[0] = ASTNode(type="cmd1", children=p[1:], toTable={'val': p[3].val, 'pos':0}, cgen=empty_cgen)
 
-
+#TODO
 def p_cmd1_attr_list(p):
     '''cmd1 : ID LBRACKET exp RBRACKET ATTR exp SEMICOLON'''
 
-    p[0] = ASTNode(type="cmd1", children=p[1:], toTable={'val': p[6].val, 'pos':0})
+    p[0] = ASTNode(type="cmd1", children=p[1:], toTable={'val': p[6].val, 'pos':0}, cgen=empty_cgen)
 
 
 def p_cmd2(p):
@@ -145,75 +144,75 @@ def p_cmd2(p):
       | WHILE LPAREN exp RPAREN cmd2
       | SYSTEMOUTPRINTLN LPAREN exp RPAREN SEMICOLON'''
 
-    p[0] = ASTNode(type="cmd2", children=p[1:])
+    p[0] = ASTNode(type="cmd2", children=p[1:], cgen=cmd2_gen)
 
-
+#TODO
 def p_cmd2_attr(p):
     '''cmd2 : ID ATTR exp SEMICOLON'''
 
-    p[0] = ASTNode(type="cmd2", children=p[1:], toTable={'val': p[3].val, 'pos':0})
+    p[0] = ASTNode(type="cmd2", children=p[1:], toTable={'val': p[3].val, 'pos':0}, cgen=empty_cgen)
 
-
+#TODO
 def p_cmd2_attr_list(p):
     '''cmd2 : ID LBRACKET exp RBRACKET ATTR exp SEMICOLON'''
 
-    p[0] = ASTNode(type="cmd2", children=p[1:], toTable={'val': p[6].val, 'pos':0})
+    p[0] = ASTNode(type="cmd2", children=p[1:], toTable={'val': p[6].val, 'pos':0}, cgen=empty_cgen)
 
 
 def p_exp_and(p):
     '''exp : exp AND rexp'''
 
     if(p[1].val != None and p[3].val != None):
-        value = p[1].val and p[3].val
-        # print(value)
-        p[0] = ASTNode(type="exp", children=p[1:], val=value)
+        value = int(p[1].val and p[3].val)
+
+        p[0] = ASTNode(type="aexp", children=p[1:], val=value, cgen=exp_and_cgen)
     else:
-        p[0] = ASTNode(type="exp", children=p[1:])
+        p[0] = ASTNode(type="aexp", children=p[1:], cgen=exp_and_cgen)
 
 
 def p_exp_resp(p):
     '''exp : rexp'''
 
-    p[0] = ASTNode(type="exp", children=p[1:], val=p[1].val)
+    p[0] = ASTNode(type="exp", children=p[1:], val=p[1].val, cgen=generic_recursive_cgen)
 
 
 def p_rexp_lthan(p):
     '''rexp : rexp LTHAN aexp'''
 
     if(p[1].val != None and p[3].val != None):
-        value = p[1].val < p[3].val
-        # print(value)
-        p[0] = ASTNode(type="rexp", children=p[1:], val=value)
+        value = int(p[1].val < p[3].val)
+
+        p[0] = ASTNode(type="aexp", children=p[1:], val=value, cgen=rexp_lthan_cgen)
     else:
-        p[0] = ASTNode(type="rexp", children=p[1:])
+        p[0] = ASTNode(type="aexp", children=p[1:], cgen=rexp_lthan_cgen)
 
 
 def p_rexp_equals(p):
     '''rexp : rexp EQUALS aexp'''
 
     if(p[1].val != None and p[3].val != None):
-        value = p[1].val == p[3].val
-        # print(value)
-        p[0] = ASTNode(type="rexp", children=p[1:], val=value)
+        value = int(p[1].val == p[3].val)
+        
+        p[0] = ASTNode(type="aexp", children=p[1:], val=value, cgen=rexp_equals_cgen)
     else:
-        p[0] = ASTNode(type="rexp", children=p[1:])
+        p[0] = ASTNode(type="aexp", children=p[1:], cgen=rexp_equals_cgen)
 
 
 def p_rexp_nequals(p):
     '''rexp : rexp NEQUALS aexp'''
 
     if(p[1].val != None and p[3].val != None):
-        value = p[1].val != p[3].val
+        value = int(p[1].val != p[3].val)
         # print(value)
-        p[0] = ASTNode(type="rexp", children=p[1:], val=value)
+        p[0] = ASTNode(type="aexp", children=p[1:], val=value, cgen=rexp_nequals_cgen)
     else:
-        p[0] = ASTNode(type="rexp", children=p[1:])
+        p[0] = ASTNode(type="aexp", children=p[1:], cgen=rexp_nequals_cgen)
 
 
 def p_rexp_aexp(p):
     '''rexp : aexp'''
 
-    p[0] = ASTNode(type="rexp", children=p[1:], val=p[1].val)
+    p[0] = ASTNode(type="rexp", children=p[1:], val=p[1].val, cgen=generic_recursive_cgen)
 
 
 def p_aexp_minus(p):
@@ -221,10 +220,10 @@ def p_aexp_minus(p):
 
     if(p[1].val != None and p[3].val != None):
         value = p[1].val - p[3].val
-        # print(value)
-        p[0] = ASTNode(type="aexp", children=p[1:], val=value)
+        
+        p[0] = ASTNode(type="aexp", children=p[1:], val=value, cgen=aexp_minus_cgen)
     else:
-        p[0] = ASTNode(type="aexp", children=p[1:])
+        p[0] = ASTNode(type="aexp", children=p[1:], cgen=aexp_minus_cgen)
 
 
 def p_aexp_plus(p):
@@ -232,34 +231,37 @@ def p_aexp_plus(p):
 
     if(p[1].val != None and p[3].val != None):
         value = p[1].val + p[3].val
-        p[0] = ASTNode(type="aexp", children=p[1:], val=value)
+
+        p[0] = ASTNode(type="aexp", children=p[1:], val=value, cgen=aexp_plus_cgen)
     else:
-        p[0] = ASTNode(type="aexp", children=p[1:])
+        p[0] = ASTNode(type="aexp", children=p[1:], cgen=aexp_plus_cgen)
 
 
 def p_aexp_mexp(p):
     '''aexp : mexp'''
 
-    p[0] = ASTNode(type="aexp", children=p[1:], val=p[1].val)
+    p[0] = ASTNode(type="aexp", children=p[1:], val=p[1].val, cgen=generic_recursive_cgen)
 
 
 def p_mexp_sexp(p):
     '''mexp : sexp'''
 
-    #print(p[1].val)
-    p[0] = ASTNode(type="mexp", children=p[1:], val=p[1].val)
+    # print(p[1].val)
+    p[0] = ASTNode(type="mexp", children=p[1:], val=p[1].val, cgen=generic_recursive_cgen)
 
 
 def p_mexp_times(p):
     '''mexp : mexp TIMES sexp'''
 
     value = None
-    if(p[1].val != None and p[3].val != None):
-        value = p[1].val * p[3].val
     if(p[1].val == 0 or p[3].val == 0): 
         value = 0
-        # print(val)
-    p[0] = ASTNode(type="mexp", children=p[1:], val=value)
+
+    elif(p[1].val != None and p[3].val != None):
+        value = p[1].val * p[3].val
+
+
+    p[0] = ASTNode(type="mexp", children=p[1:], val=value, cgen=mexp_times_cgen)
 
 
 def p_sexp(p):
@@ -267,7 +269,7 @@ def p_sexp(p):
        | pexp DOT LENGTH
        | pexp LBRACKET exp RBRACKET'''
 
-    p[0] = ASTNode(type="sexp", children=p[1:])
+    p[0] = ASTNode(type="sexp", children=p[1:], cgen=sexp_cgen)
 
 
 def p_sexp_not(p):
@@ -275,8 +277,8 @@ def p_sexp_not(p):
 
     value = None
     if (p[2].val != None):
-        value = not p[2].val
-    p[0] = ASTNode(type="sexp", children=p[1:], val=value)
+        value = int(not p[2].val)
+    p[0] = ASTNode(type="sexp", children=p[1:], val=value, cgen=sexp_not_cgent)
 
 
 def p_sexp_minus(p):
@@ -285,13 +287,14 @@ def p_sexp_minus(p):
     value = None
     if (p[2].val != None):
         value = -p[2].val
-    p[0] = ASTNode(type="sexp", children=p[1:], val = value)
+        
+    p[0] = ASTNode(type="sexp", children=p[1:], val = value, cgen=sexp_minus_cgen)
 
 
 def p_sexp_pexp(p):
     '''sexp : pexp'''
 
-    p[0] = ASTNode(type="sexp", children=p[1:], val=p[1].val)
+    p[0] = ASTNode(type="sexp", children=p[1:], val=p[1].val, cgen=generic_recursive_cgen)
 
 
 def p_sexp_terminal(p):
@@ -300,43 +303,46 @@ def p_sexp_terminal(p):
        | NULL
        | NUMBER'''
 
-    p[0] = ASTNode(type="sexp", children=p[1:], val=p[1])
+    p[0] = ASTNode(type="sexp", children=p[1:], val=p[1], cgen=sexp_terminal_cgen)
 
 
 def p_pexp_id(p):
     '''pexp : ID'''
 
-    p[0] = ASTNode(type="pexp", children=p[1:], toTable={'val':None, 'pos':0})
+    p[0] = ASTNode(type="pexp", children=p[1:], toTable={'val':None, 'pos':0}, cgen=empty_cgen)
 
 def p_pexp_dot_id(p):
     '''pexp : pexp DOT ID'''
 
-    p[0] = ASTNode(type="pexp", children=p[1:], toTable={'val':None, 'pos':2})
+    p[0] = ASTNode(type="pexp", children=p[1:], toTable={'val':None, 'pos':2}, cgen=empty_cgen)
 
 
+#TODO
 def p_pexp(p):
     '''pexp : THIS
        | LPAREN exp RPAREN
        | NEW ID LPAREN RPAREN
        | pexp DOT ID LPAREN option_exps RPAREN'''
+
     
     val = None
     if p[1] == "(":
         val = p[2].val
-    p[0] = ASTNode(type="pexp", children=p[1:], val = val)
+
+    p[0] = ASTNode(type="pexp", children=p[1:], val = val, cgen=empty_cgen)
 
 
 def p_option_exps(p):
     '''option_exps : empty
        | exp '''
 
-    p[0] = ASTNode(type="option_exps", children=p[1:], val=p[1].val, cgen=option_exps)
+    p[0] = ASTNode(type="option_exps", children=p[1:], val=p[1].val, cgen=generic_list_of_expressions_cgen)
 
 
 def p_exps(p):
     '''exps : exp conj_exps '''
 
-    p[0] = ASTNode(type="exps", children=p[1:], cgen=exps_cgen)
+    p[0] = ASTNode(type="exps", children=p[1:], cgen=generic_list_of_expressions_cgen)
 
 
 def p_conj_exps(p):

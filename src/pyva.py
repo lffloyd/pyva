@@ -4,8 +4,10 @@ from anytree import Node, RenderTree
 from .scanner import lexer
 from .parser import parser
 from .semantic_analysis import analiseSemantica
+from .code_generation.mips_generator import MIPSGenerator
 from .abstract_syntax_tree.ast_node import create_tree
 from .utils.code_reader import read_source_code
+from .utils.code_writer import write_assembly_code
 
 
 def main():
@@ -41,6 +43,19 @@ def main():
         print('****************************************\n')
 
         print('****************************************\n')
+
+        print('**************MIPS Code Generation:**************')
+
+        from .parser import tree
+
+        mips_gen = MIPSGenerator()
+        code = mips_gen.generate_code(tree)
+
+        print(code)
+
+        write_assembly_code(argv[1], 'w', code)
+
+        print('****************************************\n')
         print('**************Semantic analysis:**************')
 
         from .parser import tree
@@ -51,6 +66,7 @@ def main():
             print("%s%s" % (pre, node.name))
 
         print('****************************************\n')
+
 
     except FileNotFoundError as err:
         print(err)

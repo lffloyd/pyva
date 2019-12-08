@@ -21,6 +21,17 @@ class ASTNode:
         if cgen:
             self.cgen = cgen
 
+    def children_length(self):
+        if (self.children == None or len(self.children) == 0):
+            return 0
+        
+        acc = 0
+        for son in self.children:
+            if isinstance(son, str) or isinstance(son, int):
+                acc = acc + 1
+            # else:
+            #     acc = acc + son.children_length()
+
 def create_tree(info, parent):
     if(info != None):
         if info.children != None:
