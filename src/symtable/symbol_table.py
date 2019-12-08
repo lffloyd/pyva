@@ -29,7 +29,7 @@ class SymbolTable:
 
     '''Verify if a given entry exists on global scope (0).'''
     def is_in_global(self, entry_name):
-        return self.scopes[0].is_in(entry_name)
+        return self.scopes[self.current_scope_level].is_in(entry_name)
 
     """ def __is_below_the_top(self, entry_name, position):
         if position < 0:
@@ -39,6 +39,5 @@ class SymbolTable:
     '''Return the associated value of some entry name if it exists on this table.'''
 
     def lookup(self, entry_name):
-        for scope in reversed(self.scopes):
-            if scope.is_in(entry_name):
-                return scope.lookup(entry_name)
+        if self.scopes[self.current_scope_level].is_in(entry_name):
+            return self.scopes[self.current_scope_level].lookup(entry_name)

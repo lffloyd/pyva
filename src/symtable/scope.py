@@ -1,9 +1,12 @@
 '''Defines the scope of a MiniJava block of code.'''
-
+import copy
 
 class Scope:
-    def __init__(self, scope_level=0):
-        self.table = dict()
+    def __init__(self, scope_level=0, table= None):
+        if(table):
+            self.table = copy.deepcopy(table)
+        else:
+            self.table = dict()
         self.level = scope_level
 
     '''Insert a new entry on this scope'''

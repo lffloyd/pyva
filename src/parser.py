@@ -71,7 +71,7 @@ def p_conj_metodos(p):
 def p_var(p):
     'var : tipo ID SEMICOLON'
 
-    p[0] = ASTNode(type="var", children=p[1:])
+    p[0] = ASTNode(type="var", children=p[1:], toTable={'val': None, 'pos':1})
 
 
 def p_metodo(p):
@@ -96,14 +96,17 @@ def p_params(p):
 
 def p_conj_params(p):
     '''conj_params : tipo ID mais_param'''
-    p[0] = ASTNode(type="conj_params", children=p[1:])
+    p[0] = ASTNode(type="conj_params", children=p[1:], toTable={'val': None, 'pos':1})
 
 
 def p_mais_param(p):
     '''mais_param : empty
     | mais_param COLON tipo ID'''
 
-    p[0] = ASTNode(type="mais_param", children=p[1:])
+    toTable = None
+    if len(p) > 2:
+        toTable = {'val': None, 'pos':3}
+    p[0] = ASTNode(type="mais_param", children=p[1:], toTable=toTable)
 
 
 def p_tipo(p):
@@ -127,13 +130,13 @@ def p_cmd1(p):
 def p_cmd1_attr(p):
     '''cmd1 : ID ATTR exp SEMICOLON'''
 
-    p[0] = ASTNode(type="cmd1", children=p[1:], toTable={'val': p[3].val})
+    p[0] = ASTNode(type="cmd1", children=p[1:], toTable={'val': p[3].val, 'pos':0})
 
 
 def p_cmd1_attr_list(p):
     '''cmd1 : ID LBRACKET exp RBRACKET ATTR exp SEMICOLON'''
 
-    p[0] = ASTNode(type="cmd1", children=p[1:], toTable={'val': p[6].val})
+    p[0] = ASTNode(type="cmd1", children=p[1:], toTable={'val': p[6].val, 'pos':0})
 
 
 def p_cmd2(p):
@@ -148,13 +151,13 @@ def p_cmd2(p):
 def p_cmd2_attr(p):
     '''cmd2 : ID ATTR exp SEMICOLON'''
 
-    p[0] = ASTNode(type="cmd2", children=p[1:], toTable={'val': p[3].val})
+    p[0] = ASTNode(type="cmd2", children=p[1:], toTable={'val': p[3].val, 'pos':0})
 
 
 def p_cmd2_attr_list(p):
     '''cmd2 : ID LBRACKET exp RBRACKET ATTR exp SEMICOLON'''
 
-    p[0] = ASTNode(type="cmd2", children=p[1:], toTable={'val': p[6].val})
+    p[0] = ASTNode(type="cmd2", children=p[1:], toTable={'val': p[6].val, 'pos':0})
 
 
 def p_exp_and(p):
@@ -163,9 +166,9 @@ def p_exp_and(p):
     if(p[1].val != None and p[3].val != None):
         value = p[1].val and p[3].val
         # print(value)
-        p[0] = ASTNode(type="aexp", children=p[1:], val=value)
+        p[0] = ASTNode(type="exp", children=p[1:], val=value)
     else:
-        p[0] = ASTNode(type="aexp", children=p[1:])
+        p[0] = ASTNode(type="exp", children=p[1:])
 
 
 def p_exp_resp(p):
@@ -180,9 +183,9 @@ def p_rexp_lthan(p):
     if(p[1].val != None and p[3].val != None):
         value = p[1].val < p[3].val
         # print(value)
-        p[0] = ASTNode(type="aexp", children=p[1:], val=value)
+        p[0] = ASTNode(type="rexp", children=p[1:], val=value)
     else:
-        p[0] = ASTNode(type="aexp", children=p[1:])
+        p[0] = ASTNode(type="rexp", children=p[1:])
 
 
 def p_rexp_equals(p):
@@ -191,9 +194,9 @@ def p_rexp_equals(p):
     if(p[1].val != None and p[3].val != None):
         value = p[1].val == p[3].val
         # print(value)
-        p[0] = ASTNode(type="aexp", children=p[1:], val=value)
+        p[0] = ASTNode(type="rexp", children=p[1:], val=value)
     else:
-        p[0] = ASTNode(type="aexp", children=p[1:])
+        p[0] = ASTNode(type="rexp", children=p[1:])
 
 
 def p_rexp_nequals(p):
@@ -202,9 +205,9 @@ def p_rexp_nequals(p):
     if(p[1].val != None and p[3].val != None):
         value = p[1].val != p[3].val
         # print(value)
-        p[0] = ASTNode(type="aexp", children=p[1:], val=value)
+        p[0] = ASTNode(type="rexp", children=p[1:], val=value)
     else:
-        p[0] = ASTNode(type="aexp", children=p[1:])
+        p[0] = ASTNode(type="rexp", children=p[1:])
 
 
 def p_rexp_aexp(p):
@@ -303,14 +306,18 @@ def p_sexp_terminal(p):
 def p_pexp_id(p):
     '''pexp : ID'''
 
-    p[0] = ASTNode(type="pexp", children=p[1:], toTable={'val': None})
+    p[0] = ASTNode(type="pexp", children=p[1:], toTable={'val':None, 'pos':0})
+
+def p_pexp_dot_id(p):
+    '''pexp : pexp DOT ID'''
+
+    p[0] = ASTNode(type="pexp", children=p[1:], toTable={'val':None, 'pos':2})
 
 
 def p_pexp(p):
     '''pexp : THIS
        | LPAREN exp RPAREN
        | NEW ID LPAREN RPAREN
-       | pexp DOT ID
        | pexp DOT ID LPAREN option_exps RPAREN'''
     
     val = None

@@ -68,10 +68,10 @@ Rule 56    sexp -> FALSE
 Rule 57    sexp -> NULL
 Rule 58    sexp -> NUMBER
 Rule 59    pexp -> ID
-Rule 60    pexp -> THIS
-Rule 61    pexp -> LPAREN exp RPAREN
-Rule 62    pexp -> NEW ID LPAREN RPAREN
-Rule 63    pexp -> pexp DOT ID
+Rule 60    pexp -> pexp DOT ID
+Rule 61    pexp -> THIS
+Rule 62    pexp -> LPAREN exp RPAREN
+Rule 63    pexp -> NEW ID LPAREN RPAREN
 Rule 64    pexp -> pexp DOT ID LPAREN option_exps RPAREN
 Rule 65    option_exps -> empty
 Rule 66    option_exps -> exp
@@ -87,26 +87,26 @@ ATTR                 : 30 31 36 37
 BOOLEAN              : 22
 CLASS                : 2 5
 COLON                : 20 69
-DOT                  : 50 63 64
+DOT                  : 50 60 64
 ELSE                 : 27 33
 EQUALS               : 41
 EXTENDS              : 7
 FALSE                : 56
 GEQTHAN              : 
 GTHAN                : 
-ID                   : 2 2 5 7 12 13 18 20 24 30 31 36 37 59 62 63 64
+ID                   : 2 2 5 7 12 13 18 20 24 30 31 36 37 59 60 63 64
 IF                   : 26 27 33
 INT                  : 21 23 49
 LBRACKET             : 2 21 31 37 49 51
 LENGTH               : 50
 LEQTHAN              : 
 LKEY                 : 2 2 5 13 25 32
-LPAREN               : 2 13 26 27 28 29 33 34 35 61 62 64
+LPAREN               : 2 13 26 27 28 29 33 34 35 62 63 64
 LTHAN                : 40
 MAIN                 : 2
 MINUS                : 44 53
 NEQUALS              : 42
-NEW                  : 49 62
+NEW                  : 49 63
 NOT                  : 52
 NULL                 : 57
 NUMBER               : 58
@@ -115,12 +115,12 @@ PUBLIC               : 2 13
 RBRACKET             : 2 21 31 37 49 51
 RETURN               : 13
 RKEY                 : 2 2 5 13 25 32
-RPAREN               : 2 13 26 27 28 29 33 34 35 61 62 64
+RPAREN               : 2 13 26 27 28 29 33 34 35 62 63 64
 SEMICOLON            : 12 13 29 30 31 35 36 37
 STATIC               : 2
 STRING               : 2
 SYSTEMOUTPRINTLN     : 29 35
-THIS                 : 60
+THIS                 : 61
 TIMES                : 48
 TRUE                 : 55
 VOID                 : 2
@@ -140,7 +140,7 @@ conj_metodos         : 5 11
 conj_params          : 17
 conj_var             : 5 9 13
 empty                : 3 6 8 10 14 16 19 65 68
-exp                  : 13 26 27 28 29 30 31 31 33 34 35 36 37 37 38 49 51 61 66 67 69
+exp                  : 13 26 27 28 29 30 31 31 33 34 35 36 37 37 38 49 51 62 66 67 69
 exps                 : 
 extension            : 5
 main                 : 1
@@ -149,7 +149,7 @@ metodo               : 11
 mexp                 : 44 45 46 48
 option_exps          : 64
 params               : 13
-pexp                 : 50 51 54 63 64
+pexp                 : 50 51 54 60 64
 prog                 : 0
 rexp                 : 38 39 40 41 42
 sexp                 : 47 48 52 53
@@ -805,10 +805,10 @@ state 63
     (57) sexp -> . NULL
     (58) sexp -> . NUMBER
     (59) pexp -> . ID
-    (60) pexp -> . THIS
-    (61) pexp -> . LPAREN exp RPAREN
-    (62) pexp -> . NEW ID LPAREN RPAREN
-    (63) pexp -> . pexp DOT ID
+    (60) pexp -> . pexp DOT ID
+    (61) pexp -> . THIS
+    (62) pexp -> . LPAREN exp RPAREN
+    (63) pexp -> . NEW ID LPAREN RPAREN
     (64) pexp -> . pexp DOT ID LPAREN option_exps RPAREN
 
     NEW             shift and go to state 80
@@ -854,10 +854,10 @@ state 64
     (57) sexp -> . NULL
     (58) sexp -> . NUMBER
     (59) pexp -> . ID
-    (60) pexp -> . THIS
-    (61) pexp -> . LPAREN exp RPAREN
-    (62) pexp -> . NEW ID LPAREN RPAREN
-    (63) pexp -> . pexp DOT ID
+    (60) pexp -> . pexp DOT ID
+    (61) pexp -> . THIS
+    (62) pexp -> . LPAREN exp RPAREN
+    (63) pexp -> . NEW ID LPAREN RPAREN
     (64) pexp -> . pexp DOT ID LPAREN option_exps RPAREN
 
     NEW             shift and go to state 80
@@ -945,10 +945,10 @@ state 68
     (57) sexp -> . NULL
     (58) sexp -> . NUMBER
     (59) pexp -> . ID
-    (60) pexp -> . THIS
-    (61) pexp -> . LPAREN exp RPAREN
-    (62) pexp -> . NEW ID LPAREN RPAREN
-    (63) pexp -> . pexp DOT ID
+    (60) pexp -> . pexp DOT ID
+    (61) pexp -> . THIS
+    (62) pexp -> . LPAREN exp RPAREN
+    (63) pexp -> . NEW ID LPAREN RPAREN
     (64) pexp -> . pexp DOT ID LPAREN option_exps RPAREN
 
     NEW             shift and go to state 80
@@ -994,10 +994,10 @@ state 69
     (57) sexp -> . NULL
     (58) sexp -> . NUMBER
     (59) pexp -> . ID
-    (60) pexp -> . THIS
-    (61) pexp -> . LPAREN exp RPAREN
-    (62) pexp -> . NEW ID LPAREN RPAREN
-    (63) pexp -> . pexp DOT ID
+    (60) pexp -> . pexp DOT ID
+    (61) pexp -> . THIS
+    (62) pexp -> . LPAREN exp RPAREN
+    (63) pexp -> . NEW ID LPAREN RPAREN
     (64) pexp -> . pexp DOT ID LPAREN option_exps RPAREN
 
     NEW             shift and go to state 80
@@ -1043,10 +1043,10 @@ state 70
     (57) sexp -> . NULL
     (58) sexp -> . NUMBER
     (59) pexp -> . ID
-    (60) pexp -> . THIS
-    (61) pexp -> . LPAREN exp RPAREN
-    (62) pexp -> . NEW ID LPAREN RPAREN
-    (63) pexp -> . pexp DOT ID
+    (60) pexp -> . pexp DOT ID
+    (61) pexp -> . THIS
+    (62) pexp -> . LPAREN exp RPAREN
+    (63) pexp -> . NEW ID LPAREN RPAREN
     (64) pexp -> . pexp DOT ID LPAREN option_exps RPAREN
 
     NEW             shift and go to state 80
@@ -1169,10 +1169,10 @@ state 77
     (57) sexp -> . NULL
     (58) sexp -> . NUMBER
     (59) pexp -> . ID
-    (60) pexp -> . THIS
-    (61) pexp -> . LPAREN exp RPAREN
-    (62) pexp -> . NEW ID LPAREN RPAREN
-    (63) pexp -> . pexp DOT ID
+    (60) pexp -> . pexp DOT ID
+    (61) pexp -> . THIS
+    (62) pexp -> . LPAREN exp RPAREN
+    (63) pexp -> . NEW ID LPAREN RPAREN
     (64) pexp -> . pexp DOT ID LPAREN option_exps RPAREN
 
     NEW             shift and go to state 80
@@ -1225,7 +1225,7 @@ state 79
 state 80
 
     (49) sexp -> NEW . INT LBRACKET exp RBRACKET
-    (62) pexp -> NEW . ID LPAREN RPAREN
+    (63) pexp -> NEW . ID LPAREN RPAREN
 
     INT             shift and go to state 107
     ID              shift and go to state 108
@@ -1236,7 +1236,7 @@ state 81
     (50) sexp -> pexp . DOT LENGTH
     (51) sexp -> pexp . LBRACKET exp RBRACKET
     (54) sexp -> pexp .
-    (63) pexp -> pexp . DOT ID
+    (60) pexp -> pexp . DOT ID
     (64) pexp -> pexp . DOT ID LPAREN option_exps RPAREN
 
     DOT             shift and go to state 109
@@ -1267,10 +1267,10 @@ state 82
     (57) sexp -> . NULL
     (58) sexp -> . NUMBER
     (59) pexp -> . ID
-    (60) pexp -> . THIS
-    (61) pexp -> . LPAREN exp RPAREN
-    (62) pexp -> . NEW ID LPAREN RPAREN
-    (63) pexp -> . pexp DOT ID
+    (60) pexp -> . pexp DOT ID
+    (61) pexp -> . THIS
+    (62) pexp -> . LPAREN exp RPAREN
+    (63) pexp -> . NEW ID LPAREN RPAREN
     (64) pexp -> . pexp DOT ID LPAREN option_exps RPAREN
 
     NEW             shift and go to state 80
@@ -1353,25 +1353,25 @@ state 86
 
 state 87
 
-    (60) pexp -> THIS .
+    (61) pexp -> THIS .
 
-    DOT             reduce using rule 60 (pexp -> THIS .)
-    LBRACKET        reduce using rule 60 (pexp -> THIS .)
-    TIMES           reduce using rule 60 (pexp -> THIS .)
-    MINUS           reduce using rule 60 (pexp -> THIS .)
-    PLUS            reduce using rule 60 (pexp -> THIS .)
-    LTHAN           reduce using rule 60 (pexp -> THIS .)
-    EQUALS          reduce using rule 60 (pexp -> THIS .)
-    NEQUALS         reduce using rule 60 (pexp -> THIS .)
-    SEMICOLON       reduce using rule 60 (pexp -> THIS .)
-    AND             reduce using rule 60 (pexp -> THIS .)
-    RBRACKET        reduce using rule 60 (pexp -> THIS .)
-    RPAREN          reduce using rule 60 (pexp -> THIS .)
+    DOT             reduce using rule 61 (pexp -> THIS .)
+    LBRACKET        reduce using rule 61 (pexp -> THIS .)
+    TIMES           reduce using rule 61 (pexp -> THIS .)
+    MINUS           reduce using rule 61 (pexp -> THIS .)
+    PLUS            reduce using rule 61 (pexp -> THIS .)
+    LTHAN           reduce using rule 61 (pexp -> THIS .)
+    EQUALS          reduce using rule 61 (pexp -> THIS .)
+    NEQUALS         reduce using rule 61 (pexp -> THIS .)
+    SEMICOLON       reduce using rule 61 (pexp -> THIS .)
+    AND             reduce using rule 61 (pexp -> THIS .)
+    RBRACKET        reduce using rule 61 (pexp -> THIS .)
+    RPAREN          reduce using rule 61 (pexp -> THIS .)
 
 
 state 88
 
-    (61) pexp -> LPAREN . exp RPAREN
+    (62) pexp -> LPAREN . exp RPAREN
     (38) exp -> . exp AND rexp
     (39) exp -> . rexp
     (40) rexp -> . rexp LTHAN aexp
@@ -1394,10 +1394,10 @@ state 88
     (57) sexp -> . NULL
     (58) sexp -> . NUMBER
     (59) pexp -> . ID
-    (60) pexp -> . THIS
-    (61) pexp -> . LPAREN exp RPAREN
-    (62) pexp -> . NEW ID LPAREN RPAREN
-    (63) pexp -> . pexp DOT ID
+    (60) pexp -> . pexp DOT ID
+    (61) pexp -> . THIS
+    (62) pexp -> . LPAREN exp RPAREN
+    (63) pexp -> . NEW ID LPAREN RPAREN
     (64) pexp -> . pexp DOT ID LPAREN option_exps RPAREN
 
     NEW             shift and go to state 80
@@ -1522,10 +1522,10 @@ state 97
     (57) sexp -> . NULL
     (58) sexp -> . NUMBER
     (59) pexp -> . ID
-    (60) pexp -> . THIS
-    (61) pexp -> . LPAREN exp RPAREN
-    (62) pexp -> . NEW ID LPAREN RPAREN
-    (63) pexp -> . pexp DOT ID
+    (60) pexp -> . pexp DOT ID
+    (61) pexp -> . THIS
+    (62) pexp -> . LPAREN exp RPAREN
+    (63) pexp -> . NEW ID LPAREN RPAREN
     (64) pexp -> . pexp DOT ID LPAREN option_exps RPAREN
 
     NEW             shift and go to state 80
@@ -1582,10 +1582,10 @@ state 99
     (57) sexp -> . NULL
     (58) sexp -> . NUMBER
     (59) pexp -> . ID
-    (60) pexp -> . THIS
-    (61) pexp -> . LPAREN exp RPAREN
-    (62) pexp -> . NEW ID LPAREN RPAREN
-    (63) pexp -> . pexp DOT ID
+    (60) pexp -> . pexp DOT ID
+    (61) pexp -> . THIS
+    (62) pexp -> . LPAREN exp RPAREN
+    (63) pexp -> . NEW ID LPAREN RPAREN
     (64) pexp -> . pexp DOT ID LPAREN option_exps RPAREN
 
     NEW             shift and go to state 80
@@ -1624,10 +1624,10 @@ state 100
     (57) sexp -> . NULL
     (58) sexp -> . NUMBER
     (59) pexp -> . ID
-    (60) pexp -> . THIS
-    (61) pexp -> . LPAREN exp RPAREN
-    (62) pexp -> . NEW ID LPAREN RPAREN
-    (63) pexp -> . pexp DOT ID
+    (60) pexp -> . pexp DOT ID
+    (61) pexp -> . THIS
+    (62) pexp -> . LPAREN exp RPAREN
+    (63) pexp -> . NEW ID LPAREN RPAREN
     (64) pexp -> . pexp DOT ID LPAREN option_exps RPAREN
 
     NEW             shift and go to state 80
@@ -1665,10 +1665,10 @@ state 101
     (57) sexp -> . NULL
     (58) sexp -> . NUMBER
     (59) pexp -> . ID
-    (60) pexp -> . THIS
-    (61) pexp -> . LPAREN exp RPAREN
-    (62) pexp -> . NEW ID LPAREN RPAREN
-    (63) pexp -> . pexp DOT ID
+    (60) pexp -> . pexp DOT ID
+    (61) pexp -> . THIS
+    (62) pexp -> . LPAREN exp RPAREN
+    (63) pexp -> . NEW ID LPAREN RPAREN
     (64) pexp -> . pexp DOT ID LPAREN option_exps RPAREN
 
     NEW             shift and go to state 80
@@ -1706,10 +1706,10 @@ state 102
     (57) sexp -> . NULL
     (58) sexp -> . NUMBER
     (59) pexp -> . ID
-    (60) pexp -> . THIS
-    (61) pexp -> . LPAREN exp RPAREN
-    (62) pexp -> . NEW ID LPAREN RPAREN
-    (63) pexp -> . pexp DOT ID
+    (60) pexp -> . pexp DOT ID
+    (61) pexp -> . THIS
+    (62) pexp -> . LPAREN exp RPAREN
+    (63) pexp -> . NEW ID LPAREN RPAREN
     (64) pexp -> . pexp DOT ID LPAREN option_exps RPAREN
 
     NEW             shift and go to state 80
@@ -1744,10 +1744,10 @@ state 103
     (57) sexp -> . NULL
     (58) sexp -> . NUMBER
     (59) pexp -> . ID
-    (60) pexp -> . THIS
-    (61) pexp -> . LPAREN exp RPAREN
-    (62) pexp -> . NEW ID LPAREN RPAREN
-    (63) pexp -> . pexp DOT ID
+    (60) pexp -> . pexp DOT ID
+    (61) pexp -> . THIS
+    (62) pexp -> . LPAREN exp RPAREN
+    (63) pexp -> . NEW ID LPAREN RPAREN
     (64) pexp -> . pexp DOT ID LPAREN option_exps RPAREN
 
     NEW             shift and go to state 80
@@ -1781,10 +1781,10 @@ state 104
     (57) sexp -> . NULL
     (58) sexp -> . NUMBER
     (59) pexp -> . ID
-    (60) pexp -> . THIS
-    (61) pexp -> . LPAREN exp RPAREN
-    (62) pexp -> . NEW ID LPAREN RPAREN
-    (63) pexp -> . pexp DOT ID
+    (60) pexp -> . pexp DOT ID
+    (61) pexp -> . THIS
+    (62) pexp -> . LPAREN exp RPAREN
+    (63) pexp -> . NEW ID LPAREN RPAREN
     (64) pexp -> . pexp DOT ID LPAREN option_exps RPAREN
 
     NEW             shift and go to state 80
@@ -1832,10 +1832,10 @@ state 106
     (57) sexp -> . NULL
     (58) sexp -> . NUMBER
     (59) pexp -> . ID
-    (60) pexp -> . THIS
-    (61) pexp -> . LPAREN exp RPAREN
-    (62) pexp -> . NEW ID LPAREN RPAREN
-    (63) pexp -> . pexp DOT ID
+    (60) pexp -> . pexp DOT ID
+    (61) pexp -> . THIS
+    (62) pexp -> . LPAREN exp RPAREN
+    (63) pexp -> . NEW ID LPAREN RPAREN
     (64) pexp -> . pexp DOT ID LPAREN option_exps RPAREN
 
     NEW             shift and go to state 80
@@ -1861,7 +1861,7 @@ state 107
 
 state 108
 
-    (62) pexp -> NEW ID . LPAREN RPAREN
+    (63) pexp -> NEW ID . LPAREN RPAREN
 
     LPAREN          shift and go to state 126
 
@@ -1869,7 +1869,7 @@ state 108
 state 109
 
     (50) sexp -> pexp DOT . LENGTH
-    (63) pexp -> pexp DOT . ID
+    (60) pexp -> pexp DOT . ID
     (64) pexp -> pexp DOT . ID LPAREN option_exps RPAREN
 
     LENGTH          shift and go to state 127
@@ -1901,10 +1901,10 @@ state 110
     (57) sexp -> . NULL
     (58) sexp -> . NUMBER
     (59) pexp -> . ID
-    (60) pexp -> . THIS
-    (61) pexp -> . LPAREN exp RPAREN
-    (62) pexp -> . NEW ID LPAREN RPAREN
-    (63) pexp -> . pexp DOT ID
+    (60) pexp -> . pexp DOT ID
+    (61) pexp -> . THIS
+    (62) pexp -> . LPAREN exp RPAREN
+    (63) pexp -> . NEW ID LPAREN RPAREN
     (64) pexp -> . pexp DOT ID LPAREN option_exps RPAREN
 
     NEW             shift and go to state 80
@@ -1943,7 +1943,7 @@ state 111
 
 state 112
 
-    (61) pexp -> LPAREN exp . RPAREN
+    (62) pexp -> LPAREN exp . RPAREN
     (38) exp -> exp . AND rexp
 
     RPAREN          shift and go to state 130
@@ -2161,10 +2161,10 @@ state 125
     (57) sexp -> . NULL
     (58) sexp -> . NUMBER
     (59) pexp -> . ID
-    (60) pexp -> . THIS
-    (61) pexp -> . LPAREN exp RPAREN
-    (62) pexp -> . NEW ID LPAREN RPAREN
-    (63) pexp -> . pexp DOT ID
+    (60) pexp -> . pexp DOT ID
+    (61) pexp -> . THIS
+    (62) pexp -> . LPAREN exp RPAREN
+    (63) pexp -> . NEW ID LPAREN RPAREN
     (64) pexp -> . pexp DOT ID LPAREN option_exps RPAREN
 
     NEW             shift and go to state 80
@@ -2187,7 +2187,7 @@ state 125
 
 state 126
 
-    (62) pexp -> NEW ID LPAREN . RPAREN
+    (63) pexp -> NEW ID LPAREN . RPAREN
 
     RPAREN          shift and go to state 143
 
@@ -2210,21 +2210,21 @@ state 127
 
 state 128
 
-    (63) pexp -> pexp DOT ID .
+    (60) pexp -> pexp DOT ID .
     (64) pexp -> pexp DOT ID . LPAREN option_exps RPAREN
 
-    DOT             reduce using rule 63 (pexp -> pexp DOT ID .)
-    LBRACKET        reduce using rule 63 (pexp -> pexp DOT ID .)
-    TIMES           reduce using rule 63 (pexp -> pexp DOT ID .)
-    MINUS           reduce using rule 63 (pexp -> pexp DOT ID .)
-    PLUS            reduce using rule 63 (pexp -> pexp DOT ID .)
-    LTHAN           reduce using rule 63 (pexp -> pexp DOT ID .)
-    EQUALS          reduce using rule 63 (pexp -> pexp DOT ID .)
-    NEQUALS         reduce using rule 63 (pexp -> pexp DOT ID .)
-    SEMICOLON       reduce using rule 63 (pexp -> pexp DOT ID .)
-    AND             reduce using rule 63 (pexp -> pexp DOT ID .)
-    RBRACKET        reduce using rule 63 (pexp -> pexp DOT ID .)
-    RPAREN          reduce using rule 63 (pexp -> pexp DOT ID .)
+    DOT             reduce using rule 60 (pexp -> pexp DOT ID .)
+    LBRACKET        reduce using rule 60 (pexp -> pexp DOT ID .)
+    TIMES           reduce using rule 60 (pexp -> pexp DOT ID .)
+    MINUS           reduce using rule 60 (pexp -> pexp DOT ID .)
+    PLUS            reduce using rule 60 (pexp -> pexp DOT ID .)
+    LTHAN           reduce using rule 60 (pexp -> pexp DOT ID .)
+    EQUALS          reduce using rule 60 (pexp -> pexp DOT ID .)
+    NEQUALS         reduce using rule 60 (pexp -> pexp DOT ID .)
+    SEMICOLON       reduce using rule 60 (pexp -> pexp DOT ID .)
+    AND             reduce using rule 60 (pexp -> pexp DOT ID .)
+    RBRACKET        reduce using rule 60 (pexp -> pexp DOT ID .)
+    RPAREN          reduce using rule 60 (pexp -> pexp DOT ID .)
     LPAREN          shift and go to state 144
 
 
@@ -2239,20 +2239,20 @@ state 129
 
 state 130
 
-    (61) pexp -> LPAREN exp RPAREN .
+    (62) pexp -> LPAREN exp RPAREN .
 
-    DOT             reduce using rule 61 (pexp -> LPAREN exp RPAREN .)
-    LBRACKET        reduce using rule 61 (pexp -> LPAREN exp RPAREN .)
-    TIMES           reduce using rule 61 (pexp -> LPAREN exp RPAREN .)
-    MINUS           reduce using rule 61 (pexp -> LPAREN exp RPAREN .)
-    PLUS            reduce using rule 61 (pexp -> LPAREN exp RPAREN .)
-    LTHAN           reduce using rule 61 (pexp -> LPAREN exp RPAREN .)
-    EQUALS          reduce using rule 61 (pexp -> LPAREN exp RPAREN .)
-    NEQUALS         reduce using rule 61 (pexp -> LPAREN exp RPAREN .)
-    SEMICOLON       reduce using rule 61 (pexp -> LPAREN exp RPAREN .)
-    AND             reduce using rule 61 (pexp -> LPAREN exp RPAREN .)
-    RBRACKET        reduce using rule 61 (pexp -> LPAREN exp RPAREN .)
-    RPAREN          reduce using rule 61 (pexp -> LPAREN exp RPAREN .)
+    DOT             reduce using rule 62 (pexp -> LPAREN exp RPAREN .)
+    LBRACKET        reduce using rule 62 (pexp -> LPAREN exp RPAREN .)
+    TIMES           reduce using rule 62 (pexp -> LPAREN exp RPAREN .)
+    MINUS           reduce using rule 62 (pexp -> LPAREN exp RPAREN .)
+    PLUS            reduce using rule 62 (pexp -> LPAREN exp RPAREN .)
+    LTHAN           reduce using rule 62 (pexp -> LPAREN exp RPAREN .)
+    EQUALS          reduce using rule 62 (pexp -> LPAREN exp RPAREN .)
+    NEQUALS         reduce using rule 62 (pexp -> LPAREN exp RPAREN .)
+    SEMICOLON       reduce using rule 62 (pexp -> LPAREN exp RPAREN .)
+    AND             reduce using rule 62 (pexp -> LPAREN exp RPAREN .)
+    RBRACKET        reduce using rule 62 (pexp -> LPAREN exp RPAREN .)
+    RPAREN          reduce using rule 62 (pexp -> LPAREN exp RPAREN .)
 
 
 state 131
@@ -2280,10 +2280,10 @@ state 131
     (57) sexp -> . NULL
     (58) sexp -> . NUMBER
     (59) pexp -> . ID
-    (60) pexp -> . THIS
-    (61) pexp -> . LPAREN exp RPAREN
-    (62) pexp -> . NEW ID LPAREN RPAREN
-    (63) pexp -> . pexp DOT ID
+    (60) pexp -> . pexp DOT ID
+    (61) pexp -> . THIS
+    (62) pexp -> . LPAREN exp RPAREN
+    (63) pexp -> . NEW ID LPAREN RPAREN
     (64) pexp -> . pexp DOT ID LPAREN option_exps RPAREN
 
     NEW             shift and go to state 80
@@ -2422,20 +2422,20 @@ state 142
 
 state 143
 
-    (62) pexp -> NEW ID LPAREN RPAREN .
+    (63) pexp -> NEW ID LPAREN RPAREN .
 
-    DOT             reduce using rule 62 (pexp -> NEW ID LPAREN RPAREN .)
-    LBRACKET        reduce using rule 62 (pexp -> NEW ID LPAREN RPAREN .)
-    TIMES           reduce using rule 62 (pexp -> NEW ID LPAREN RPAREN .)
-    MINUS           reduce using rule 62 (pexp -> NEW ID LPAREN RPAREN .)
-    PLUS            reduce using rule 62 (pexp -> NEW ID LPAREN RPAREN .)
-    LTHAN           reduce using rule 62 (pexp -> NEW ID LPAREN RPAREN .)
-    EQUALS          reduce using rule 62 (pexp -> NEW ID LPAREN RPAREN .)
-    NEQUALS         reduce using rule 62 (pexp -> NEW ID LPAREN RPAREN .)
-    SEMICOLON       reduce using rule 62 (pexp -> NEW ID LPAREN RPAREN .)
-    AND             reduce using rule 62 (pexp -> NEW ID LPAREN RPAREN .)
-    RBRACKET        reduce using rule 62 (pexp -> NEW ID LPAREN RPAREN .)
-    RPAREN          reduce using rule 62 (pexp -> NEW ID LPAREN RPAREN .)
+    DOT             reduce using rule 63 (pexp -> NEW ID LPAREN RPAREN .)
+    LBRACKET        reduce using rule 63 (pexp -> NEW ID LPAREN RPAREN .)
+    TIMES           reduce using rule 63 (pexp -> NEW ID LPAREN RPAREN .)
+    MINUS           reduce using rule 63 (pexp -> NEW ID LPAREN RPAREN .)
+    PLUS            reduce using rule 63 (pexp -> NEW ID LPAREN RPAREN .)
+    LTHAN           reduce using rule 63 (pexp -> NEW ID LPAREN RPAREN .)
+    EQUALS          reduce using rule 63 (pexp -> NEW ID LPAREN RPAREN .)
+    NEQUALS         reduce using rule 63 (pexp -> NEW ID LPAREN RPAREN .)
+    SEMICOLON       reduce using rule 63 (pexp -> NEW ID LPAREN RPAREN .)
+    AND             reduce using rule 63 (pexp -> NEW ID LPAREN RPAREN .)
+    RBRACKET        reduce using rule 63 (pexp -> NEW ID LPAREN RPAREN .)
+    RPAREN          reduce using rule 63 (pexp -> NEW ID LPAREN RPAREN .)
 
 
 state 144
@@ -2466,10 +2466,10 @@ state 144
     (57) sexp -> . NULL
     (58) sexp -> . NUMBER
     (59) pexp -> . ID
-    (60) pexp -> . THIS
-    (61) pexp -> . LPAREN exp RPAREN
-    (62) pexp -> . NEW ID LPAREN RPAREN
-    (63) pexp -> . pexp DOT ID
+    (60) pexp -> . pexp DOT ID
+    (61) pexp -> . THIS
+    (62) pexp -> . LPAREN exp RPAREN
+    (63) pexp -> . NEW ID LPAREN RPAREN
     (64) pexp -> . pexp DOT ID LPAREN option_exps RPAREN
 
     RPAREN          reduce using rule 70 (empty -> .)
@@ -2545,10 +2545,10 @@ state 147
     (57) sexp -> . NULL
     (58) sexp -> . NUMBER
     (59) pexp -> . ID
-    (60) pexp -> . THIS
-    (61) pexp -> . LPAREN exp RPAREN
-    (62) pexp -> . NEW ID LPAREN RPAREN
-    (63) pexp -> . pexp DOT ID
+    (60) pexp -> . pexp DOT ID
+    (61) pexp -> . THIS
+    (62) pexp -> . LPAREN exp RPAREN
+    (63) pexp -> . NEW ID LPAREN RPAREN
     (64) pexp -> . pexp DOT ID LPAREN option_exps RPAREN
 
     NEW             shift and go to state 80
@@ -2636,10 +2636,10 @@ state 150
     (57) sexp -> . NULL
     (58) sexp -> . NUMBER
     (59) pexp -> . ID
-    (60) pexp -> . THIS
-    (61) pexp -> . LPAREN exp RPAREN
-    (62) pexp -> . NEW ID LPAREN RPAREN
-    (63) pexp -> . pexp DOT ID
+    (60) pexp -> . pexp DOT ID
+    (61) pexp -> . THIS
+    (62) pexp -> . LPAREN exp RPAREN
+    (63) pexp -> . NEW ID LPAREN RPAREN
     (64) pexp -> . pexp DOT ID LPAREN option_exps RPAREN
 
     NEW             shift and go to state 80
@@ -2686,10 +2686,10 @@ state 151
     (57) sexp -> . NULL
     (58) sexp -> . NUMBER
     (59) pexp -> . ID
-    (60) pexp -> . THIS
-    (61) pexp -> . LPAREN exp RPAREN
-    (62) pexp -> . NEW ID LPAREN RPAREN
-    (63) pexp -> . pexp DOT ID
+    (60) pexp -> . pexp DOT ID
+    (61) pexp -> . THIS
+    (62) pexp -> . LPAREN exp RPAREN
+    (63) pexp -> . NEW ID LPAREN RPAREN
     (64) pexp -> . pexp DOT ID LPAREN option_exps RPAREN
 
     NEW             shift and go to state 80
@@ -2736,10 +2736,10 @@ state 152
     (57) sexp -> . NULL
     (58) sexp -> . NUMBER
     (59) pexp -> . ID
-    (60) pexp -> . THIS
-    (61) pexp -> . LPAREN exp RPAREN
-    (62) pexp -> . NEW ID LPAREN RPAREN
-    (63) pexp -> . pexp DOT ID
+    (60) pexp -> . pexp DOT ID
+    (61) pexp -> . THIS
+    (62) pexp -> . LPAREN exp RPAREN
+    (63) pexp -> . NEW ID LPAREN RPAREN
     (64) pexp -> . pexp DOT ID LPAREN option_exps RPAREN
 
     NEW             shift and go to state 80
@@ -2786,10 +2786,10 @@ state 153
     (57) sexp -> . NULL
     (58) sexp -> . NUMBER
     (59) pexp -> . ID
-    (60) pexp -> . THIS
-    (61) pexp -> . LPAREN exp RPAREN
-    (62) pexp -> . NEW ID LPAREN RPAREN
-    (63) pexp -> . pexp DOT ID
+    (60) pexp -> . pexp DOT ID
+    (61) pexp -> . THIS
+    (62) pexp -> . LPAREN exp RPAREN
+    (63) pexp -> . NEW ID LPAREN RPAREN
     (64) pexp -> . pexp DOT ID LPAREN option_exps RPAREN
 
     NEW             shift and go to state 80
@@ -3109,10 +3109,10 @@ state 176
     (57) sexp -> . NULL
     (58) sexp -> . NUMBER
     (59) pexp -> . ID
-    (60) pexp -> . THIS
-    (61) pexp -> . LPAREN exp RPAREN
-    (62) pexp -> . NEW ID LPAREN RPAREN
-    (63) pexp -> . pexp DOT ID
+    (60) pexp -> . pexp DOT ID
+    (61) pexp -> . THIS
+    (62) pexp -> . LPAREN exp RPAREN
+    (63) pexp -> . NEW ID LPAREN RPAREN
     (64) pexp -> . pexp DOT ID LPAREN option_exps RPAREN
 
     NEW             shift and go to state 80

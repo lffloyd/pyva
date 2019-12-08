@@ -21,7 +21,9 @@ def analiseSemantica(info, sum = 0, mult = 1):
             elif len(info.children) > 1:                            
                 if(info.children[1] == "*"  and info.children[2].val != None):                     
                     mult = mult * info.children[2].val
+                    
                     resp = analiseSemantica(info.children[0], mult = mult)
+                    print(info.children[0].val)
                     if resp == ReturnType.partialMult:
                         info.set(
                             type = info.children[0].type,
@@ -29,13 +31,14 @@ def analiseSemantica(info, sum = 0, mult = 1):
                             val = info.children[0].val,
                             cgen = info.children[0].cgen)
                     else:
-                        #TODO mudar os filhos na arvore
                         setValToAll(info.children[2], mult)
-                        #info.children[2].val = mult
                     return ReturnType.partialMult
                 elif(info.children[1] == "*"  and info.children[0].val != None):                              
                     mult = mult * info.children[0].val
+                    #print(info.children[2])
                     resp = analiseSemantica(info.children[2], mult = mult)
+                    print(info.children[2].type)
+                    print(info.children[2].val)
                     if resp == ReturnType.partialMult:
                         info.set(
                             type = info.children[2].type,
@@ -43,9 +46,7 @@ def analiseSemantica(info, sum = 0, mult = 1):
                             val = info.children[2].val,
                             cgen = info.children[2].cgen)
                     else:
-                        #TODO mudar os filhos na arvore
                         setValToAll(info.children[0], mult)
-                        #info.children[0].val = mult
                     return ReturnType.partialMult
                 else:
                     resp = analiseSemantica(info.children[0], mult = mult)
@@ -58,14 +59,16 @@ def analiseSemantica(info, sum = 0, mult = 1):
         elif (info.type == "aexp"):
             mult = 1
             if(info.val):
-                return ReturnType.partialSum
+                return ReturnType.total
             elif len(info.children) > 1:                            
                 if(info.children[1] and info.children[2].val != None):
+                    #print(info.children[0])
                     if(info.children[1] == "+" ):
                         sum = sum + info.children[2].val
                     if(info.children[1] == "-" ):
-                        sum = sum + info.children[2].val
+                        sum = sum - info.children[2].val
                     resp = analiseSemantica(info.children[0], sum)
+                    print(info.children[0].val)
                     if resp == ReturnType.partialSum:
                         info.set(
                             type = info.children[0].type,
@@ -74,14 +77,16 @@ def analiseSemantica(info, sum = 0, mult = 1):
                             cgen = info.children[0].cgen)
                     else:
                         setValToAll(info.children[2], sum)
-                        #info.children[2].val = sum
                     return ReturnType.partialSum
                 elif(info.children[1] and info.children[0].val != None):
+                    #print(info.children[2])
                     if(info.children[1] == "+" ):
                         sum = sum + info.children[0].val
                     if(info.children[1] == "-" ):
                         sum = info.children[0].val - sum
                     resp = analiseSemantica(info.children[2], sum)
+                    print(info.children[2].type)
+                    print(info.children[2].val)
                     if resp == ReturnType.partialSum:
                         info.set(
                             type = info.children[2].type,
@@ -90,7 +95,6 @@ def analiseSemantica(info, sum = 0, mult = 1):
                             cgen = info.children[2].cgen)
                     else:
                         setValToAll(info.children[0], sum)
-                        #info.children[0].val = sum
                     return ReturnType.partialSum
                 else:
                     resp = analiseSemantica(info.children[0], sum = sum)
@@ -105,38 +109,60 @@ def analiseSemantica(info, sum = 0, mult = 1):
                     if (item.type == "class"):
                         symbolT = SymbolTable()
                         analiseSemantica(item)
-
                     elif (item.type == "metodo"):
-                        symbolT.insert_scope(Scope())
+                        symbolT.insert_scope(Scope(table = symbolT.scopes[symbolT.current_scope_level].table))
                         analiseSemantica(item)
                         symbolT.remove()
                     else:
                         if (item.type == "var" or item.type == "conj_params"):
-                            
+                        
                             if (len(item.children[0].children) > 1):
-                                
+                                novo = dict()
+                                novo.setdefault('type', 'int[]')
                                 symbolT.insert_entry(
-                                    item.children[1], {'type': 'int[]'})
+                                    item.children[1], novo)
                             else:
-                                symbolT.insert_entry(item.children[1], {
-                                                    'type': item.children[0].children[0]})
+                                novo = dict()
+                                novo.setdefault('type', item.children[0].children[0])
+                                symbolT.insert_entry(item.children[1], novo)
 
                         elif (item.type == "mais_param" and len(item.children) > 1):
                             if (len(item.children[2].children) > 1):
+                                novo = dict()
+                                novo.setdefault('type', 'int[]')
                                 symbolT.insert_entry(
-                                    item.children[3], {'type': 'int[]'})
+                                    item.children[3], novo)
                             else:
-                                symbolT.insert_entry(item.children[3], {
-                                                    'type': item.children[2].children[0]})
+                                novo = dict()
+                                novo.setdefault('type', item.children[2].children[0])
+                                symbolT.insert_entry(item.children[3], novo)
 
-                        elif ((item.type == "pexp" or item.type == "cmd2" or item.type == "cmd1") and item.toTable):
-                            sco = symbolT.scopes[symbolT.current_scope_level]
-                            glob = symbolT.scopes[0]
-                            
-                            if not (sco.is_in(item.children[0]) or glob.is_in(item.children[0])):
+                        elif item.type == "pexp" and item.toTable != None:
+                            #print(item.children[0])
+                            if not (symbolT.is_in_global(item.children[item.toTable['pos']])):
                                 print('Erro: Variável {0} não declarada'.format(
-                                    item.children[0]))
+                                    item.children[item.toTable['pos']]))
+                            atribbutes = symbolT.lookup(item.children[item.toTable['pos']])
+                            item.val = atribbutes.get('val')
+                        elif (item.type == "cmd2" or item.type == "cmd1") and item.toTable != None:
+                            #print(item.children[0])
+                            if not (symbolT.is_in_global(item.children[item.toTable['pos']])):
+                                print('Erro: Variável {} não declarada'.format(
+                                    item.children[item.toTable['pos']]))
+                            elif item.children[2].val != None and item.children[1] != "[":
+                                novo = dict()
+                                novo.setdefault('val', item.children[2].val)
+                                symbolT.insert_entry(
+                                    item.children[item.toTable['pos']], novo)
                         analiseSemantica(item)
+                    if len(info.children) == 1 and item.val:
+                        info.val = item.val
+                elif (item == "{"):
+                    symbolT.insert_scope(Scope(table = symbolT.scopes[symbolT.current_scope_level].table))
+                elif (item == "}"):
+                    #print(symbolT.scopes[symbolT.current_scope_level].table)
+                    symbolT.remove()
+                    #print(symbolT.scopes[symbolT.current_scope_level].table)
 def setValToAll(info, val):
     info.set(val = val)
     index = 0
