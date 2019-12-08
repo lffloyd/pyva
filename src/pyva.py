@@ -7,6 +7,7 @@ from .semantic_analysis import analiseSemantica
 from .code_generation.mips_generator import MIPSGenerator
 from .abstract_syntax_tree.ast_node import create_tree
 from .utils.code_reader import read_source_code
+from .utils.code_writer import write_assembly_code
 
 
 def main():
@@ -51,6 +52,8 @@ def main():
         code = mips_gen.generate_code(tree)
 
         print(code)
+
+        write_assembly_code(argv[1], 'w', code)
 
         print('****************************************\n')
         print('**************Semantic analysis:**************')
