@@ -18,6 +18,10 @@ def analiseSemantica(info, sum = 0, mult = 1):
             if(info.val):
                 return ReturnType.total
             elif len(info.children) > 1:
+                ##Se o ultimo termo for uma variavel a analise semantica vai transforma-lo em uma constante
+                #não chamar a analise do termo no inicio pode resoltar em um calculo incompleto com esse termo sobrando
+                #no final (ex: 3*x*2*y -> 6*x*y com y.val =2)
+                analiseSemantica(info.children[2])
                 #Se um dos termos é constante a função propaga a constante para dentro do outro termo
                 #  que apos ser analisado retorna se essa constante foi usada e pode ser descartada                          
                 if(info.children[1] == "*"  and info.children[2].val != None):                     
@@ -83,6 +87,10 @@ def analiseSemantica(info, sum = 0, mult = 1):
             if(info.val):
                 return ReturnType.total
             elif len(info.children) > 1:
+                ##Se o ultimo termo for uma variavel a analise semantica vai transforma-lo em uma constante
+                #não chamar a analise do termo no inicio pode resoltar em um calculo incompleto com esse termo sobrando
+                #no final (ex: 3+ x + 3 + y -> 6 + x + y com y.val =2)
+                analiseSemantica(info.children[2])
                 #Se um dos termos é constante a função propaga a constante para dentro do outro termo
                 #  que apos ser analisado retorna se essa constante foi usada e pode ser descartada                                
                 if(info.children[1] and info.children[2].val != None):
