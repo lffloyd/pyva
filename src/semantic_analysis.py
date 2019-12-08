@@ -34,7 +34,7 @@ def analiseSemantica(info, sum = 0, mult = 1):
                     # com valor na tabela e o termo tenha passado a ser constante a operacao é realizada
                     elif info.children[0].val != None:
                         mult = mult * info.children[0].val
-                        setValToAll(info.children[0], mult)
+                        setValToAll(info.children[2], mult)
                         info.set(
                             type = info.children[2].type,
                             children = info.children[2].children,
