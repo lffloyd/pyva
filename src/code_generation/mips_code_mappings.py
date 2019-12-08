@@ -34,6 +34,7 @@ loop_count = 0
 equals_count = 0
 not_equals_count = 0
 not_count = 0
+generic_label_count = 0
 
 def get_next_if_count():
     global if_count
@@ -70,6 +71,14 @@ def get_next_not_count():
     not_count = not_count + 1
     return not_count
 
+def get_next_generic_label_count():
+    global generic_label_count
+    generic_label_count = generic_label_count + 1
+    return generic_label_count
+
+def get_label(label):
+    return "label" + str(get_next_generic_label_count()) if (label == "" or label == None) else label
+
 
 def prog_cgen(p):
     if p.val != None:
@@ -77,13 +86,11 @@ def prog_cgen(p):
 
     return p.children[0].cgen(p.children[0]) + p.children[1].cgen(p.children[1])
 
- #Aqui está dando erro de NoneType, pq o cgen de cmd1 (p.children[14]) ainda n foi feito (linha 10)
-#This function calls cgen(cmd1)
 def main_cgen(p):
     if p.val != None:
         return load_immediate(p.val)
 
-    return p.children[1] + ":" + "\n" +\
+    return get_label(p.children[1]) + ":" + "\n" +\
         "\tmove $fp $sp\n" +\
         "\tsw $ra 0($sp)\n" +\
         "\taddiu $sp $sp -40\n" +\
@@ -348,7 +355,7 @@ def classe_cgen(p):
 
     children = p.children
 
-    return children[1] + ":\n" + children[4].cgen(children[4]) + children[5].cgen(children[5])
+    return get_label(children[1]) + ":\n" + children[4].cgen(children[4]) + children[5].cgen(children[5])
 
 def metodo_cgen(p):
     if p.val != None:
@@ -361,7 +368,7 @@ def metodo_cgen(p):
 
     n_params = children[4].children_length() or 1
 
-    return children[2] + ":\n" + \
+    return get_label(children[2]) + ":\n" + \
         children[4].cgen(children[4]) + ":\n" + \
         "\tmove $fp $sp\n" + \
         "\tsw $ra 0($sp)\n" + \
