@@ -109,10 +109,8 @@ def analiseSemantica(info, sum = 0, mult = 1):
                     #Caso na analise do termo não constante tenha se verificado uma variavel
                     # com valor na tabela e o termo tenha passado a ser constante a operacao é realizada
                     elif info.children[0].val != None:
-                        if(info.children[1] == "+" ):
-                            sum = sum + info.children[0].val
-                        if(info.children[1] == "-" ):
-                            sum = info.children[0].val - sum
+                        #Se for uma subtração o valor ja ficou negativo, subtrair transforaria a operacao em soma
+                        sum = sum + info.children[0].val
                         setValToAll(info.children[2], sum)
                         info.set(
                             type = info.children[2].type,
@@ -139,10 +137,8 @@ def analiseSemantica(info, sum = 0, mult = 1):
                     #Caso na analise do termo não constante tenha se verificado uma variavel
                     # com valor na tabela e o termo tenha passado a ser constante a operacao é realizada
                     elif info.children[2].val != None:
-                        if(info.children[1] == "+" ):
-                            sum = sum + info.children[2].val
-                        if(info.children[1] == "-" ):
-                            sum = sum - info.children[2].val
+                        #Se for uma subtração o valor ja ficou negativo, subtrair transforaria a operacao em soma
+                        sum = sum + info.children[2].val
                         setValToAll(info.children[0], sum)
                         info.set(
                             type = info.children[0].type,
@@ -174,6 +170,19 @@ def analiseSemantica(info, sum = 0, mult = 1):
                         symbolT.insert_scope(Scope(table = symbolT.scopes[symbolT.current_scope_level].table))
                         analiseSemantica(item)
                         symbolT.remove()
+                    elif (item.type == "cmd2" or item.type == "cmd1") and item.toTable != None:
+                        analiseSemantica(item)
+                        if not (symbolT.is_in_global(item.children[item.toTable['pos']])):
+                            print('Erro: Variável {} não declarada'.format(
+                                item.children[item.toTable['pos']]))
+                        elif item.children[2].val != None and item.children[1] != "[":
+                            novo = dict()
+                            novo.setdefault('val', item.children[2].val)
+                            symbolT.insert_entry(
+                                item.children[item.toTable['pos']], novo)
+                        #Propagando valor para nos superiores na arvore caso so tenha um filho e a analise dele tenha atribuido valor
+                        if len(info.children) == 1 and item.val:
+                            info.val = item.val
                     else:
                         if (item.type == "var" or item.type == "conj_params"):
                         
@@ -204,15 +213,6 @@ def analiseSemantica(info, sum = 0, mult = 1):
                                     item.children[item.toTable['pos']]))
                             atribbutes = symbolT.lookup(item.children[item.toTable['pos']])
                             item.val = atribbutes.get('val')
-                        elif (item.type == "cmd2" or item.type == "cmd1") and item.toTable != None:
-                            if not (symbolT.is_in_global(item.children[item.toTable['pos']])):
-                                print('Erro: Variável {} não declarada'.format(
-                                    item.children[item.toTable['pos']]))
-                            elif item.children[2].val != None and item.children[1] != "[":
-                                novo = dict()
-                                novo.setdefault('val', item.children[2].val)
-                                symbolT.insert_entry(
-                                    item.children[item.toTable['pos']], novo)
                         analiseSemantica(item)
                     #Propagando valor para nos superiores na arvore caso so tenha um filho e a analise dele tenha atribuido valor
                     if len(info.children) == 1 and item.val:
@@ -222,7 +222,8 @@ def analiseSemantica(info, sum = 0, mult = 1):
                 elif (item == "{"):
                     symbolT.insert_scope(Scope(table = symbolT.scopes[symbolT.current_scope_level].table))
                 elif (item == "}"):
-                    symbolT.remove()
+                    
+                    print(symbolT.remove().table)
 
 def setValToAll(info, val):
     info.set(val = val)

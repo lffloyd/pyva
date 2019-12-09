@@ -165,9 +165,9 @@ def p_exp_and(p):
     if(p[1].val != None and p[3].val != None):
         value = int(p[1].val and p[3].val)
 
-        p[0] = ASTNode(type="aexp", children=p[1:], val=value, cgen=exp_and_cgen)
+        p[0] = ASTNode(type="exp", children=p[1:], val=value, cgen=exp_and_cgen)
     else:
-        p[0] = ASTNode(type="aexp", children=p[1:], cgen=exp_and_cgen)
+        p[0] = ASTNode(type="exp", children=p[1:], cgen=exp_and_cgen)
 
 
 def p_exp_resp(p):
@@ -182,9 +182,9 @@ def p_rexp_lthan(p):
     if(p[1].val != None and p[3].val != None):
         value = int(p[1].val < p[3].val)
 
-        p[0] = ASTNode(type="aexp", children=p[1:], val=value, cgen=rexp_lthan_cgen)
+        p[0] = ASTNode(type="rexp", children=p[1:], val=value, cgen=rexp_lthan_cgen)
     else:
-        p[0] = ASTNode(type="aexp", children=p[1:], cgen=rexp_lthan_cgen)
+        p[0] = ASTNode(type="rexp", children=p[1:], cgen=rexp_lthan_cgen)
 
 
 def p_rexp_equals(p):
@@ -193,9 +193,9 @@ def p_rexp_equals(p):
     if(p[1].val != None and p[3].val != None):
         value = int(p[1].val == p[3].val)
         
-        p[0] = ASTNode(type="aexp", children=p[1:], val=value, cgen=rexp_equals_cgen)
+        p[0] = ASTNode(type="rexp", children=p[1:], val=value, cgen=rexp_equals_cgen)
     else:
-        p[0] = ASTNode(type="aexp", children=p[1:], cgen=rexp_equals_cgen)
+        p[0] = ASTNode(type="rexp", children=p[1:], cgen=rexp_equals_cgen)
 
 
 def p_rexp_nequals(p):
@@ -204,9 +204,9 @@ def p_rexp_nequals(p):
     if(p[1].val != None and p[3].val != None):
         value = int(p[1].val != p[3].val)
         # print(value)
-        p[0] = ASTNode(type="aexp", children=p[1:], val=value, cgen=rexp_nequals_cgen)
+        p[0] = ASTNode(type="rexp", children=p[1:], val=value, cgen=rexp_nequals_cgen)
     else:
-        p[0] = ASTNode(type="aexp", children=p[1:], cgen=rexp_nequals_cgen)
+        p[0] = ASTNode(type="rexp", children=p[1:], cgen=rexp_nequals_cgen)
 
 
 def p_rexp_aexp(p):

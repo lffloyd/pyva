@@ -25,7 +25,7 @@ class SymbolTable:
     def remove(self):
         if(len(self.scopes) > 0):
             self.current_scope_level = self.current_scope_level - 1
-            self.scopes.pop()
+            return self.scopes.pop()
 
     '''Verify if a given entry exists on global scope (0).'''
     def is_in_global(self, entry_name):

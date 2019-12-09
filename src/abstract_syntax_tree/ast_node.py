@@ -39,8 +39,8 @@ def create_tree(info, parent):
             for item in info.children:
                 if not type(item) is ASTNode:
                     Node(str(item), parent=parent)
-                #elif item.val != None:
-                #    Node(item.val, parent=parent)
+                elif item.val != None:
+                    Node(item.val, parent=parent)
                 else:
                     new = Node(item.type, parent=parent)
                     create_tree(item, new)
