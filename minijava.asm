@@ -8,11 +8,7 @@ Factorial:
 	lw $fp 0($sp)
 	jr $ra
 Fac:
-	li $a0 0
-	sw $a0 0($sp)
-	addiu $sp $sp -4
 ComputeFac:
-	li $a0 0
 	li $a0 0
 :
 	move $fp $sp

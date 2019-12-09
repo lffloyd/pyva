@@ -40,6 +40,12 @@ def main():
 
         parser.parse(raw_source_code, lexer=lexer)
 
+        from .parser import tree
+
+        create_tree(tree['production'], tree['root'])
+        for pre, _, node in RenderTree(tree['root']):
+            print("%s%s" % (pre, node.name))
+
         print('****************************************\n')
 
         print('****************************************\n')
@@ -59,12 +65,15 @@ def main():
         print('**************Semantic analysis:**************')
 
         from .parser import tree
-
-        analiseSemantica(tree['production'])
-        create_tree(tree['production'], tree['root'])
-        for pre, _, node in RenderTree(tree['root']):
-            print("%s%s" % (pre, node.name))
-
+        
+        try:
+            analiseSemantica(tree['production'])
+            tree['root'] = Node("prog")
+            create_tree(tree['production'], tree['root'])
+            for pre, _, node in RenderTree(tree['root']):
+                print("%s%s" % (pre, node.name))
+        except Exception as e:
+            print(e)
         print('****************************************\n')
 
 

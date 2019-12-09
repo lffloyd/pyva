@@ -209,10 +209,11 @@ def analiseSemantica(info, sum = 0, mult = 1):
 
                         elif item.type == "pexp" and item.toTable != None:
                             if not (symbolT.is_in_global(item.children[item.toTable['pos']])):
-                                print('Erro: Variável {0} não declarada'.format(
+                                raise Exception('Erro: Variável {0} não declarada'.format(
                                     item.children[item.toTable['pos']]))
                             atribbutes = symbolT.lookup(item.children[item.toTable['pos']])
-                            item.val = atribbutes.get('val')
+                            if atribbutes:
+                                item.val = atribbutes.get('val')
                         analiseSemantica(item)
                     #Propagando valor para nos superiores na arvore caso so tenha um filho e a analise dele tenha atribuido valor
                     if len(info.children) == 1 and item.val:
@@ -222,8 +223,7 @@ def analiseSemantica(info, sum = 0, mult = 1):
                 elif (item == "{"):
                     symbolT.insert_scope(Scope(table = symbolT.scopes[symbolT.current_scope_level].table))
                 elif (item == "}"):
-                    
-                    print(symbolT.remove().table)
+                    symbolT.remove()
 
 def setValToAll(info, val):
     info.set(val = val)
